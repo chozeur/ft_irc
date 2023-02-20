@@ -6,7 +6,7 @@
 /*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 21:16:58 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/20 17:49:39 by tbrebion         ###   ########.fr       */
+/*   Updated: 2023/02/20 17:54:11 by tbrebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ long	parsing_args(int ac, char *str, char **env){
 	long port = 0; 
 	port = strtol(str, &endptr, port);
 	
-	if (port < 0 || port > LONG_MAX || *endptr != '\0'){
+	if (port < 0 || port > 65535 || *endptr != '\0'){
 
 		std::cout << "Error : problem with the port" << std::endl;
 		return (-1);
