@@ -6,7 +6,7 @@
 /*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 21:16:58 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/21 15:15:30 by tbrebion         ###   ########.fr       */
+/*   Updated: 2023/02/21 15:37:49 by tbrebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <climits>
 
 #include "launchConfig/launchConfig.hpp"
+#include "server/server.hpp"
 
 bool stop = false;
 
@@ -52,17 +53,20 @@ int	main(int ac, char **av, char **env){
 	long port = parsing_args(ac, av[1], env);
 	if (port == -1)
 		return (1);
-
-	signal(SIGINT, sig_handler);
+		
+	irc::server serv = irc::server();
 	
-
-	// Init server
+	signal(SIGINT, sig_handler);
+	serv.getConf().setConfig("port", av[1]);
+	serv.getConf().setConfig("password", av[2]);
 	
 	//server is running
 	while (!stop){
 
 		//server.run();
 	}
-
 	return (0);
 }
+
+	// std::cout << serv.getConf().getConfig("port") << std::endl << serv.getConf().getConfig("password") << std::endl;
+	
