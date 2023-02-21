@@ -6,13 +6,16 @@
 /*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 21:16:58 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/20 17:54:11 by tbrebion         ###   ########.fr       */
+/*   Updated: 2023/02/21 15:15:30 by tbrebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include <iostream>
 #include <csignal>
 #include <climits>
+
+#include "launchConfig/launchConfig.hpp"
 
 bool stop = false;
 
@@ -52,6 +55,7 @@ int	main(int ac, char **av, char **env){
 
 	signal(SIGINT, sig_handler);
 	
+
 	// Init server
 	
 	//server is running

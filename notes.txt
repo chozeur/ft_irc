@@ -4,7 +4,7 @@
 
 - launch : ./ircserv <port> <password>
 
-- <port> : number of the port we will accept incomming connexion
+- <port> : number of the port we will accept incomming connexions
 
 - <password> : password all clients must use to connect to the server
 
