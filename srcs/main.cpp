@@ -6,7 +6,7 @@
 /*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 21:16:58 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/21 15:37:49 by tbrebion         ###   ########.fr       */
+/*   Updated: 2023/02/21 17:04:28 by tbrebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <csignal>
 #include <climits>
 
-#include "launchConfig/launchConfig.hpp"
+#include "config/config.hpp"
 #include "server/server.hpp"
 
 bool stop = false;
@@ -60,6 +60,7 @@ int	main(int ac, char **av, char **env){
 	serv.getConf().setConfig("port", av[1]);
 	serv.getConf().setConfig("password", av[2]);
 	
+	std::cout << serv.getConf().getConfig("port") << std::endl << serv.getConf().getConfig("password") << std::endl;
 	//server is running
 	while (!stop){
 
@@ -68,5 +69,4 @@ int	main(int ac, char **av, char **env){
 	return (0);
 }
 
-	// std::cout << serv.getConf().getConfig("port") << std::endl << serv.getConf().getConfig("password") << std::endl;
 	

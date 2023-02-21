@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   launchConfig.hpp                                   :+:      :+:    :+:   */
+/*   config.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,19 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LAUNCHCONFIG_HPP
-#define LAUNCHCONFIG_HPP
+#ifndef CONFIG_HPP
+#define CONFIG_HPP
 
 #include <iostream>
 #include <map>
 
 namespace irc{
 	
-	class launchConfig {
+	class config {
 
 		public:
-			launchConfig();
-			~launchConfig();
+			config();
+			~config();
 
 			void	setConfig(std::string key, std::string values);
 			
@@ -30,7 +30,7 @@ namespace irc{
 			
 		
 		private:
-			std::map<std::string, std::string> config;
+			std::map<std::string, std::string> conf_tab;
 	};
 }
 

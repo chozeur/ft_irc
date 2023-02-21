@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   launchConfig.cpp                                   :+:      :+:    :+:   */
+/*   config.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,18 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "launchConfig.hpp"
+#include "config.hpp"
 
-irc::launchConfig::launchConfig(){}
+irc::config::config(){}
 
-irc::launchConfig::~launchConfig(){}
+irc::config::~config(){}
 
-void	irc::launchConfig::setConfig(std::string key, std::string value){
+void	irc::config::setConfig(std::string key, std::string value){
 
-	this->config.insert(std::pair<std::string, std::string>(key, value));
+	this->conf_tab.insert(std::pair<std::string, std::string>(key, value));
 }
 
-std::string	irc::launchConfig::getConfig(std::string key){
+std::string	irc::config::getConfig(std::string key){
 
-	return (this->config[key]);
+	return (this->conf_tab[key]);
 }

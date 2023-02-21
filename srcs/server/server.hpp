@@ -6,14 +6,14 @@
 /*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:36 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/21 15:27:22 by tbrebion         ###   ########.fr       */
+/*   Updated: 2023/02/21 17:01:32 by tbrebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
-#include "../launchConfig/launchConfig.hpp"
+#include "../config/config.hpp"
 
 
 namespace irc{
@@ -24,10 +24,10 @@ namespace irc{
 			server();
 			~server();
 
-			irc::launchConfig &getConf();
+			irc::config &getConf();
 			
 		private:
-			irc::launchConfig conf;
+			irc::config conf;
 	};
 }
 
