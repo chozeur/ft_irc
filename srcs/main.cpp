@@ -6,7 +6,7 @@
 /*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 21:16:58 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/21 17:04:28 by tbrebion         ###   ########.fr       */
+/*   Updated: 2023/02/23 18:56:39 by tbrebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ int	main(int ac, char **av, char **env){
 	serv.getConf().setConfig("port", av[1]);
 	serv.getConf().setConfig("password", av[2]);
 	
-	std::cout << serv.getConf().getConfig("port") << std::endl << serv.getConf().getConfig("password") << std::endl;
-	//server is running
+	// std::cout << serv.getConf().getConfig("port") << std::endl << serv.getConf().getConfig("password") << std::endl;
+	
 	while (!stop){
 
 		//server.run();
