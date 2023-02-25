@@ -6,7 +6,7 @@
 /*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 21:16:58 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/23 18:56:39 by tbrebion         ###   ########.fr       */
+/*   Updated: 2023/02/25 20:11:10 by tbrebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,19 @@ long	parsing_args(int ac, char *str, char **env){
 	return (port);
 }
 
+int	init(irc::server *serv, char **av){
+
+	serv->getConf().setConfig("port", av[1]);
+	serv->getConf().setConfig("password", av[2]);
+	serv->setSockfd(socket(AF_INET, SOCK_STREAM, 0));
+	if (serv->getSockfd() < 0){
+
+		std::cout << "opening socket problem" << std::endl;
+		return (1);		
+	}
+	return (0);
+}
+
 int	main(int ac, char **av, char **env){
 
 	long port = parsing_args(ac, av[1], env);
@@ -55,13 +68,10 @@ int	main(int ac, char **av, char **env){
 		return (1);
 		
 	irc::server serv = irc::server();
-	
+
+	if (init(&serv, av) != 0)
+		return (1);
 	signal(SIGINT, sig_handler);
-	serv.getConf().setConfig("port", av[1]);
-	serv.getConf().setConfig("password", av[2]);
-	
-	// std::cout << serv.getConf().getConfig("port") << std::endl << serv.getConf().getConfig("password") << std::endl;
-	
 	while (!stop){
 
 		//server.run();
@@ -69,4 +79,5 @@ int	main(int ac, char **av, char **env){
 	return (0);
 }
 
+	// std::cout << serv.getConf().getConfig("port") << std::endl << serv.getConf().getConfig("password") << std::endl;
 	
