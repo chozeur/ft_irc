@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:36 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/27 00:21:49 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/02/27 00:31:49 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,8 @@ namespace ft_irc{
 			server(server const &src);
 			~server(void);
 
-			server	&operator=(server const &src);
+			server				&operator=(server const &src);
 
-			std::string			getConfMap(std::string key);
-			void				setConfMap(std::string key, std::string values);
 			long				getPort(void)const;
 			void				setPort(long port);
 			std::string			getPassword(void)const;
@@ -45,7 +43,6 @@ namespace ft_irc{
 			void				init(std::string password, long port);
 
 		private:
-			std::map<std::string, std::string>	_conf_map;
 			long								_port;
 			std::string							_password;
 			struct sockaddr_in					_serv_addr;

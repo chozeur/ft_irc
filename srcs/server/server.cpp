@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:40 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/27 00:21:37 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/02/27 00:25:08 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,10 @@ ft_irc::server	&ft_irc::server::operator=(server const &src){
 	if (this != &src){
 		this->_serv_addr = src._serv_addr;
 		this->_sock_fd = src._sock_fd;
-		this->_conf_map = src._conf_map;
+		this->_port = src._port;
+		this->_password = src._password;
 	}
 	return (*this);
-}
-
-std::string	ft_irc::server::getConfMap(std::string key){
-	return (this->_conf_map[key]);
-}
-
-void	ft_irc::server::setConfMap(std::string key, std::string value){
-	this->_conf_map[key] = value;
 }
 
 long	ft_irc::server::getPort(void) const {
