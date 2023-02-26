@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 21:16:58 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/26 19:33:37 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/02/26 20:59:22 by tbrebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,17 @@ long	parsing_args(int ac, char *str, char **env){
 	return (port);
 }
 
-int	init(ft_irc::server *serv, char **av){	//TODO use a reference instead of a pointer ?
+int	init(ft_irc::server &serv, char **av, long port){
 
-	serv->setConfMap("port", av[1]);
-	serv->setConfMap("password", av[2]);
-	serv->setSockfd(socket(AF_INET, SOCK_STREAM, 0));
-	if (serv->getSockfd() < 0){
+	serv.setConfMap("port", av[1]);
+	serv.setConfMap("password", av[2]);
+	serv.setSockfd(socket(AF_INET, SOCK_STREAM, 0));
+	if (serv.getSockfd() < 0){
 
 		std::cout << "opening socket problem" << std::endl;
-		return (1);
+		return (-1);
 	}
+	serv.setServAddr(port);
 	return (0);
 }
 
@@ -68,9 +69,9 @@ int	main(int ac, char **av, char **env){
 	if (port == -1)
 		return (1);
 
-	if (init(&serv, av) != 0)
+	if (init(serv, av, port) != 0)
 		return (1);
-	ft_irc::server serv2(serv);
+
 	signal(SIGINT, sig_handler);
 	while (!stop){
 
@@ -79,3 +80,4 @@ int	main(int ac, char **av, char **env){
 	return (0);
 }
 
+	// std::cout << serv.getConfMap("port") << std::endl << serv.getConfMap("password") << std::endl;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:36 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/26 19:38:54 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/02/26 20:53:43 by tbrebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,16 @@ namespace ft_irc{
 
 			server	&operator=(server const &src);
 
-			struct sockaddr_in	*getServAddr()const;
-			void				setConfMap(std::string key, std::string values);
+			struct sockaddr_in	getServAddr()const;
+			void				setServAddr(long port);
 			std::string			getConfMap(std::string key);
+			void				setConfMap(std::string key, std::string values);
 			int					getSockfd()const;
 			void				setSockfd(int fd);
 
 		private:
 			std::map<std::string, std::string> 	_conf_map;
-			struct sockaddr_in					*_serv_addr;
+			struct sockaddr_in					_serv_addr;
 			int									_sock_fd;
 	};
 }

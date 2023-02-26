@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:40 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/26 19:38:14 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/02/26 21:23:43 by tbrebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,25 +29,29 @@ ft_irc::server	&ft_irc::server::operator=(server const &src){
 	return (*this);
 }
 
-struct sockaddr_in	*ft_irc::server::getServAddr()const{
+struct sockaddr_in	ft_irc::server::getServAddr()const{
+	return (this->_serv_addr);
+}
 
-	return (_serv_addr);
+void				ft_irc::server::setServAddr(long port){
+
+	this->_serv_addr.sin_family = AF_INET;
+	this->_serv_addr.sin_addr.s_addr = INADDR_ANY;
+	this->_serv_addr.sin_port = htonl(port);
 }
 
 int	ft_irc::server::getSockfd()const{
-
-	return (_sock_fd);
+	return (this->_sock_fd);
 }
 
 void	ft_irc::server::setSockfd(int fd){
-
-	_sock_fd = fd;
-}
-
-void	ft_irc::server::setConfMap(std::string key, std::string value){
-	this->_conf_map[key] = value;
+	this->_sock_fd = fd;
 }
 
 std::string	ft_irc::server::getConfMap(std::string key){
 	return (this->_conf_map[key]);
+}
+
+void	ft_irc::server::setConfMap(std::string key, std::string value){
+	this->_conf_map[key] = value;
 }
