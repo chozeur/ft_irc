@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 21:16:58 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/26 23:51:04 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/02/26 23:53:31 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 #include <climits>
 
 #include "server/server.hpp"
-#include "../include/init.hpp"
-#include "../include/utils.hpp"
+#include "../includes/init.hpp"
+#include "../includes/utils.hpp"
 
 
 bool	stop = false;
@@ -29,11 +29,6 @@ int	main(int ac, char **av, char **env){
 
 	try {
 		port = parsing_args(ac, av[1], env);
-	} catch (std::exception &e){
-		return (1);
-	}
-
-	try {
 		serv.init(av, port);
 	} catch (std::exception &e){
 		return (1);

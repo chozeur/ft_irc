@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:40 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/26 23:29:06 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/02/26 23:52:44 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,7 @@ void	ft_irc::server::init(char **av, long port){
 	this->setConfMap("port", av[1]);
 	this->setConfMap("password", av[2]);
 	this->setSockfd(socket(AF_INET, SOCK_STREAM, 0));
-	if (this->getSockfd() < 0){
-		std::cerr << "opening socket problem" << std::endl;
-		throw(std::exception()); // TODO: create a custom exception
-	}
+	if (this->getSockfd() < 0)
+		throw std::runtime_error("Error : socket");
 	this->setServAddr(port);
 }
