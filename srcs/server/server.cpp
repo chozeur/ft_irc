@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:40 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/27 00:25:08 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/02/27 00:34:12 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	ft_irc::server::setServAddr(long port){
 	this->_serv_addr.sin_port = htonl(port);
 }
 
-int	ft_irc::server::getSockfd()const{
+int	ft_irc::server::getSockfd(void)const{
 	return (this->_sock_fd);
 }
 
