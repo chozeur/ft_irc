@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 21:16:58 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/26 23:32:02 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/02/26 23:51:04 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,14 @@ bool	stop = false;
 
 int	main(int ac, char **av, char **env){
 
-	ft_irc::server serv = ft_irc::server();
-	long port = parsing_args(ac, av[1], env);
+	ft_irc::server	serv = ft_irc::server();
+	long			port;
 
-	if (port == -1)
+	try {
+		port = parsing_args(ac, av[1], env);
+	} catch (std::exception &e){
 		return (1);
+	}
 
 	try {
 		serv.init(av, port);

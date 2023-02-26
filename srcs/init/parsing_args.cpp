@@ -6,11 +6,11 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 23:17:42 by flcarval          #+#    #+#             */
-/*   Updated: 2023/02/26 23:17:43 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/02/26 23:49:17 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/init.hpp"
+#include "../../includes/init.hpp"
 
 long	parsing_args(int ac, char *str, char **env){
 
@@ -18,17 +18,11 @@ long	parsing_args(int ac, char *str, char **env){
 	long	port = 0;
 
 	if (!(*env))
-		return (-1);
-	if (ac != 3){
-		std::cout << "Error : ./ircserv <port> <password>" << std::endl;
-		return (-1);
-	}
-
+		throw std::runtime_error("Error : no environment variables");
+	if (ac != 3)
+		throw std::runtime_error("Error : ./ircserv <port> <password>");
 	port = strtol(str, &endptr, port);
-
-	if (port < 1 || port > 65535 || *endptr != '\0'){
-		std::cout << "Error : problem with the port" << std::endl;
-		return (-1);
-	}
+	if (port < 1 || port > 65535 || *endptr != '\0')
+		throw std::runtime_error("Error : port must be a number between 1 and 65535");
 	return (port);
 }
