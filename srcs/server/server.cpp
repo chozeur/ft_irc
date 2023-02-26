@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:40 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/26 23:57:05 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/02/27 00:21:37 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,22 @@ void	ft_irc::server::setConfMap(std::string key, std::string value){
 	this->_conf_map[key] = value;
 }
 
+long	ft_irc::server::getPort(void) const {
+	return (this->_port);
+}
+
+void	ft_irc::server::setPort(long port){
+	this->_port = port;
+}
+
+std::string	ft_irc::server::getPassword(void)const{
+	return (this->_password);
+}
+
+void	ft_irc::server::setPassword(std::string password){
+	this->_password = password;
+}
+
 struct sockaddr_in	ft_irc::server::getServAddr()const{
 	return (this->_serv_addr);
 }
@@ -56,9 +72,9 @@ void	ft_irc::server::setSockfd(int fd){
 	this->_sock_fd = fd;
 }
 
-void	ft_irc::server::init(char **av, long port){
-	this->setConfMap("port", av[1]);
-	this->setConfMap("password", av[2]);
+void	ft_irc::server::init(std::string password, long port){
+	this->setPort(port);
+	this->setPassword(password);
 	this->setSockfd(socket(AF_INET, SOCK_STREAM, 0));
 	if (this->getSockfd() < 0)
 		throw std::runtime_error("Error : socket");

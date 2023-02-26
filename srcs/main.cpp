@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 21:16:58 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/26 23:53:31 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/02/27 00:21:13 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,11 @@ int	main(int ac, char **av, char **env){
 
 	ft_irc::server	serv = ft_irc::server();
 	long			port;
+	std::string		password = av[2];
 
 	try {
 		port = parsing_args(ac, av[1], env);
-		serv.init(av, port);
+		serv.init(password, port);
 	} catch (std::exception &e){
 		return (1);
 	}
