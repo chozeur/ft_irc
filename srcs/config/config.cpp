@@ -19,6 +19,8 @@ irc::config::~config(){}
 void	irc::config::setConfig(std::string key, std::string value){
 
 	this->conf_tab.insert(std::pair<std::string, std::string>(key, value));
+	// could be done with
+	this->conf_tab[key] = value;
 }
 
 std::string	irc::config::getConfig(std::string key){

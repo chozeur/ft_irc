@@ -16,19 +16,19 @@
 #include <iostream>
 #include <map>
 
-namespace irc{
-	
-	class config {
+namespace irc{	//? name the namesapce ft_irc
+
+	class config {	//? respect coplien form
 
 		public:
 			config();
 			~config();
 
 			void	setConfig(std::string key, std::string values);
-			
+
 			std::string	getConfig(std::string key);
-			
-		
+
+
 		private:
 			std::map<std::string, std::string> conf_tab;
 	};
