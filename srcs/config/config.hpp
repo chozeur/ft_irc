@@ -16,9 +16,9 @@
 #include <iostream>
 #include <map>
 
-namespace irc{	//? name the namesapce ft_irc
+namespace ft_irc{	//TODO name the namesapce ft_irc
 
-	class config {	//? respect coplien form
+	class config {	//TODO coplien form
 
 		public:
 			config();

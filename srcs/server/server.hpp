@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:36 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/26 16:57:55 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/02/26 19:00:47 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,25 @@
 #include "../config/config.hpp"
 
 
-namespace irc{ //? name the namesapce ft_irc
+namespace ft_irc{
 
-	class server{	//? respect coplien form
+	class server{	//TODO respect coplien form
 
 		public:
 			server();
 			~server();
 
-			irc::config &getConf();	//? set to const and make a typedef for irc::config
+			typedef ft_irc::config config;
+
+			config 				&getConf();
 			struct sockaddr_in	*getServAddr()const;
-			int	getSockfd()const;
-			void	setSockfd(int fd);
+			int					getSockfd()const;
+			void				setSockfd(int fd);
 
 		private:
-			irc::config conf;
-			struct sockaddr_in *serv_addr;
-			int sock_fd;
+			config				conf;
+			struct sockaddr_in	*serv_addr;
+			int					sock_fd;
 	};
 }
 
