@@ -12,9 +12,4 @@ SOURCES		+=                   		\
 		srcs/server/server.cpp      	\
 
 
-## SRCS/CONFIG ##
-
-SOURCES		+=                   		\
-		srcs/config/config.cpp      	\
-
 

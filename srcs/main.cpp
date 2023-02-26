@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 21:16:58 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/26 19:00:18 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/02/26 19:33:37 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include <csignal>
 #include <climits>
 
-#include "config/config.hpp"
 #include "server/server.hpp"
 
 
@@ -50,8 +49,8 @@ long	parsing_args(int ac, char *str, char **env){
 
 int	init(ft_irc::server *serv, char **av){	//TODO use a reference instead of a pointer ?
 
-	serv->getConf().setConfig("port", av[1]);
-	serv->getConf().setConfig("password", av[2]);
+	serv->setConfMap("port", av[1]);
+	serv->setConfMap("password", av[2]);
 	serv->setSockfd(socket(AF_INET, SOCK_STREAM, 0));
 	if (serv->getSockfd() < 0){
 
@@ -63,14 +62,15 @@ int	init(ft_irc::server *serv, char **av){	//TODO use a reference instead of a p
 
 int	main(int ac, char **av, char **env){
 
+	ft_irc::server serv = ft_irc::server();
 	long port = parsing_args(ac, av[1], env);
+
 	if (port == -1)
 		return (1);
 
-	ft_irc::server serv = ft_irc::server();
-
 	if (init(&serv, av) != 0)
 		return (1);
+	ft_irc::server serv2(serv);
 	signal(SIGINT, sig_handler);
 	while (!stop){
 
@@ -79,4 +79,3 @@ int	main(int ac, char **av, char **env){
 	return (0);
 }
 
-	// std::cout << serv.getConf().getConfig("port") << std::endl << serv.getConf().getConfig("password") << std::endl;
