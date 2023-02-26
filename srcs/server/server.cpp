@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:40 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/27 00:34:12 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/02/27 00:38:31 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,10 @@ void	ft_irc::server::setSockfd(int fd){
 }
 
 void	ft_irc::server::init(std::string password, long port){
-	this->setPort(port);
-	this->setPassword(password);
-	this->setSockfd(socket(AF_INET, SOCK_STREAM, 0));
-	if (this->getSockfd() < 0)
+	this->_port = port;
+	this->_password = password;
+	this->_sock_fd = socket(AF_INET, SOCK_STREAM, 0);
+	if (this->_sock_fd < 0)
 		throw std::runtime_error("Error : socket");
 	this->setServAddr(port);
 }
