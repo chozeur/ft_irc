@@ -11,8 +11,8 @@ ifeq ($(shell uname -s),Darwin)
 endif
 
 #The Target Binary Program
-TARGET				:= ircserv
-TARGET_BONUS		:= ircserv-bonus
+TARGET				:= ft_irc
+TARGET_BONUS		:= ft_irc-bonus
 
 BUILD				:= release
 
@@ -20,7 +20,7 @@ include sources.mk
 
 #The Directories, Source, Includes, Objects, Binary and Resources
 SRCDIR				:= srcs
-INCDIR				:= srcs
+INCDIR				:= includes
 BUILDDIR			:= obj
 TARGETDIR			:= .
 SRCEXT				:= cpp
