@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:40 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/26 21:23:43 by tbrebion         ###   ########.fr       */
+/*   Updated: 2023/02/26 23:29:06 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,14 @@ ft_irc::server	&ft_irc::server::operator=(server const &src){
 	return (*this);
 }
 
+std::string	ft_irc::server::getConfMap(std::string key){
+	return (this->_conf_map[key]);
+}
+
+void	ft_irc::server::setConfMap(std::string key, std::string value){
+	this->_conf_map[key] = value;
+}
+
 struct sockaddr_in	ft_irc::server::getServAddr()const{
 	return (this->_serv_addr);
 }
@@ -48,10 +56,13 @@ void	ft_irc::server::setSockfd(int fd){
 	this->_sock_fd = fd;
 }
 
-std::string	ft_irc::server::getConfMap(std::string key){
-	return (this->_conf_map[key]);
-}
-
-void	ft_irc::server::setConfMap(std::string key, std::string value){
-	this->_conf_map[key] = value;
+void	ft_irc::server::init(char **av, long port){
+	this->setConfMap("port", av[1]);
+	this->setConfMap("password", av[2]);
+	this->setSockfd(socket(AF_INET, SOCK_STREAM, 0));
+	if (this->getSockfd() < 0){
+		std::cerr << "opening socket problem" << std::endl;
+		throw(std::exception()); // TODO: create a custom exception
+	}
+	this->setServAddr(port);
 }
