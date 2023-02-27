@@ -6,18 +6,19 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:40 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/27 00:38:31 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/02/27 13:20:39 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
 
-ft_irc::server::server(void){}
+ft_irc::server::server(void){return ;}
 
-ft_irc::server::~server(void){}
+ft_irc::server::~server(void){return ;}
 
 ft_irc::server::server(server const &src){
 	*this = src;
+	return ;
 }
 
 ft_irc::server	&ft_irc::server::operator=(server const &src){
@@ -36,6 +37,7 @@ long	ft_irc::server::getPort(void) const {
 
 void	ft_irc::server::setPort(long port){
 	this->_port = port;
+	return ;
 }
 
 std::string	ft_irc::server::getPassword(void)const{
@@ -44,6 +46,7 @@ std::string	ft_irc::server::getPassword(void)const{
 
 void	ft_irc::server::setPassword(std::string password){
 	this->_password = password;
+	return ;
 }
 
 struct sockaddr_in	ft_irc::server::getServAddr()const{
@@ -55,6 +58,7 @@ void	ft_irc::server::setServAddr(long port){
 	this->_serv_addr.sin_family = AF_INET;
 	this->_serv_addr.sin_addr.s_addr = INADDR_ANY;
 	this->_serv_addr.sin_port = htonl(port);
+	return ;
 }
 
 int	ft_irc::server::getSockfd(void)const{
@@ -63,6 +67,7 @@ int	ft_irc::server::getSockfd(void)const{
 
 void	ft_irc::server::setSockfd(int fd){
 	this->_sock_fd = fd;
+	return ;
 }
 
 void	ft_irc::server::init(std::string password, long port){
@@ -72,4 +77,5 @@ void	ft_irc::server::init(std::string password, long port){
 	if (this->_sock_fd < 0)
 		throw std::runtime_error("Error : socket");
 	this->setServAddr(port);
+	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:36 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/27 00:31:49 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/02/27 13:06:33 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 namespace ft_irc{
 
-	class server{	//TODO respect coplien form
+	class server{
 
 		public:
 			server(void);
