@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:32 by flcarval          #+#    #+#             */
-/*   Updated: 2023/02/27 13:49:00 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/02/27 13:53:28 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@
 
 namespace ft_irc
 {
-	class Client
-	{
+	class Client {
 		public:
 			Client(void);
 			~Client(void);
