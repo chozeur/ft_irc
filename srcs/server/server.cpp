@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:40 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/27 13:20:39 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/02/27 13:46:15 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ ft_irc::server::server(server const &src){
 	return ;
 }
 
-ft_irc::server	&ft_irc::server::operator=(server const &src){
+ft_irc::server&	ft_irc::server::operator=(server const &src){
 	if (this != &src){
 		this->_serv_addr = src._serv_addr;
 		this->_sock_fd = src._sock_fd;
