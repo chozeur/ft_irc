@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:13:49 by flcarval          #+#    #+#             */
-/*   Updated: 2023/02/27 13:19:38 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/02/27 13:24:20 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,13 @@ ft_irc::Channel	&ft_irc::Channel::operator=(Channel const &src){
 		this->_name = src._name;
 	}
 	return (*this);
+}
+
+std::string	ft_irc::Channel::getName(void) const {
+	return (this->_name);
+}
+
+void	ft_irc::Channel::setName(std::string name){
+	this->_name = name;
+	return ;
 }
