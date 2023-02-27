@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 21:16:58 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/27 00:42:15 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/02/27 12:07:55 by tbrebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	main(int ac, char **av, char **env){
 	}
 
 	signal(SIGINT, sig_handler);
+	std::cout << serv.getPort() << std::endl << serv.getPassword() << std::endl;
 	while (!stop){
 
 		//server.run(); //? server.run() should be called only once..?
@@ -42,4 +43,3 @@ int	main(int ac, char **av, char **env){
 	return (0);
 }
 
-	// std::cout << serv.getConfMap("port") << std::endl << serv.getConfMap("password") << std::endl;
