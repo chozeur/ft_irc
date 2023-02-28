@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:40 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/02/27 13:46:15 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/02/28 18:46:22 by tbrebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,7 @@ void	ft_irc::server::init(std::string password, long port){
 	if (this->_sock_fd < 0)
 		throw std::runtime_error("Error : socket");
 	this->setServAddr(port);
+	if (bind(this->_sock_fd, (struct sockaddr *) &this->_serv_addr, sizeof(_serv_addr)) < 0)
+		throw std::runtime_error("Error : binding socket failed");
 	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 23:17:42 by flcarval          #+#    #+#             */
-/*   Updated: 2023/02/28 15:54:38 by tbrebion         ###   ########.fr       */
+/*   Updated: 2023/02/28 20:45:19 by tbrebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ long	parsing_args(int ac, char **av, char **env){
 	if (av[1][0] == '\0')
 		throw std::runtime_error("Error : port must be a number between 1 and 65535");
 	port = strtol(av[1], &endptr, port);
-	if (port < 1024 || port > 65535 || *endptr != '\0')
-		throw std::runtime_error("Error : port must be a number between 1 and 65535");
+	if (port < 1025 || port > 65535 || *endptr != '\0')
+		throw std::runtime_error("Error : port must be a number between 1025 and 65535");
 	return (port);
 }
