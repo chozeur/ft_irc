@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:54 by flcarval          #+#    #+#             */
-/*   Updated: 2023/02/27 13:51:29 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/03/01 15:07:58 by tbrebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,10 @@ ft_irc::Client&	ft_irc::Client::operator=(Client const &src){
 		this->_channels = src._channels;
 	}
 	return (*this);
+}
+
+struct sockaddr_in	ft_irc::Client::getCliAddr()const{
+	return (this->_cli_addr);
 }
 
 std::string	ft_irc::Client::getNickname(void) const {
