@@ -6,7 +6,7 @@
 /*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 21:16:58 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/01 15:18:39 by tbrebion         ###   ########.fr       */
+/*   Updated: 2023/03/02 16:55:15 by tbrebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,14 @@ int	main(int ac, char **av, char **env){
 	
 	/**/
 	/*TEST*/
+	char buffer[256];
+	buffer = bzero()
+	int n;
     struct sockaddr_in cli_addr;
-	socklen_t	cli_len = sizeof(cli_addr);
+	socklen_t	clilen = sizeof(cli_addr);
 	listen(serv.getSockfd(), 1);
+	int newsockfd = accept(serv.getSockfd(), (struct sockaddr *) &cli_addr, &clilen);
+	int n = read(newsockfd,buffer,255);
 	/**/
 	
 	// signal(SIGINT, sig_handler);
