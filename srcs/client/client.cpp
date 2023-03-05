@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:54 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/05 23:10:45 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/03/05 23:13:00 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ ft_irc::Client::~Client(void){return ;}
 
 ft_irc::Client&	ft_irc::Client::operator=(Client const &src){
 	if (this != &src){
+		this->_cli_addr = src._cli_addr;
+		this->_cli_len = src._cli_len;
+		this->_sockfd = src._sockfd;
+		for (int i = 0; i < 1024; i++)
+			this->_buffer[i] = src._buffer[i];
 		this->_nickname = src._nickname;
 		this->_username = src._username;
 		this->_realname = src._realname;

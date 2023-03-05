@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:40 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/05 22:52:41 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/03/05 23:18:48 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,11 @@ ft_irc::server::~server(void){return ;}
 
 ft_irc::server&	ft_irc::server::operator=(server const &src){
 	if (this != &src){
-		this->_serv_addr = src._serv_addr;
-		this->_sockfd = src._sockfd;
 		this->_port = src._port;
 		this->_password = src._password;
+		this->_serv_addr = src._serv_addr;
+		this->_sockfd = src._sockfd;
+		this->_env = src._env; //! deep copy
 	}
 	return (*this);
 }
@@ -58,12 +59,8 @@ struct sockaddr_in	ft_irc::server::getServAddr()const{
 	return (this->_serv_addr);
 }
 
-void	ft_irc::server::setServAddr(void){
-
-	memset(&this->_serv_addr, 0, sizeof(struct sockaddr_in));
-	this->_serv_addr.sin_family = AF_INET;
-	this->_serv_addr.sin_addr.s_addr = INADDR_ANY;
-	this->_serv_addr.sin_port = htons(this->_port);
+void	ft_irc::server::setServAddr(struct sockaddr_in serv_addr){
+	this->_serv_addr = serv_addr;
 	return ;
 }
 
@@ -91,7 +88,10 @@ void	ft_irc::server::init(std::string password, long port, char **env){
 	this->_sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (this->_sockfd < 0)
 		throw std::runtime_error("Error : socket");
-	this->setServAddr();
+	memset(&this->_serv_addr, 0, sizeof(struct sockaddr_in));
+	this->_serv_addr.sin_family = AF_INET;
+	this->_serv_addr.sin_addr.s_addr = INADDR_ANY;
+	this->_serv_addr.sin_port = htons(this->_port);
 	this->_env = env; //! deep copy
 	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:36 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/05 22:52:31 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/03/05 23:16:29 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ namespace ft_irc{
 			std::string			getPassword(void)const;
 			void				setPassword(std::string password);
 			struct sockaddr_in	getServAddr(void)const;
-			void				setServAddr(void);
+			void				setServAddr(struct sockaddr_in);
 			int					getSockfd(void)const;
 			void				setSockfd(int fd);
 			char				**getEnv(void)const;
