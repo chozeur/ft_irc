@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:40 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/02 16:46:35 by tbrebion         ###   ########.fr       */
+/*   Updated: 2023/03/05 22:24:55 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,17 @@
 
 ft_irc::server::server(void){return ;}
 
-ft_irc::server::~server(void){return ;}
-
 ft_irc::server::server(server const &src){
 	*this = src;
 	return ;
 }
+
+ft_irc::server::server(std::string password, long port, char **env){
+	this->init(password, port, env);
+	return ;
+}
+
+ft_irc::server::~server(void){return ;}
 
 ft_irc::server&	ft_irc::server::operator=(server const &src){
 	if (this != &src){
@@ -53,12 +58,12 @@ struct sockaddr_in	ft_irc::server::getServAddr()const{
 	return (this->_serv_addr);
 }
 
-void	ft_irc::server::setServAddr(long port){
+void	ft_irc::server::setServAddr(void){
 
 	memset(&this->_serv_addr, 0, sizeof(struct sockaddr_in));
 	this->_serv_addr.sin_family = AF_INET;
 	this->_serv_addr.sin_addr.s_addr = INADDR_ANY;
-	this->_serv_addr.sin_port = htonl(port);
+	this->_serv_addr.sin_port = htonl(this->_port);
 	return ;
 }
 
@@ -71,14 +76,47 @@ void	ft_irc::server::setSockfd(int fd){
 	return ;
 }
 
-void	ft_irc::server::init(std::string password, long port){
+char	**ft_irc::server::getEnv(void)const{
+	return (this->_env);
+}
+
+void	ft_irc::server::setEnv(char **env){
+	this->_env = env;	//! deep copy
+	return ;
+}
+
+void	ft_irc::server::init(std::string password, long port, char **env){
 	this->_port = port;
 	this->_password = password;
 	this->_sock_fd = socket(AF_INET, SOCK_STREAM, 0);
 	if (this->_sock_fd < 0)
 		throw std::runtime_error("Error : socket");
-	this->setServAddr(port);
-	if (bind(this->_sock_fd, (struct sockaddr *) &this->_serv_addr, sizeof(_serv_addr)) < 0)
-		throw std::runtime_error("Error : binding socket failed");
+	this->setServAddr();
+	this->_env = env; //! deep copy
 	return ;
 }
+
+void	ft_irc::server::run(void){
+	if (bind(this->_sock_fd, (struct sockaddr *) &this->_serv_addr, sizeof(this->_serv_addr)) < 0)
+		throw std::runtime_error("Error : binding socket failed");
+	listen(this->_sock_fd, 5);
+	/* TESTS */
+	struct sockaddr_in	cli_addr;
+	socklen_t			clilen = sizeof(cli_addr);
+	int					newsockfd = accept(this->_sock_fd, (struct sockaddr *) &cli_addr, &clilen);
+	if (newsockfd < 0)
+		throw (std::runtime_error("Error : accept"));
+	char buffer[256];
+	bzero(buffer, 256);
+	int n = read(newsockfd, buffer, 255);
+	if (n < 0)
+		throw (std::runtime_error("Error : reading from socket"));
+	std::cout << "Here is the message: " << buffer << std::endl;
+	n = write(newsockfd, "I got your message", 18);
+	if (n < 0)
+		throw (std::runtime_error("Error : writing to socket"));
+	close(newsockfd);
+	close(this->_sock_fd);
+	return ;
+}
+

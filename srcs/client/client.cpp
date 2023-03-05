@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:54 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/01 15:07:58 by tbrebion         ###   ########.fr       */
+/*   Updated: 2023/03/05 21:39:39 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ std::vector<std::string>	ft_irc::Client::getChannels(void) const {
 	return (this->_channels);
 }
 
-void	ft_irc::Client::setChannels(std::vector<std::string> channels){
+void	ft_irc::Client::setChannels(std::vector<std::string> channels){	//! deep copy
 	this->_channels = channels;
 	return ;
 }
