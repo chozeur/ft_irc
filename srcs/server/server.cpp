@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:40 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/05 22:24:55 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/03/05 22:37:00 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	ft_irc::server::setServAddr(void){
 	memset(&this->_serv_addr, 0, sizeof(struct sockaddr_in));
 	this->_serv_addr.sin_family = AF_INET;
 	this->_serv_addr.sin_addr.s_addr = INADDR_ANY;
-	this->_serv_addr.sin_port = htonl(this->_port);
+	this->_serv_addr.sin_port = htons(this->_port);
 	return ;
 }
 
