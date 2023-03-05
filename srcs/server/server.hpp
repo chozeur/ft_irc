@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:36 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/05 22:17:38 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/03/05 22:52:31 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ namespace ft_irc{
 			long								_port;
 			std::string							_password;
 			struct sockaddr_in					_serv_addr;
-			int									_sock_fd;
+			int									_sockfd;
 			char								**_env;
 	};
 }

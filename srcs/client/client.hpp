@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:32 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/01 15:06:38 by tbrebion         ###   ########.fr       */
+/*   Updated: 2023/03/05 23:09:29 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,19 @@ namespace ft_irc
 		public:
 			Client(void);
 			Client(Client const & src);
-			
+
 			~Client(void);
 
 			Client	&operator=(Client const & rhs);
 
-			struct sockaddr_in			getCliAddr()const;
+			struct sockaddr_in			getCliAddr(void)const;
+			void						setCliAddr(struct sockaddr_in cli_addr);
+			socklen_t					getCliLen(void) const;
+			void						setCliLen(socklen_t cli_len);
+			int							getSockfd(void) const;
+			void						setSockfd(int sockfd);
+			char						*getBuffer(void);
+			void						setBuffer(char *buffer);
 			std::string					getNickname(void) const;
 			void						setNickname(std::string nickname);
 			std::string					getUsername(void) const;
@@ -46,6 +53,9 @@ namespace ft_irc
 
 		private:
 			struct sockaddr_in			_cli_addr;
+			socklen_t					_cli_len = sizeof(_cli_addr);
+			int							_sockfd;
+			char						_buffer[1024];
 			std::string					_nickname;
 			std::string					_username;
 			std::string					_realname;

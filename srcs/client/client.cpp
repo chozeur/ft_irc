@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:54 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/05 21:39:39 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/03/05 23:10:45 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,41 @@ ft_irc::Client&	ft_irc::Client::operator=(Client const &src){
 	return (*this);
 }
 
-struct sockaddr_in	ft_irc::Client::getCliAddr()const{
+struct sockaddr_in	ft_irc::Client::getCliAddr(void)const{
 	return (this->_cli_addr);
+}
+
+void	ft_irc::Client::setCliAddr(struct sockaddr_in cli_addr){
+	this->_cli_addr = cli_addr;
+	return ;
+}
+
+socklen_t	ft_irc::Client::getCliLen(void) const {
+	return (this->_cli_len);
+}
+
+void	ft_irc::Client::setCliLen(socklen_t cli_len){
+	this->_cli_len = cli_len;
+	return ;
+}
+
+int	ft_irc::Client::getSockfd(void) const {
+	return (this->_sockfd);
+}
+
+void	ft_irc::Client::setSockfd(int sockfd){
+	this->_sockfd = sockfd;
+	return ;
+}
+
+char	*ft_irc::Client::getBuffer(void){
+	return (this->_buffer);
+}
+
+void	ft_irc::Client::setBuffer(char *buffer){
+	for (int i = 0; i < 1024 && buffer[i]; i++)
+		this->_buffer[i] = buffer[i];
+	return ;
 }
 
 std::string	ft_irc::Client::getNickname(void) const {

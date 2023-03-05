@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:40 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/05 22:37:00 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/03/05 22:52:41 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ ft_irc::server::~server(void){return ;}
 ft_irc::server&	ft_irc::server::operator=(server const &src){
 	if (this != &src){
 		this->_serv_addr = src._serv_addr;
-		this->_sock_fd = src._sock_fd;
+		this->_sockfd = src._sockfd;
 		this->_port = src._port;
 		this->_password = src._password;
 	}
@@ -68,11 +68,11 @@ void	ft_irc::server::setServAddr(void){
 }
 
 int	ft_irc::server::getSockfd(void)const{
-	return (this->_sock_fd);
+	return (this->_sockfd);
 }
 
 void	ft_irc::server::setSockfd(int fd){
-	this->_sock_fd = fd;
+	this->_sockfd = fd;
 	return ;
 }
 
@@ -88,8 +88,8 @@ void	ft_irc::server::setEnv(char **env){
 void	ft_irc::server::init(std::string password, long port, char **env){
 	this->_port = port;
 	this->_password = password;
-	this->_sock_fd = socket(AF_INET, SOCK_STREAM, 0);
-	if (this->_sock_fd < 0)
+	this->_sockfd = socket(AF_INET, SOCK_STREAM, 0);
+	if (this->_sockfd < 0)
 		throw std::runtime_error("Error : socket");
 	this->setServAddr();
 	this->_env = env; //! deep copy
@@ -97,13 +97,13 @@ void	ft_irc::server::init(std::string password, long port, char **env){
 }
 
 void	ft_irc::server::run(void){
-	if (bind(this->_sock_fd, (struct sockaddr *) &this->_serv_addr, sizeof(this->_serv_addr)) < 0)
+	if (bind(this->_sockfd, (struct sockaddr *) &this->_serv_addr, sizeof(this->_serv_addr)) < 0)
 		throw std::runtime_error("Error : binding socket failed");
-	listen(this->_sock_fd, 5);
+	listen(this->_sockfd, 5);
 	/* TESTS */
 	struct sockaddr_in	cli_addr;
 	socklen_t			clilen = sizeof(cli_addr);
-	int					newsockfd = accept(this->_sock_fd, (struct sockaddr *) &cli_addr, &clilen);
+	int					newsockfd = accept(this->_sockfd, (struct sockaddr *) &cli_addr, &clilen);
 	if (newsockfd < 0)
 		throw (std::runtime_error("Error : accept"));
 	char buffer[256];
@@ -116,7 +116,7 @@ void	ft_irc::server::run(void){
 	if (n < 0)
 		throw (std::runtime_error("Error : writing to socket"));
 	close(newsockfd);
-	close(this->_sock_fd);
+	close(this->_sockfd);
 	return ;
 }
 
