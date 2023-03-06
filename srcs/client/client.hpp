@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:32 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/06 11:26:36 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/03/06 14:39:05 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <netinet/in.h>
 # include <string.h>
 # include <unistd.h>
+# include "../server/server.hpp"
 
 
 namespace ft_irc
@@ -28,6 +29,7 @@ namespace ft_irc
 		public:
 			Client(void);
 			Client(Client const & src);
+			Client(ft_irc::Server &server);
 
 			~Client(void);
 
@@ -58,10 +60,11 @@ namespace ft_irc
 			int							write(std::string message);
 
 		private:
+			ft_irc::Server				*_server;
 			struct sockaddr_in			_cli_addr;
 			socklen_t					_cli_len;
 			int							_sockfd;
-			char						_buffer[1024];
+			char						_buffer[2048];
 			std::string					_nickname;
 			std::string					_username;
 			std::string					_realname;

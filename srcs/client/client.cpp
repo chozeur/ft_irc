@@ -6,24 +6,25 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:54 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/06 11:24:19 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/03/06 14:39:38 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.hpp"
 
-ft_irc::Client::Client(void){
-	this->_cli_len = sizeof(_cli_addr);
-	this->_sockfd = accept(this->_sockfd, (struct sockaddr *) &(this->_cli_addr), &(this->_cli_len));
-	if (this->_sockfd < 0)
-		throw (std::runtime_error("Error : accept"));
-	bzero(this->_buffer, 1024);
-	return ;
-}
+ft_irc::Client::Client(void){return ;}
 
 ft_irc::Client::Client(Client const & src){
 	*this = src;
 	return ;
+}
+
+ft_irc::Client::Client(ft_irc::Server &server){
+	this->_server = &server;
+	this->_cli_len = sizeof(_cli_addr);
+	this->_sockfd = accept(this->_server->getSockfd(), (struct sockaddr *) &(this->_cli_addr), &(this->_cli_len));
+	if (this->_sockfd < 0)
+		throw (std::runtime_error("Error : accept"));
 }
 
 ft_irc::Client::~Client(void){
@@ -36,7 +37,7 @@ ft_irc::Client&	ft_irc::Client::operator=(Client const &src){
 		this->_cli_addr = src._cli_addr;
 		this->_cli_len = src._cli_len;
 		this->_sockfd = src._sockfd;
-		for (int i = 0; i < 1024; i++)
+		for (int i = 0; i < 2048; i++)
 			this->_buffer[i] = src._buffer[i];
 		this->_nickname = src._nickname;
 		this->_username = src._username;
@@ -80,7 +81,7 @@ char	*ft_irc::Client::getBuffer(void){
 }
 
 void	ft_irc::Client::setBuffer(char *buffer){
-	for (int i = 0; i < 1024 && buffer[i]; i++)
+	for (int i = 0; i < 2048 && buffer[i]; i++)
 		this->_buffer[i] = buffer[i];
 	return ;
 }
@@ -140,8 +141,8 @@ void	ft_irc::Client::setChannels(std::vector<std::string> channels){	//! deep co
 }
 
 int	ft_irc::Client::read(void){
-	bzero(this->_buffer, 1024);
-	int n = recv(this->_sockfd, this->_buffer, 1023, 0);
+	bzero(this->_buffer, 2048);
+	int	n = recv(this->_sockfd, this->_buffer, 2047, 0);
 	if (n < 0)
 		throw (std::runtime_error("Error : recv"));
 	return (n);

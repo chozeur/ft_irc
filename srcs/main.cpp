@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 21:16:58 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/06 11:33:08 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/03/06 14:16:05 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ bool	stop = false;
 
 int	main(int ac, char **av, char **env){
 
-	ft_irc::server	serv;
+	ft_irc::Server	serv;
 
 	try {
 		serv.init(
@@ -38,9 +38,15 @@ int	main(int ac, char **av, char **env){
 
 	serv.run();
 
-	ft_irc::Client	test_client;
-	test_client.read();
-	test_client.write("Message has been received");
+	try {
+		ft_irc::Client	test_client(serv);
+		test_client.read();
+		std::cout << "Message received: " << test_client.getBuffer() << std::endl;
+		test_client.write("Message has been received");
+	} catch (std::exception &e){
+		std::cerr << e.what() << std::endl;
+		return (1);
+	}
 
 
 	return (0);

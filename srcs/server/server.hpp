@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:36 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/05 23:16:29 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/03/06 13:36:12 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,15 @@
 
 namespace ft_irc{
 
-	class server{
+	class Server{
 
 		public:
-			server(void);
-			server(server const &src);
-			server(std::string password, long port, char **env);
-			~server(void);
+			Server(void);
+			Server(Server const &src);
+			Server(std::string password, long port, char **env);
+			~Server(void);
 
-			server				&operator=(server const &src);
+			Server				&operator=(Server const &src);
 
 			long				getPort(void)const;
 			void				setPort(long port);
