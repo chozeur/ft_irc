@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:54 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/06 14:39:38 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/03/06 15:58:44 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@ ft_irc::Client::Client(Client const & src){
 
 ft_irc::Client::Client(ft_irc::Server &server){
 	this->_server = &server;
+	memset(&this->_cli_addr, 0, sizeof(struct sockaddr_in));
+	this->_cli_addr.sin_family = AF_INET;
+	this->_cli_addr.sin_addr.s_addr = INADDR_ANY;
+	this->_cli_addr.sin_port = htons(this->_server->getPort());
 	this->_cli_len = sizeof(_cli_addr);
 	this->_sockfd = accept(this->_server->getSockfd(), (struct sockaddr *) &(this->_cli_addr), &(this->_cli_len));
 	if (this->_sockfd < 0)
