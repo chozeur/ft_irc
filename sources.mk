@@ -6,16 +6,28 @@ SOURCES		+=                        		\
 		srcs/main.cpp                    	\
 
 
+## SRCS/UTILS ##
+
+SOURCES		+=                        		\
+		srcs/utils/sig_handler.cpp       	\
+		srcs/utils/parsing_args.cpp      	\
+
+
 ## SRCS/SERVER ##
 
 SOURCES		+=                        		\
 		srcs/server/server.cpp           	\
 
 
-## SRCS/UTILS ##
+## SRCS/CHANNEL ##
 
 SOURCES		+=                        		\
-		srcs/utils/parsing_args.cpp      	\
-		srcs/utils/sig_handler.cpp       	\
+		srcs/channel/channel.cpp         	\
+
+
+## SRCS/CLIENT ##
+
+SOURCES		+=                        		\
+		srcs/client/client.cpp           	\
 
 

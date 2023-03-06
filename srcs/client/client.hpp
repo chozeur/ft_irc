@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:32 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/05 23:09:29 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/03/06 11:26:36 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 # include <sys/types.h>
 # include <sys/socket.h>
 # include <netinet/in.h>
+# include <string.h>
+# include <unistd.h>
+
 
 namespace ft_irc
 {
@@ -51,9 +54,12 @@ namespace ft_irc
 			std::vector<std::string>	getChannels(void) const;
 			void						setChannels(std::vector<std::string> channels);
 
+			int							read(void);
+			int							write(std::string message);
+
 		private:
 			struct sockaddr_in			_cli_addr;
-			socklen_t					_cli_len = sizeof(_cli_addr);
+			socklen_t					_cli_len;
 			int							_sockfd;
 			char						_buffer[1024];
 			std::string					_nickname;

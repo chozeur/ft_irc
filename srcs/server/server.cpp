@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:40 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/05 23:18:48 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/03/06 11:28:59 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ ft_irc::server::server(std::string password, long port, char **env){
 	return ;
 }
 
-ft_irc::server::~server(void){return ;}
+ft_irc::server::~server(void){
+	close(this->_sockfd);
+	return ;
+}
 
 ft_irc::server&	ft_irc::server::operator=(server const &src){
 	if (this != &src){

@@ -6,20 +6,30 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:54 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/05 23:13:00 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/03/06 11:24:19 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.hpp"
 
-ft_irc::Client::Client(void){return ;}
+ft_irc::Client::Client(void){
+	this->_cli_len = sizeof(_cli_addr);
+	this->_sockfd = accept(this->_sockfd, (struct sockaddr *) &(this->_cli_addr), &(this->_cli_len));
+	if (this->_sockfd < 0)
+		throw (std::runtime_error("Error : accept"));
+	bzero(this->_buffer, 1024);
+	return ;
+}
 
 ft_irc::Client::Client(Client const & src){
 	*this = src;
 	return ;
 }
 
-ft_irc::Client::~Client(void){return ;}
+ft_irc::Client::~Client(void){
+	close(this->_sockfd);
+	return ;
+}
 
 ft_irc::Client&	ft_irc::Client::operator=(Client const &src){
 	if (this != &src){
@@ -127,4 +137,19 @@ std::vector<std::string>	ft_irc::Client::getChannels(void) const {
 void	ft_irc::Client::setChannels(std::vector<std::string> channels){	//! deep copy
 	this->_channels = channels;
 	return ;
+}
+
+int	ft_irc::Client::read(void){
+	bzero(this->_buffer, 1024);
+	int n = recv(this->_sockfd, this->_buffer, 1023, 0);
+	if (n < 0)
+		throw (std::runtime_error("Error : recv"));
+	return (n);
+}
+
+int	ft_irc::Client::write(std::string msg){
+	int n = send(this->_sockfd, msg.c_str(), msg.length(), 0);
+	if (n < 0)
+		throw (std::runtime_error("Error : send"));
+	return (n);
 }
