@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 		/*					ON LIS LE MESSAGE DU CLIENT DEPUIS SON FD DE SOCKET, PUIS ON LUI ECRIT		*/
 
 		close(newsockfd);									// ON FERME LA SOCKET DU CLIENT
-		close(sockfd);										// ON FERME LA SOCKET DU SERVEUR
+		close(sWockfd);										// ON FERME LA SOCKET DU SERVEUR
 
 
 	return 0;
