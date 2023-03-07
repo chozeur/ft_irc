@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:32 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/07 22:31:26 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/03/07 23:31:28 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@ namespace ft_irc
 	class Client {
 
 		public:
-		
+
 			Client(void);
 			Client(Client const &rhs);
 			Client(ft_irc::Server &server);
 
 			~Client(void);
 
-			Client	&operator=(Client const & rhs);
+			Client						&operator=(Client const & rhs);
 
 			struct sockaddr_in			getCliAddr(void) const;
 			socklen_t					getCliLen(void) const;
