@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:54 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/07 18:36:33 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/03/07 19:17:48 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,10 +145,19 @@ void	ft_irc::Client::setChannels(std::vector<std::string> channels){	//! deep co
 }
 
 int	ft_irc::Client::read(void){
+	std::string msg("");
 	bzero(this->_buffer, 2048);
-	int	n = recv(this->_sockfd, this->_buffer, 2047, 0);
+	int n = 1;
+	while (n > 0){
+		n = recv(this->_sockfd, this->_buffer, 2047, 0);
+		if (n > 0)
+			msg += this->_buffer;
+	}
+	std::cerr << "ggggg" << std::endl;
 	if (n < 0)
 		throw (std::runtime_error("Error : recv"));
+	for (int i = 0; msg.c_str()[i]; i++)
+		this->_buffer[i] = msg.c_str()[i];
 	return (n);
 }
 
