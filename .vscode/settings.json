@@ -48,6 +48,15 @@
 		"span": "cpp",
 		"stdexcept": "cpp",
 		"streambuf": "cpp",
-		"typeinfo": "cpp"
+		"typeinfo": "cpp",
+		"cstring": "cpp",
+		"bitset": "cpp",
+		"complex": "cpp",
+		"list": "cpp",
+		"set": "cpp",
+		"sstream": "cpp",
+		"cinttypes": "cpp",
+		"typeindex": "cpp",
+		"variant": "cpp"
 	}
 }

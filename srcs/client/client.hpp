@@ -6,7 +6,7 @@
 /*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:32 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/07 18:36:45 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/03/07 22:31:26 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,40 +26,44 @@
 namespace ft_irc
 {
 	class Client {
+
 		public:
+		
 			Client(void);
-			Client(Client const & src);
+			Client(Client const &rhs);
 			Client(ft_irc::Server &server);
 
 			~Client(void);
 
 			Client	&operator=(Client const & rhs);
 
-			struct sockaddr_in			getCliAddr(void)const;
-			void						setCliAddr(struct sockaddr_in cli_addr);
+			struct sockaddr_in			getCliAddr(void) const;
 			socklen_t					getCliLen(void) const;
-			void						setCliLen(socklen_t cli_len);
 			int							getSockfd(void) const;
+			std::string					getNickname(void) const;
+			std::string					getUsername(void) const;
+			std::string					getRealname(void) const;
+			std::string					getPassword(void) const;
+			std::string					getHost(void) const;
+			std::vector<std::string>	getChannels(void) const;
+
+			void						setCliAddr(struct sockaddr_in cli_addr);
+			void						setCliLen(socklen_t cli_len);
 			void						setSockfd(int sockfd);
 			char						*getBuffer(void);
 			void						setBuffer(char *buffer);
-			std::string					getNickname(void) const;
 			void						setNickname(std::string nickname);
-			std::string					getUsername(void) const;
 			void						setUsername(std::string username);
-			std::string					getRealname(void) const;
 			void						setRealname(std::string realname);
-			std::string					getPassword(void) const;
 			void						setPassword(std::string password);
-			std::string					getHost(void) const;
 			void						setHost(std::string host);
-			std::vector<std::string>	getChannels(void) const;
 			void						setChannels(std::vector<std::string> channels);
 
 			int							read(void);
 			int							write(std::string message);
 
 		private:
+
 			ft_irc::Server				*_server;
 			struct sockaddr_in			_cli_addr;
 			socklen_t					_cli_len;
