@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:36 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/07 22:23:05 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/03/09 21:10:03 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,15 @@
 #define SERVER_HPP
 
 #include <string.h>
+#include <sstream>
 #include <iostream>
 #include <map>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
+#include "../channel/channel.hpp"
+#include "../client/client.hpp"
 
 
 namespace ft_irc{
@@ -27,37 +30,27 @@ namespace ft_irc{
 	class Server{
 
 		public:
-
 			Server(void);
 			Server(Server const &rhs);
-			Server(std::string password, long port, char **env);
-
+			Server(std::string password, int port, char **env);
 			~Server(void);
-
 			Server				&operator=(Server const &rhs);
 
-			long				getPort(void)const;
-			std::string			getPassword(void)const;
-			struct sockaddr_in	getServAddr(void)const;
-			int					getSockfd(void)const;
-			char				**getEnv(void)const;
-
-			void				setPort(long port);
-			void				setPassword(std::string password);
-			void				setServAddr(struct sockaddr_in);
-			void				setSockfd(int fd);
-			void				setEnv(char **env);
-
-			void				init(std::string password, long port, char **env);
+			void				init(std::string password, int port, char **env);
 			void				run(void);
+			void				stop(void);
+			bool				anyoneHasMessage();
+			void				newClient(void);
+			void				handleClient(void);
 
 		private:
-		
-			long								_port;
+			int									_port;
 			std::string							_password;
 			struct sockaddr_in					_serv_addr;
 			int									_sockfd;
 			char								**_env;
+			std::vector<Channel>				_channels;
+    		std::vector<Client>					_clients;
 	};
 }
 
