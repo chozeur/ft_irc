@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:36 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/10 18:05:48 by rvrignon         ###   ########.fr       */
+/*   Updated: 2023/03/07 22:23:05 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
-#include <poll.h>
-#include "../client/client.hpp"
 
-# define MAX_CLIENTS 4
 
 namespace ft_irc{
 
@@ -55,8 +52,7 @@ namespace ft_irc{
 			void				run(void);
 
 		private:
-			struct pollfd						_fds[MAX_CLIENTS + 1];
-			std::vector<Client>					_clients;
+		
 			long								_port;
 			std::string							_password;
 			struct sockaddr_in					_serv_addr;
