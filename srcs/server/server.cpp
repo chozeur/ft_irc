@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:40 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/09 22:06:10 by rvrignon         ###   ########.fr       */
+/*   Updated: 2023/03/10 14:06:56 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,20 +102,27 @@ void ft_irc::Server::handleClient(void)
     for (std::vector<ft_irc::Client>::iterator it = this->_clients.begin(); true; ++it) {
         clock_t current_time = clock();
         int elapsed_time = (current_time - start_time) / CLOCKS_PER_SEC * 1000;
-        if (elapsed_time >= 500) {
+        if (elapsed_time >= 100) {
             break;
         }
 		ft_irc::Client &client = *it;
-		std::string message;
 		while (client.hasMessage()) {
-			message += client.recvMessage();
+			std::string message;
+			message = client.recvMessage();
+			client.setIrssiMessage(message);
 		}
-		std::cout << message;
-		//handleMessage here;
 		if (it == this->_clients.end() - 1)
 			it = this->_clients.begin() - 1;
 	}
-	std::cout << std::endl;
+
+	for (std::vector<ft_irc::Client>::iterator it = this->_clients.begin(); it != this->_clients.end(); ++it) {
+		ft_irc::Client &client = *it;
+		if(client.getIrssiMessageSize() > 0) {
+			std::cout << "Message received from Pseudo : " << client.getPseudo() << std::endl << client.getIrssiMessage();
+		}
+		// Handle Message Client
+		client.clearIrssiMessage();
+	}
 }
 
 void ft_irc::Server::run(void)

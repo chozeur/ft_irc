@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:54 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/09 20:30:46 by rvrignon         ###   ########.fr       */
+/*   Updated: 2023/03/10 14:00:14 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,22 @@ int ft_irc::Client::getSocket() const {
 // Accesseur pour le pseudo du client
 std::string ft_irc::Client::getPseudo() const {
 	return _pseudo;
+}
+
+std::string ft_irc::Client::getIrssiMessage() const {
+	return _irssi;
+}
+
+int ft_irc::Client::getIrssiMessageSize() const {
+	return _irssi.size();
+}
+
+void ft_irc::Client::setIrssiMessage(std::string& append) {
+    _irssi += append;
+}
+
+void ft_irc::Client::clearIrssiMessage(void) {
+	_irssi.clear();
 }
 
 // Accesseur pour la liste des channels auxquels le client est connecté

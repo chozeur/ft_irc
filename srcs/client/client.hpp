@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:32 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/09 20:29:52 by rvrignon         ###   ########.fr       */
+/*   Updated: 2023/03/10 14:15:23 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,29 @@ namespace ft_irc{
 			Client& operator=(Client const &rhs);
 			~Client();
 
+			// Getters
 			int 							getSocket() const;
 			std::string 					getPseudo() const;
 			std::vector<std::string> 		getChannels() const;
+			std::string						getIrssiMessage() const;
+			int								getIrssiMessageSize() const;
+			
+			// Setters
+			void							setIrssiMessage(std::string& append);
 
+			// Methods
 			std::string 					recvMessage() const;
 			void 							joinChannel(const std::string& channel);
 			void 							quitChannel(const std::string& channel);
 			void 							addMessage(const std::string& message);
 			bool							hasMessage(void);
+			void							clearIrssiMessage(void);
 
 		private:
 			struct pollfd					_fds[1];
 			int								_sockfd;
-			std::string						_pseudo;
-			std::vector<std::string>		_channels;
-			std::vector<std::string> 		_messages;
+			std::string						_irssi;
+			std::string						_pseudo
 	};
 }
 
