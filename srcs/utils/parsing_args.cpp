@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 23:17:42 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/09 17:05:27 by rvrignon         ###   ########.fr       */
+/*   Updated: 2023/03/10 18:13:11 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 int	parsing_args(int ac, char **av, char **env){
 
 	char	*endptr = NULL;
-	int	port = 0;
-	(void)ac;
+	long	port = 0;
 
 	if (!(*env))
 		throw std::runtime_error("Error : no environment variables");

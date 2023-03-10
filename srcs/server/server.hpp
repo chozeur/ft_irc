@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:36 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/09 21:10:03 by rvrignon         ###   ########.fr       */
+/*   Updated: 2023/03/10 18:13:04 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,8 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
-#include "../channel/channel.hpp"
-#include "../client/client.hpp"
 
+# define MAX_CLIENTS 4
 
 namespace ft_irc{
 
@@ -44,7 +43,8 @@ namespace ft_irc{
 			void				handleClient(void);
 
 		private:
-			int									_port;
+		
+			long								_port;
 			std::string							_password;
 			struct sockaddr_in					_serv_addr;
 			int									_sockfd;
