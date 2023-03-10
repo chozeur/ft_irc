@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:32 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/07 22:31:26 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/03/10 17:48:40 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@
 # include <netinet/in.h>
 # include <string.h>
 # include <unistd.h>
-# include "../server/server.hpp"
-
 
 namespace ft_irc
 {
@@ -31,14 +29,12 @@ namespace ft_irc
 		
 			Client(void);
 			Client(Client const &rhs);
-			Client(ft_irc::Server &server);
+			Client(int sockfd);
 
 			~Client(void);
 
 			Client	&operator=(Client const & rhs);
 
-			struct sockaddr_in			getCliAddr(void) const;
-			socklen_t					getCliLen(void) const;
 			int							getSockfd(void) const;
 			std::string					getNickname(void) const;
 			std::string					getUsername(void) const;
@@ -47,8 +43,6 @@ namespace ft_irc
 			std::string					getHost(void) const;
 			std::vector<std::string>	getChannels(void) const;
 
-			void						setCliAddr(struct sockaddr_in cli_addr);
-			void						setCliLen(socklen_t cli_len);
 			void						setSockfd(int sockfd);
 			char						*getBuffer(void);
 			void						setBuffer(char *buffer);
@@ -59,16 +53,8 @@ namespace ft_irc
 			void						setHost(std::string host);
 			void						setChannels(std::vector<std::string> channels);
 
-			int							read(void);
-			int							write(std::string message);
-
 		private:
-
-			ft_irc::Server				*_server;
-			struct sockaddr_in			_cli_addr;
-			socklen_t					_cli_len;
 			int							_sockfd;
-			char						_buffer[2048];
 			std::string					_nickname;
 			std::string					_username;
 			std::string					_realname;

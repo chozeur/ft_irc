@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:40 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/10 15:19:16 by rvrignon         ###   ########.fr       */
+/*   Updated: 2023/03/10 18:05:51 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	ft_irc::Server::run(void){
 		throw std::runtime_error("Error : binding socket failed");
 		return;
 	}
-	if (listen(this->_sockfd, 10) == -1) {
+	if (listen(this->_sockfd, 5) == -1) {
 		std::cerr << "Error: listen failed" << std::endl;
 		return ;
 	}
@@ -141,14 +141,20 @@ void	ft_irc::Server::run(void){
 				std::cerr << "Error: accept failed" << std::endl;
 				continue;
 			}
+
+			ft_irc::Client new_client;
+			new_client.setSockfd(clientfd);
+			_clients.push_back(new_client);
+
 			// Ajouter la socket du client à l'ensemble des sockets surveillées
 			for (int i = 1; i <= MAX_CLIENTS; ++i)
 			{
 				if (this->_fds[i].fd == -1)
 				{
 					this->_fds[i].fd = clientfd;
-					std::cout << "New client connected" << std::endl;
-					// Create a new client;
+					std::cout << "New client connected || i = " << i << std::endl;
+					std::string welcome_msg = "Welcome to the chatroom!\n";
+					send(clientfd, welcome_msg.c_str(), welcome_msg.length(), 0);			
 					break;
 				}
 				if (i == MAX_CLIENTS) {
@@ -158,7 +164,17 @@ void	ft_irc::Server::run(void){
 			}
 		}
 
+		for (std::vector<ft_irc::Client>::iterator it = this->_clients.begin(); it != this->_clients.end(); ++it) {
+			ft_irc::Client &client = *it;
+			std::cout << "Client : " << client.getSockfd() << std::endl;
+		}
+
 		for (int i = 1; i <= MAX_CLIENTS; ++i) {
+			std::cout << "------------------" << std::endl;
+			std::cout << "i = " << i << std::endl;
+			std::cout << "this->_fds[i].fd = " << this->_fds[i].fd << std::endl;
+			std::cout << "this->_fds[i].revents = " << this->_fds[i].revents << std::endl;
+				
 			if (this->_fds[i].fd != -1 && this->_fds[i].revents & POLLIN)
 			{
 				char buffer[1024];
@@ -177,11 +193,69 @@ void	ft_irc::Server::run(void){
 				}
 				else
 				{
+					std::cout << "Hello world 2" << std::endl;
+					ft_irc::Client client_test;
+					
+					for (std::vector<ft_irc::Client>::iterator it = this->_clients.begin(); it != this->_clients.end(); ++it) {
+						ft_irc::Client &client = *it;
+						std::cout << "i = " << i << std::endl;
+						std::cout << "getSockfd() = " << client.getSockfd() << std::endl;
+						if (i == client.getSockfd() - 3){
+							client_test = client;
+							break;
+						}
+					}
+										
 					std::string message(buffer, bytes_received);
+					if (message.find_first_not_of(' ') == std::string::npos) 
+						continue;
 					std::cout << message;
+
+					if (message.substr(0, 7) == "CAP LS\n") {
+						std::string cap_response = "CAP LS\r\n";
+						send(this->_fds[i].fd, cap_response.c_str(), cap_response.length(), 0);
+					}
+					else if (message.substr(0, 5) == "NICK ") {
+						client_test.setNickname(message.substr(5));
+					}
+					// else if (message.substr(0, 5) == "USER ") {
+					// 	std::string user_info = message.substr(5);
+					// 	client_test.setUs
+					// }
+
+
+					// else if (message.substr(0, 5) == "NICK ") {
+					// 	std::string nick = message.substr(5);
+					// 	std::string nick_response = "NICK " + nick + "\r\n";
+					// 	send(this->_fds[i].fd, nick_response.c_str(), nick_response.length(), 0);
+					// }
+					// else if (message.substr(0, 5) == "USER ") {
+					// 	std::string user_info = message.substr(5);
+					// 	std::string user_response = "USER " + user_info + "\r\n";
+					// 	send(this->_fds[i].fd, user_response.c_str(), user_response.length(), 0);
+					// }					
+					if (message.substr(0, 6) == "/join ") {
+						std::string channel_name = message.substr(6);
+						if (channel_name.empty()) {
+							std::string error_message = "Error: Channel name cannot be empty\n";
+							send(this->_fds[i].fd, error_message.c_str(), error_message.length(), 0);
+						}
+						else {
+							std::string join_message = "Joining channel " + channel_name + "\n";
+							send(this->_fds[i].fd, join_message.c_str(), join_message.length(), 0);
+						}
+					}
+					else {
+						std::string error_message = "Error: I can't handle this command: " + message;
+						send(this->_fds[i].fd, error_message.c_str(), error_message.length(), 0);
+					}
 				}
 			}
+		
+			if (i == MAX_CLIENTS)
+				break ;
 		}
+		break ;
 	}
 	return ;
 }
