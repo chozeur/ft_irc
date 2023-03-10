@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:54 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/10 18:03:55 by rvrignon         ###   ########.fr       */
+/*   Updated: 2023/03/10 18:19:48 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,5 +124,6 @@ void	ft_irc::Client::setChannels(std::vector<std::string> channels){	//! deep co
 	this->_channels = channels;
 	return ;
 }
+
 
 /* METHODS */
