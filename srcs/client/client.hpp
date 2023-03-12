@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:32 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/10 17:48:40 by rvrignon         ###   ########.fr       */
+/*   Updated: 2023/03/12 15:38:47 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ namespace ft_irc
 	class Client {
 
 		public:
-		
+
 			Client(void);
 			Client(Client const &rhs);
-			Client(int sockfd);
+			Client(const int sockfd);
 
 			~Client(void);
 

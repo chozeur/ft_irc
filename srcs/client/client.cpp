@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:54 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/10 18:19:48 by rvrignon         ###   ########.fr       */
+/*   Updated: 2023/03/12 15:38:34 by flcarval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@ ft_irc::Client::Client(Client const & rhs){
 	return ;
 }
 
-ft_irc::Client::Client(int sockfd):
+ft_irc::Client::Client(const int sockfd):
 	_sockfd(sockfd),
 	_nickname(""),
 	_username(""),
 	_realname(""),
 	_password(""),
 	_host("") {
-	std::cout << "New Client created on Sockfd : " << _sockfd << std::endl; 
+	std::cout << "New Client created on Sockfd : " << _sockfd << std::endl;
 	return ;
 }
 
