@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:32 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/12 15:38:47 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/03/12 17:54:54 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ namespace ft_irc
 
 			Client(void);
 			Client(Client const &rhs);
-			Client(const int sockfd);
+			Client(const int &sockfd, const std::string nickname);
 
 			~Client(void);
 
@@ -62,6 +62,9 @@ namespace ft_irc
 			std::string					_host;
 			std::vector<std::string>	_channels;
 	};
+
+std::ostream& operator<<(std::ostream& os, const ft_irc::Client& client);
+
 }
 
 #endif

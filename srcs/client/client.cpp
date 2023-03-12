@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:54 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/12 15:38:34 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/03/12 18:41:02 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@ ft_irc::Client::Client(Client const & rhs){
 	return ;
 }
 
-ft_irc::Client::Client(const int sockfd):
+ft_irc::Client::Client(const int &sockfd, const std::string nickname):
 	_sockfd(sockfd),
-	_nickname(""),
+	_nickname(nickname),
 	_username(""),
 	_realname(""),
 	_password(""),
 	_host("") {
-	std::cout << "New Client created on Sockfd : " << _sockfd << std::endl;
+	std::cerr << *this << std::endl;
 	return ;
 }
 
@@ -46,6 +46,7 @@ ft_irc::Client::~Client(void){
 
 ft_irc::Client&	ft_irc::Client::operator=(Client const &rhs){
 	if (this != &rhs){
+		this->_sockfd = rhs._sockfd;
 		this->_nickname = rhs._nickname;
 		this->_username = rhs._username;
 		this->_realname = rhs._realname;
@@ -127,3 +128,12 @@ void	ft_irc::Client::setChannels(std::vector<std::string> channels){	//! deep co
 
 
 /* METHODS */
+
+/* OVERLOADS */
+
+std::ostream& ft_irc::operator<<(std::ostream& os, const ft_irc::Client& client)
+{
+    os << "Client [nickname=" << client.getNickname() << ", sockfd=" << client.getSockfd() << "]";
+    return os;
+}
+
