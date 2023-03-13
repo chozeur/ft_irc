@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:54 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/13 14:01:46 by rvrignon         ###   ########.fr       */
+/*   Updated: 2023/03/13 16:24:46 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ ft_irc::Client::Client(const int &sockfd, const std::string message):
 	_realname(""),
 	_password(""),
 	_host("") {
-	std::cerr << *this << std::endl;
+	// std::cerr << *this << std::endl;
 	return ;
 }
 

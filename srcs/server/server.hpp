@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:36 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/13 14:01:03 by rvrignon         ###   ########.fr       */
+/*   Updated: 2023/03/13 16:44:52 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,13 @@ namespace ft_irc{
 
 			void				init(std::string password, long port, char **env);
 			void				run(void);
+			Client				findClient(int fd);
+			void				clientInit(int fd, std::string message);
+			void				clientCommand(int fd, std::string message);
 
 		private:
 			std::vector<struct pollfd>			_fds;
-			// std::vector<Client>					_clients;
-			std::map<int,Client>				_clients;
+			std::vector<Client>					_clients;
 			long								_port;
 			std::string							_password;
 			struct sockaddr_in					_serv_addr;

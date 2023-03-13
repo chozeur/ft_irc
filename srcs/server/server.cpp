@@ -6,34 +6,39 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:40 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/13 13:57:12 by rvrignon         ###   ########.fr       */
+/*   Updated: 2023/03/13 16:56:56 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
 
 /* CONSTRUCTORS */
-ft_irc::Server::Server(void){return ;}
+ft_irc::Server::Server(void) { return; }
 
-ft_irc::Server::Server(Server const &rhs){
+ft_irc::Server::Server(Server const &rhs)
+{
 	*this = rhs;
-	return ;
+	return;
 }
 
-ft_irc::Server::Server(std::string password, long port, char **env) : _clients(){
+ft_irc::Server::Server(std::string password, long port, char **env) : _clients()
+{
 	this->init(password, port, env);
-	return ;
+	return;
 }
 
 /* DESTRUCTOR */
-ft_irc::Server::~Server(void){
+ft_irc::Server::~Server(void)
+{
 	close(this->_sockfd);
-	return ;
+	return;
 }
 
 /* INIT */
-ft_irc::Server&	ft_irc::Server::operator=(Server const &rhs){
-	if (this != &rhs){
+ft_irc::Server &ft_irc::Server::operator=(Server const &rhs)
+{
+	if (this != &rhs)
+	{
 		this->_port = rhs._port;
 		this->_password = rhs._password;
 		this->_serv_addr = rhs._serv_addr;
@@ -44,54 +49,65 @@ ft_irc::Server&	ft_irc::Server::operator=(Server const &rhs){
 }
 
 /* GETTERS */
-long	ft_irc::Server::getPort(void) const {
+long ft_irc::Server::getPort(void) const
+{
 	return (this->_port);
 }
 
-std::string	ft_irc::Server::getPassword(void)const{
+std::string ft_irc::Server::getPassword(void) const
+{
 	return (this->_password);
 }
 
-struct sockaddr_in	ft_irc::Server::getServAddr()const{
+struct sockaddr_in ft_irc::Server::getServAddr() const
+{
 	return (this->_serv_addr);
 }
 
-int	ft_irc::Server::getSockfd(void)const{
+int ft_irc::Server::getSockfd(void) const
+{
 	return (this->_sockfd);
 }
 
-char	**ft_irc::Server::getEnv(void)const{
+char **ft_irc::Server::getEnv(void) const
+{
 	return (this->_env);
 }
 
 /* SETTERS */
-void	ft_irc::Server::setPort(long port){
+void ft_irc::Server::setPort(long port)
+{
 	this->_port = port;
-	return ;
+	return;
 }
 
-void	ft_irc::Server::setPassword(std::string password){
+void ft_irc::Server::setPassword(std::string password)
+{
 	this->_password = password;
-	return ;
+	return;
 }
 
-void	ft_irc::Server::setServAddr(struct sockaddr_in serv_addr){
+void ft_irc::Server::setServAddr(struct sockaddr_in serv_addr)
+{
 	this->_serv_addr = serv_addr;
-	return ;
+	return;
 }
 
-void	ft_irc::Server::setSockfd(int fd){
+void ft_irc::Server::setSockfd(int fd)
+{
 	this->_sockfd = fd;
-	return ;
+	return;
 }
 
-void	ft_irc::Server::setEnv(char **env){
-	this->_env = env;	//! deep copy
-	return ;
+void ft_irc::Server::setEnv(char **env)
+{
+	this->_env = env; //! deep copy
+	return;
 }
 
 /* METHODS */
-void	ft_irc::Server::init(std::string password, long port, char **env){
+void ft_irc::Server::init(std::string password, long port, char **env)
+{
 	this->_port = port;
 	this->_password = password;
 	this->_sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -108,32 +124,38 @@ void	ft_irc::Server::init(std::string password, long port, char **env){
 	this->_fds = std::vector<struct pollfd>(MAX_CLIENTS + 1);
 	this->_fds[0].fd = this->_sockfd;
 	this->_fds[0].events = POLLIN;
-	for (int i = 1; i <= MAX_CLIENTS; ++i){
+	for (int i = 1; i <= MAX_CLIENTS; ++i)
+	{
 		this->_fds[i].fd = -1; // Initialise les sockets client à -1 pour indiquer qu'elles sont vides
 		this->_fds[i].events = POLLIN;
 	}
-	return ;
+	return;
 }
 
-void	ft_irc::Server::run(void){
-	if (bind(this->_sockfd, (struct sockaddr *) &this->_serv_addr, sizeof(this->_serv_addr)) < 0) {
+void ft_irc::Server::run(void)
+{
+	if (bind(this->_sockfd, (struct sockaddr *)&this->_serv_addr, sizeof(this->_serv_addr)) < 0)
+	{
 		throw std::runtime_error("Error : binding socket failed");
 		return;
 	}
-	if (listen(this->_sockfd, 5) == -1) {
+	if (listen(this->_sockfd, 5) == -1)
+	{
 		std::cerr << "Error: listen failed" << std::endl;
-		return ;
+		return;
 	}
 	std::cout << "Server listening on 127.0.0.1:" << _port << std::endl;
 
-	while (true) {
+	while (true)
+	{
 		int num_ready_fds = poll(this->_fds.data(), MAX_CLIENTS + 1, -1);
 		if (num_ready_fds == -1) {
 			std::cerr << "Error: poll failed" << std::endl;
 			break;
 		}
 
-		if (this->_fds.front().revents & POLLIN) {
+		if (this->_fds[0].revents & POLLIN)
+		{
 			// Accepter une connexion entrante
 			struct sockaddr_in client_address;
 			socklen_t client_address_length = sizeof(client_address);
@@ -149,67 +171,103 @@ void	ft_irc::Server::run(void){
 			{
 				if (this->_fds[i].fd == -1)
 				{
-					ft_irc::Client new_client(clientfd, "Bruce Lee");
-					this->_clients.push_back(new_client);
-					
 					this->_fds[i].fd = clientfd;
-					
+
 					std::string welcome_msg = "Welcome to the chatroom!\n";
 					send(clientfd, welcome_msg.c_str(), welcome_msg.length(), 0);
 					break;
 				}
-				if (i == MAX_CLIENTS) {
+				if (i == MAX_CLIENTS)
+				{
 					std::cout << "Too many clients connected" << std::endl;
 					break;
 				}
 			}
 		}
 
-		for (std::vector<struct pollfd>::iterator it = this->_fds.begin(); it != this->_fds.end(); ++it) {
-	
-			if ((*it).fd != -1 && (*it).revents & POLLIN)
+		for (int i = 1; i <= MAX_CLIENTS; ++i)
+		{
+			if (this->_fds[i].fd != -1 && this->_fds[i].revents & POLLIN)
 			{
 				char buffer[1024];
-				ft_irc::Message	msg;
-				
-				int bytes_received = recv((*it).fd, buffer, sizeof(buffer), 0);
+				int bytes_received = recv(this->_fds[i].fd, buffer, sizeof(buffer), 0);
 				if (bytes_received == -1)
 				{
 					std::cerr << "Error: message receiving failed" << std::endl;
-					close((*it).fd);
-					(*it).fd = -1;
+					close(this->_fds[i].fd);
+					this->_fds[i].fd = -1;
 				}
 				else if (bytes_received == 0)
 				{
 					std::cout << "Client closed the connection" << std::endl;
-					close((*it).fd);
-					(*it).fd = -1;
+					close(this->_fds[i].fd);
+					this->_fds[i].fd = -1;
 				}
 				else
 				{
-					std::string msg(buffer, bytes_received);
-					ft_irc::Message Message(msg);
-					
-					std::cerr << msg << std::endl;
-					
-					// if (client.getMessage().substr(0, 8) == "CAP LS\r\n") {
-					// 	ft_irc::Client client(((*it).fd), msg);
-					// 	this->_clients.push_back(client);
-						
-					// 	std::string cap_response = "CAP * LS :\r\n";
-					// 	if (client.getSockfd() > 0 &&
-					// 		client.getNickname() != "" &&
-					// 		client.getRealname()!= "" &&
-					// 		client.getUsername() != "" &&
-					// 		client.getHost() != "")
-					// 		send((*it).fd, cap_response.c_str(), cap_response.length(), 0);
-					// } else {
-					// 	client.setMessage(msg);
-					// }
+					std::string message(buffer, bytes_received);
+					std::cout << message;
+
+					if (message.substr(0, 8) == "CAP LS\r\n" || message.substr(0, 4) == "NICK" || message.substr(0, 4) == "USER")
+						clientInit(this->_fds[i].fd, message);
+					// else
+					// 	clientCommand(this->_fds[i].fd, message);
 				}
 			}
 		}
 	}
-	return ;
+	return;
 }
 
+void ft_irc::Server::clientInit(int fd, std::string message)
+{
+	std::string cap_response = "CAP * LS :\r\n";
+
+	if (message.substr(0, 8) == "CAP LS\r\n") {
+		std::string::size_type nick_pos = message.find("NICK");
+		std::string::size_type user_pos = message.find("USER");
+		if (nick_pos != std::string::npos)
+		{
+			if (user_pos != std::string::npos) {
+				// We have all infos, we can create Client we can send all.
+				send(fd, cap_response.c_str(), cap_response.length(), 0);
+			}
+			else {
+				// We have to set Nickname and continue
+			}
+		}
+	}
+	else if (message.substr(0, 4) == "NICK") {
+		std::string::size_type user_pos = message.find("USER");
+		if (user_pos != std::string::npos) {
+			// We have all infos, we can create Client we can send all.
+			send(fd, cap_response.c_str(), cap_response.length(), 0);
+		}
+		else {
+			// We have to set Nickname and continue
+		}
+	}
+	else if (message.substr(0, 4) == "USER") {
+		std::cerr << "We have USER" << std::endl;
+		// We have all infos, we can create Client we can send all.
+		send(fd, cap_response.c_str(), cap_response.length(), 0);
+	}
+}
+
+void ft_irc::Server::clientCommand(int fd, std::string message) {
+	(void)fd;
+	(void)message;
+	std::cerr << "This is an other command" << std::cout;
+}
+
+ft_irc::Client ft_irc::Server::findClient(int fd) {
+	
+	ft_irc::Client client;
+	
+	for (std::vector<Client>::iterator it = this->_clients.begin(); it != this->_clients.end(); it++) {
+		if ((*it).getSockfd() == fd)
+			client = (*it);
+	}
+	
+	return client;
+}
