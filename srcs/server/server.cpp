@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   server.cpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/21 15:15:40 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/12 18:45:17 by rvrignon         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "server.hpp"
 
 /* CONSTRUCTORS */
@@ -44,6 +32,15 @@ ft_irc::Server&	ft_irc::Server::operator=(Server const &rhs){
 }
 
 /* GETTERS */
+
+std::vector<struct pollfd>	ft_irc::Server::getFds(void) const {
+	return (this->_fds);
+}
+
+std::map<int,ft_irc::Client>	ft_irc::Server::getClients(void) const {
+	return (this->_clients);
+}
+
 long	ft_irc::Server::getPort(void) const {
 	return (this->_port);
 }
@@ -65,6 +62,17 @@ char	**ft_irc::Server::getEnv(void)const{
 }
 
 /* SETTERS */
+
+void	ft_irc::Server::setFds(std::vector<struct pollfd> fds){
+	this->_fds = fds;
+	return ;
+}
+
+std::map<int,ft_irc::Client>	ft_irc::Server::setClients(std::map<int,ft_irc::Client> clients){
+	this->_clients = clients;
+	return (this->_clients);
+}
+
 void	ft_irc::Server::setPort(long port){
 	this->_port = port;
 	return ;
@@ -127,7 +135,6 @@ void	ft_irc::Server::run(void){
 	std::cout << "Server listening on 127.0.0.1:" << _port << std::endl;
 
 	while (true) {
-
 		int num_ready_fds = poll(this->_fds.data(), MAX_CLIENTS + 1, -1);
 		if (num_ready_fds == -1) {
 			std::cerr << "Error: poll failed" << std::endl;
@@ -150,11 +157,11 @@ void	ft_irc::Server::run(void){
 			{
 				if (this->_fds[i].fd == -1)
 				{
-					// ft_irc::Client new_client(clientfd, "Bruce Lee");
-					// this->_clients.push_back(new_client);
-					
+					ft_irc::Client new_client(clientfd, "Bruce Lee");
+					this->_clients[this->_fds[i].fd] = new_client;
+
 					this->_fds[i].fd = clientfd;
-					
+
 					std::string welcome_msg = "Welcome to the chatroom!\n";
 					send(clientfd, welcome_msg.c_str(), welcome_msg.length(), 0);
 					break;
@@ -167,10 +174,12 @@ void	ft_irc::Server::run(void){
 		}
 
 		for (std::vector<struct pollfd>::iterator it = this->_fds.begin(); it != this->_fds.end(); ++it) {
-	
+
 			if ((*it).fd != -1 && (*it).revents & POLLIN)
 			{
 				char buffer[1024];
+				ft_irc::Message	msg;
+
 				int bytes_received = recv((*it).fd, buffer, sizeof(buffer), 0);
 				if (bytes_received == -1)
 				{
@@ -181,51 +190,31 @@ void	ft_irc::Server::run(void){
 				else if (bytes_received == 0)
 				{
 					std::cout << "Client closed the connection" << std::endl;
+					_clients.erase((*it).fd);
 					close((*it).fd);
 					(*it).fd = -1;
 				}
 				else
 				{
-					std::string message(buffer, bytes_received);
-					std::cout << "IRC SERVER : " << message << std::endl;
-					std::cout << "IRC SERVER SUBSTR : " << message.substr(0, 7) << std::endl;
+					std::string msg(buffer, bytes_received);
+					ft_irc::Message Message(msg);
 
-					if (message.substr(0, 6) == "CAP LS\n") {
-						std::cerr << "WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE" << std::endl;
-						ft_irc::Client client(((*it).fd), "Bruce Lee");
-						this->_clients.push_back(client);
-						std::string cap_response = "CAP LS\r\n";
-						send((*it).fd, cap_response.c_str(), cap_response.length(), 0);
-					}
-					else if (message.substr(0, 5) == "NICK ") {
-						ft_irc::Client client;
-						for (std::vector<ft_irc::Client>::iterator itb = this->_clients.begin(); itb != this->_clients.end(); ++itb) {
-							client = *itb;
-							std::cerr << "getSockfd() = " << client.getSockfd() << std::endl;
-							if ((*it).fd == client.getSockfd()){
-								break;
-							}
-						}
-						client.setNickname(message.substr(5));
-					}
+					std::cerr << msg << std::endl;
 
-					if (message.find_first_not_of(' ') == std::string::npos)
-						continue;
-					else if (message.substr(0, 6) == "/join ") {
-						std::string channel_name = message.substr(6);
-						if (channel_name.empty()) {
-							std::string error_message = "Error: Channel name cannot be empty\n";
-							send((*it).fd, error_message.c_str(), error_message.length(), 0);
-						}
-						else {
-							std::string join_message = "Joining channel " + channel_name + "\n";
-							send((*it).fd, join_message.c_str(), join_message.length(), 0);
-						}
-					}
-					else {
-						std::string error_message = "Error: I can't handle this command: " + message;
-						send((*it).fd, error_message.c_str(), error_message.length(), 0);
-					}
+					// if (client.getMessage().substr(0, 8) == "CAP LS\r\n") {
+					// 	ft_irc::Client client(((*it).fd), msg);
+					// 	this->_clients.push_back(client);
+
+					// 	std::string cap_response = "CAP * LS :\r\n";
+					// 	if (client.getSockfd() > 0 &&
+					// 		client.getNickname() != "" &&
+					// 		client.getRealname()!= "" &&
+					// 		client.getUsername() != "" &&
+					// 		client.getHost() != "")
+					// 		send((*it).fd, cap_response.c_str(), cap_response.length(), 0);
+					// } else {
+					// 	client.setMessage(msg);
+					// }
 				}
 			}
 		}

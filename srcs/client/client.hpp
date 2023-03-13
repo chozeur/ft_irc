@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   client.hpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/27 13:30:32 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/12 17:54:54 by rvrignon         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef CLIENT_HPP
 # define CLIENT_HPP
 
@@ -37,6 +25,7 @@ namespace ft_irc
 
 			int							getSockfd(void) const;
 			std::string					getNickname(void) const;
+			std::string					getMessage(void) const;
 			std::string					getUsername(void) const;
 			std::string					getRealname(void) const;
 			std::string					getPassword(void) const;
@@ -47,6 +36,7 @@ namespace ft_irc
 			char						*getBuffer(void);
 			void						setBuffer(char *buffer);
 			void						setNickname(std::string nickname);
+			void						setMessage(std::string nickname);
 			void						setUsername(std::string username);
 			void						setRealname(std::string realname);
 			void						setPassword(std::string password);
@@ -56,6 +46,7 @@ namespace ft_irc
 		private:
 			int							_sockfd;
 			std::string					_nickname;
+			std::string					_message;
 			std::string					_username;
 			std::string					_realname;
 			std::string					_password;

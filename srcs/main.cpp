@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/18 21:16:58 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/10 15:19:35 by rvrignon         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <stdlib.h>
 #include <iostream>
 #include <csignal>
@@ -37,17 +25,6 @@ int	main(int ac, char **av, char **env){
 	}
 
 	serv.run();
-
-	// try {
-	// 	ft_irc::Client	test_client(serv);
-	// 	test_client.read();
-	// 	std::cout << "Message received: \n" << test_client.getBuffer() << std::endl;
-	// 	// test_client.write("Message has been received");
-	// } catch (std::exception &e){
-	// 	std::cerr << e.what() << std::endl;
-	// 	return (1);
-	// }
-
 
 	return (0);
 }
