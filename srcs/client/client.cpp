@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:54 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/12 18:41:02 by rvrignon         ###   ########.fr       */
+/*   Updated: 2023/03/13 13:43:27 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,10 @@ ft_irc::Client::Client(Client const & rhs){
 	return ;
 }
 
-ft_irc::Client::Client(const int &sockfd, const std::string nickname):
+ft_irc::Client::Client(const int &sockfd, const std::string message):
 	_sockfd(sockfd),
-	_nickname(nickname),
+	_nickname(""),
+	_message(message),
 	_username(""),
 	_realname(""),
 	_password(""),
@@ -67,6 +68,10 @@ std::string	ft_irc::Client::getNickname(void) const {
 	return (this->_nickname);
 }
 
+std::string	ft_irc::Client::getMessage(void) const {
+	return (this->_message);
+}
+
 std::string	ft_irc::Client::getUsername(void) const {
 	return (this->_username);
 }
@@ -93,6 +98,11 @@ std::vector<std::string>	ft_irc::Client::getChannels(void) const {
 void	ft_irc::Client::setSockfd(int sockfd){
 	this->_sockfd = sockfd;
 	std::cout << "client sockfd : " << _sockfd << std::endl;
+	return ;
+}
+
+void	ft_irc::Client::setMessage(std::string message){
+	this->_message += message;
 	return ;
 }
 
@@ -133,7 +143,7 @@ void	ft_irc::Client::setChannels(std::vector<std::string> channels){	//! deep co
 
 std::ostream& ft_irc::operator<<(std::ostream& os, const ft_irc::Client& client)
 {
-    os << "Client [nickname=" << client.getNickname() << ", sockfd=" << client.getSockfd() << "]";
+    os << "Client [" << std::endl << "\tsockfd=" << client.getSockfd() << std::endl << "\tmessage : " << client.getMessage() << "]";
     return os;
 }
 
