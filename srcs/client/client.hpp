@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:32 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/10 17:48:40 by rvrignon         ###   ########.fr       */
+/*   Updated: 2023/03/13 13:18:31 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ namespace ft_irc
 	class Client {
 
 		public:
-		
+
 			Client(void);
 			Client(Client const &rhs);
-			Client(int sockfd);
+			Client(const int &sockfd, const std::string nickname);
 
 			~Client(void);
 
@@ -37,6 +37,7 @@ namespace ft_irc
 
 			int							getSockfd(void) const;
 			std::string					getNickname(void) const;
+			std::string					getMessage(void) const;
 			std::string					getUsername(void) const;
 			std::string					getRealname(void) const;
 			std::string					getPassword(void) const;
@@ -47,6 +48,7 @@ namespace ft_irc
 			char						*getBuffer(void);
 			void						setBuffer(char *buffer);
 			void						setNickname(std::string nickname);
+			void						setMessage(std::string nickname);
 			void						setUsername(std::string username);
 			void						setRealname(std::string realname);
 			void						setPassword(std::string password);
@@ -56,12 +58,16 @@ namespace ft_irc
 		private:
 			int							_sockfd;
 			std::string					_nickname;
+			std::string					_message;
 			std::string					_username;
 			std::string					_realname;
 			std::string					_password;
 			std::string					_host;
 			std::vector<std::string>	_channels;
 	};
+
+std::ostream& operator<<(std::ostream& os, const ft_irc::Client& client);
+
 }
 
 #endif

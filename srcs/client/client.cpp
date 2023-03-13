@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:54 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/10 18:19:48 by rvrignon         ###   ########.fr       */
+/*   Updated: 2023/03/13 14:01:46 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,15 @@ ft_irc::Client::Client(Client const & rhs){
 	return ;
 }
 
-ft_irc::Client::Client(int sockfd):
+ft_irc::Client::Client(const int &sockfd, const std::string message):
 	_sockfd(sockfd),
 	_nickname(""),
+	_message(message),
 	_username(""),
 	_realname(""),
 	_password(""),
 	_host("") {
-	std::cout << "New Client created on Sockfd : " << _sockfd << std::endl; 
+	std::cerr << *this << std::endl;
 	return ;
 }
 
@@ -46,6 +47,7 @@ ft_irc::Client::~Client(void){
 
 ft_irc::Client&	ft_irc::Client::operator=(Client const &rhs){
 	if (this != &rhs){
+		this->_sockfd = rhs._sockfd;
 		this->_nickname = rhs._nickname;
 		this->_username = rhs._username;
 		this->_realname = rhs._realname;
@@ -64,6 +66,10 @@ int	ft_irc::Client::getSockfd(void) const {
 
 std::string	ft_irc::Client::getNickname(void) const {
 	return (this->_nickname);
+}
+
+std::string	ft_irc::Client::getMessage(void) const {
+	return (this->_message);
 }
 
 std::string	ft_irc::Client::getUsername(void) const {
@@ -92,6 +98,11 @@ std::vector<std::string>	ft_irc::Client::getChannels(void) const {
 void	ft_irc::Client::setSockfd(int sockfd){
 	this->_sockfd = sockfd;
 	std::cout << "client sockfd : " << _sockfd << std::endl;
+	return ;
+}
+
+void	ft_irc::Client::setMessage(std::string message){
+	this->_message += message;
 	return ;
 }
 
@@ -127,3 +138,12 @@ void	ft_irc::Client::setChannels(std::vector<std::string> channels){	//! deep co
 
 
 /* METHODS */
+
+/* OVERLOADS */
+
+std::ostream& ft_irc::operator<<(std::ostream& os, const ft_irc::Client& client)
+{
+    os << "Client [" << std::endl << "\tsockfd=" << client.getSockfd() << std::endl << "\tmessage : " << client.getMessage() << "]";
+    return os;
+}
+

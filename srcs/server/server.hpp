@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:36 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/10 18:05:48 by rvrignon         ###   ########.fr       */
+/*   Updated: 2023/03/13 14:01:03 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <unistd.h>
 #include <poll.h>
 #include "../client/client.hpp"
+#include "../message/message.hpp"
 
 # define MAX_CLIENTS 4
 
@@ -39,6 +40,7 @@ namespace ft_irc{
 
 			Server				&operator=(Server const &rhs);
 
+		
 			long				getPort(void)const;
 			std::string			getPassword(void)const;
 			struct sockaddr_in	getServAddr(void)const;
@@ -55,8 +57,9 @@ namespace ft_irc{
 			void				run(void);
 
 		private:
-			struct pollfd						_fds[MAX_CLIENTS + 1];
-			std::vector<Client>					_clients;
+			std::vector<struct pollfd>			_fds;
+			// std::vector<Client>					_clients;
+			std::map<int,Client>				_clients;
 			long								_port;
 			std::string							_password;
 			struct sockaddr_in					_serv_addr;
