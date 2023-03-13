@@ -26,6 +26,7 @@ ft_irc::Client::Client(
 	_password(password),
 	_servername(servername),
 	_host(host) {
+	std::cerr << *this << std::endl;
 	return ;
 }
 

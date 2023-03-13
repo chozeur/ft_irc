@@ -1,6 +1,7 @@
 #include "server.hpp"
 
 /* CONSTRUCTORS */
+
 ft_irc::Server::Server(void) { return; }
 
 ft_irc::Server::Server(Server const &rhs)
@@ -16,6 +17,7 @@ ft_irc::Server::Server(std::string password, long port, char **env) : _clients()
 }
 
 /* DESTRUCTOR */
+
 ft_irc::Server::~Server(void)
 {
 	close(this->_sockfd);
@@ -23,6 +25,7 @@ ft_irc::Server::~Server(void)
 }
 
 /* INIT */
+
 ft_irc::Server &ft_irc::Server::operator=(Server const &rhs)
 {
 	if (this != &rhs)
@@ -37,6 +40,7 @@ ft_irc::Server &ft_irc::Server::operator=(Server const &rhs)
 }
 
 /* GETTERS */
+
 long ft_irc::Server::getPort(void) const
 {
 	return (this->_port);
@@ -81,6 +85,7 @@ std::vector<ft_irc::Client>::iterator ft_irc::Server::getClientIterator(int fd) 
 }
 
 /* SETTERS */
+
 void ft_irc::Server::setPort(long port)
 {
 	this->_port = port;
@@ -112,6 +117,7 @@ void ft_irc::Server::setEnv(char **env)
 }
 
 /* METHODS */
+
 void ft_irc::Server::init(std::string password, long port, char **env)
 {
 	this->_port = port;
@@ -166,7 +172,6 @@ void ft_irc::Server::run(void)
 				if (this->_fds[i].fd == -1)
 				{
 					this->_fds[i].fd = clientfd;
-					std::cout << "New client connected on fd : " << clientfd << std::endl;
 					break;
 				}
 				else if (i == MAX_CLIENTS)
@@ -202,8 +207,6 @@ void ft_irc::Server::run(void)
 					}
 					close(this->_fds[i].fd);
 					this->_fds[i].fd = -1;
-					std::cerr << "_clients.size() = " << this->_clients.size() << std::endl << std::endl;
-
 				}
 				else
 				{
@@ -212,7 +215,8 @@ void ft_irc::Server::run(void)
 						if (clientInit(this->_fds[i].fd, message)) {
 							sendIrcResponse(this->_fds[i].fd, getClientPointer(this->_fds[i].fd));
 						}
-					}
+					} else
+						std::cerr << "clientfd " << this->_fds[i].fd << " : " << message;
 				}
 			}
 		}
@@ -368,7 +372,6 @@ int ft_irc::Server::createClient(const int sockfd, const std::string nickname, c
 	// Return 0 if Nickname is already taken
 	ft_irc::Client client(sockfd, nickname, username, realname, password, servername, host);
 	this->_clients.push_back(client);
-	std::cerr << "_clients.size() = " << this->_clients.size() << std::endl;
 	return 1;
 }
 
@@ -377,8 +380,6 @@ void ft_irc::Server::sendIrcResponse(int sockfd, ft_irc::Client *client) const {
         std::cerr << "Error: Null client pointer passed to sendIrcResponse" << std::endl;
         return;
     }
-
-	std::cerr << *client << std::endl << std::endl;
     std::string cap_response = "CAP * LS :\r\n";
     std::string welcome_msg = ":" + client->getServerName() + " 001 " + client->getNickname() + " :Welcome to the Internet Relay Network " + client->getNickname() + "!" + client->getUsername() + "@" + client->getHost() + "\r\n";
     std::string version_msg = ":" + client->getServerName() + " 002 " + client->getNickname() + " :Your host is " + client->getServerName() + ", running version X.Y.Z\r\n";
