@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:54 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/13 21:02:09 by rvrignon         ###   ########.fr       */
+/*   Updated: 2023/03/13 22:16:17 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ ft_irc::Client::Client(Client const & rhs){
 }
 
 ft_irc::Client::Client(
-	const int sockfd, 
+	int sockfd, 
 	const std::string nickname, 
 	const std::string username, 
 	const std::string realname,
@@ -44,7 +44,6 @@ ft_irc::Client::Client(
 /* DESTRUCTOR */
 
 ft_irc::Client::~Client(void){
-	close(this->_sockfd);
 	return ;
 }
 

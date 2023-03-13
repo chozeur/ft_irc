@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:36 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/13 20:48:09 by rvrignon         ###   ########.fr       */
+/*   Updated: 2023/03/13 22:08:45 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,11 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include <poll.h>
+#include <fcntl.h>
 #include "../client/client.hpp"
 #include "../message/message.hpp"
 
-# define MAX_CLIENTS 4
+# define MAX_CLIENTS 3
 
 extern bool	server;
 
@@ -61,7 +62,7 @@ namespace ft_irc{
 			int					clientInit(int fd, std::string message);
 			void				clientCommand(int fd, std::string message);
 			int					createClient(const int sockfd, const std::string nickname, const std::string username, const std::string realname,const std::string password,const std::string servername,const std::string host);
-			void				sendIrcResponse(const int sockfd, ft_irc::Client client);
+			void				sendIrcResponse(int sockfd, ft_irc::Client client) const;
 		private:
 			std::vector<struct pollfd>			_fds;
 			std::vector<Client>					_clients;

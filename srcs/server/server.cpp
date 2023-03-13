@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:40 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/13 21:06:14 by rvrignon         ###   ########.fr       */
+/*   Updated: 2023/03/13 22:20:18 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,34 +118,33 @@ void ft_irc::Server::init(std::string password, long port, char **env)
 	this->_serv_addr.sin_addr.s_addr = INADDR_ANY;
 	this->_serv_addr.sin_port = htons(this->_port);
 	this->_env = env; //! deep copy
-
-	// this->_fds[0].fd = this->_sockfd;
-	// this->_fds[0].events = POLLIN;
+	if (bind(this->_sockfd, (struct sockaddr *)&this->_serv_addr, sizeof(this->_serv_addr)) == -1)
+		throw std::runtime_error("Error : binding socket failed");
+	if (listen(this->_sockfd, MAX_CLIENTS) == -1)
+		std::cerr << "Error: listen failed" << std::endl;
 	this->_fds = std::vector<struct pollfd>(MAX_CLIENTS + 1);
 	this->_fds[0].fd = this->_sockfd;
 	this->_fds[0].events = POLLIN;
-	for (int i = 1; i <= MAX_CLIENTS; ++i)
-	{
-		this->_fds[i].fd = -1; // Initialise les sockets client à -1 pour indiquer qu'elles sont vides
+	for (int i = 1; i <= MAX_CLIENTS; ++i) {
+		this->_fds[i].fd = -1;
 		this->_fds[i].events = POLLIN;
 	}
 	return;
 }
 
+bool isFdOpen(int fd)
+{
+    int flags = fcntl(fd, F_GETFL);
+    if (flags == -1) {
+        return false;
+    }
+
+    return true;
+}
+
 void ft_irc::Server::run(void)
 {
-	if (bind(this->_sockfd, (struct sockaddr *)&this->_serv_addr, sizeof(this->_serv_addr)) < 0)
-	{
-		throw std::runtime_error("Error : binding socket failed");
-		return;
-	}
-	if (listen(this->_sockfd, 5) == -1)
-	{
-		std::cerr << "Error: listen failed" << std::endl;
-		return;
-	}
 	std::cout << "Server listening on 127.0.0.1:" << _port << std::endl;
-
 	while (server)
 	{
 		int num_ready_fds = poll(this->_fds.data(), MAX_CLIENTS + 1, -1);
@@ -153,11 +152,11 @@ void ft_irc::Server::run(void)
 			std::cerr << "Error: poll failed" << std::endl;
 			break;
 		}
-
 		if (this->_fds[0].revents & POLLIN)
-		{
+		{			
 			// Accepter une connexion entrante
 			struct sockaddr_in client_address;
+			
 			socklen_t client_address_length = sizeof(client_address);
 			int clientfd = accept(this->_sockfd, (struct sockaddr *)&client_address, &client_address_length);
 			if (clientfd == -1) {
@@ -165,20 +164,16 @@ void ft_irc::Server::run(void)
 				continue;
 			}
 
-			std::cerr << "IRC clientfd : " << clientfd << std::endl;
-
 			// Ajouter la socket du client à l'ensemble des sockets surveillées
 			for (int i = 1; i <= MAX_CLIENTS; ++i)
 			{
 				if (this->_fds[i].fd == -1)
 				{
 					this->_fds[i].fd = clientfd;
-
-					std::string welcome_msg = "Welcome to the chatroom!\n";
-					send(clientfd, welcome_msg.c_str(), welcome_msg.length(), 0);
+					std::cout << "New client connected on fd : " << clientfd << std::endl;
 					break;
 				}
-				if (i == MAX_CLIENTS)
+				else if (i == MAX_CLIENTS)
 				{
 					std::cout << "Too many clients connected" << std::endl;
 					break;
@@ -200,21 +195,18 @@ void ft_irc::Server::run(void)
 				}
 				else if (bytes_received == 0)
 				{
-					std::cout << "Client " << this->_fds[i].fd << " closed the connection" << std::endl;
+					std::cerr << "Client " << this->_fds[i].fd << " closed the connection" << std::endl;
 					close(this->_fds[i].fd);
 					this->_fds[i].fd = -1;
 				}
 				else
 				{
-					std::string message(buffer, bytes_received);
-					
+					std::string message(buffer, bytes_received);	
 					if (message.substr(0, 8) == "CAP LS\r\n" || message.substr(0, 4) == "NICK" || message.substr(0, 4) == "USER") {
 						if (clientInit(this->_fds[i].fd, message)) {
 							sendIrcResponse(this->_fds[i].fd, findClient(this->_fds[i].fd));
 						}
 					}
-					else
-						clientCommand(this->_fds[i].fd, message);
 				}
 			}
 		}
@@ -244,9 +236,9 @@ int ft_irc::Server::clientInit(int fd, std::string message)
 				std::string::size_type pos3 = message.find('\n', pos2 + 1);
 				std::string third_line = message.substr(pos2 + 1, pos3 - pos2 - 2);
 
-				std::cout << "IRC : " << first_line << std::endl;
-				std::cout << "IRC : " << second_line << std::endl;
-				std::cout << "IRC : " << third_line << std::endl;
+				std::cout << "IRC SERVER => " << first_line << std::endl;
+				std::cout << "IRC SERVER => " << second_line << std::endl;
+				std::cout << "IRC SERVER => " << third_line << std::endl;
 
 				// nickname
 				std::string::size_type space_pos = second_line.find(' ');
@@ -273,11 +265,11 @@ int ft_irc::Server::clientInit(int fd, std::string message)
 				}
 			}
 			else {
-				std::cout << "IRC : " << first_line << std::endl;
-				std::cout << "IRC : " << second_line << std::endl;
+				std::cout << "IRC SERVER => " << first_line << std::endl;
+				std::cout << "IRC SERVER => " << second_line << std::endl;
 			}
 		} else {
-			std::cout << "IRC : " << first_line << std::endl;
+			std::cout << "IRC SERVER => " << first_line << std::endl;
 		}
 	}
 	
@@ -293,8 +285,8 @@ int ft_irc::Server::clientInit(int fd, std::string message)
 			std::string::size_type pos2 = message.find('\n', pos1 + 1);
 			std::string third_line = message.substr(pos1 + 1, pos2 - pos1  - 2);
 
-			std::cout << "IRC : " << second_line << std::endl;
-			std::cout << "IRC : " << third_line << std::endl;
+			std::cout << "IRC SERVER => " << second_line << std::endl;
+			std::cout << "IRC SERVER => " << third_line << std::endl;
 
 			// nickname
 			std::string::size_type space_pos = second_line.find(' ');
@@ -324,7 +316,7 @@ int ft_irc::Server::clientInit(int fd, std::string message)
 		}
 		else {
 			// NICK rvrignon
-			std::cout << "IRC : " << second_line << std::endl;
+			std::cout << "IRC SERVER => " << second_line << std::endl;
 		}
 	}
 	
@@ -332,7 +324,7 @@ int ft_irc::Server::clientInit(int fd, std::string message)
 		std::string::size_type pos1 = message.find('\n');
 		std::string third_line = message.substr(0, pos1 - 1);
 
-		std::cout << "IRC : " << third_line << std::endl;
+		std::cout << "IRC SERVER => " << third_line << std::endl;
 
 		// Extract the substrings corresponding to the username, hostname, servername, and realname fields
 		std::string::size_type space_pos1 = third_line.find(' ');
@@ -382,11 +374,12 @@ int ft_irc::Server::createClient(const int sockfd, const std::string nickname, c
 	// Return 0 if Nickname is already taken
 	ft_irc::Client client(sockfd, nickname, username, realname, password, servername, host);
 	this->_clients.push_back(client);
+	std::cerr << "_clients.size() = " << this->_clients.size() << std::endl;
 	return 1;
 }
 
-void ft_irc::Server::sendIrcResponse(const int sockfd, ft_irc::Client client) {
-	std::cerr << "IRC : " << client << std::endl; 
+void ft_irc::Server::sendIrcResponse(int sockfd, ft_irc::Client client) const {
+	std::cerr << client << std::endl << std::endl; 
 	std::string cap_response = "CAP * LS :\r\n";
 	std::string welcome_msg = ":" + client.getServerName() + " 001 " + client.getNickname() + " :Welcome to the Internet Relay Network " + client.getNickname() + "!" + client.getUsername() + "@" + client.getHost() + "\r\n";
 	std::string version_msg = ":" + client.getServerName() + " 002 " + client.getNickname() + " :Your host is " + client.getServerName() + ", running version X.Y.Z\r\n";
