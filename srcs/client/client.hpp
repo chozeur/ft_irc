@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:32 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/13 13:18:31 by rvrignon         ###   ########.fr       */
+/*   Updated: 2023/03/13 19:58:39 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ namespace ft_irc
 
 			Client(void);
 			Client(Client const &rhs);
-			Client(const int &sockfd, const std::string nickname);
+			Client(	const int sockfd, const std::string nickname, const std::string username, const std::string realname,const std::string password, const std::string servername, const std::string host);
 
 			~Client(void);
 
@@ -41,6 +41,7 @@ namespace ft_irc
 			std::string					getUsername(void) const;
 			std::string					getRealname(void) const;
 			std::string					getPassword(void) const;
+			std::string					getServerName(void) const;
 			std::string					getHost(void) const;
 			std::vector<std::string>	getChannels(void) const;
 
@@ -52,6 +53,7 @@ namespace ft_irc
 			void						setUsername(std::string username);
 			void						setRealname(std::string realname);
 			void						setPassword(std::string password);
+			void						setServerName(std::string host);
 			void						setHost(std::string host);
 			void						setChannels(std::vector<std::string> channels);
 
@@ -62,6 +64,7 @@ namespace ft_irc
 			std::string					_username;
 			std::string					_realname;
 			std::string					_password;
+			std::string					_servername;
 			std::string					_host;
 			std::vector<std::string>	_channels;
 	};

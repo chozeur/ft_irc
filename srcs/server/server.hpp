@@ -6,7 +6,7 @@
 /*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:36 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/13 16:44:52 by rvrignon         ###   ########.fr       */
+/*   Updated: 2023/03/13 20:48:09 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 #include "../message/message.hpp"
 
 # define MAX_CLIENTS 4
+
+extern bool	server;
 
 namespace ft_irc{
 
@@ -56,9 +58,10 @@ namespace ft_irc{
 			void				init(std::string password, long port, char **env);
 			void				run(void);
 			Client				findClient(int fd);
-			void				clientInit(int fd, std::string message);
+			int					clientInit(int fd, std::string message);
 			void				clientCommand(int fd, std::string message);
-
+			int					createClient(const int sockfd, const std::string nickname, const std::string username, const std::string realname,const std::string password,const std::string servername,const std::string host);
+			void				sendIrcResponse(const int sockfd, ft_irc::Client client);
 		private:
 			std::vector<struct pollfd>			_fds;
 			std::vector<Client>					_clients;
