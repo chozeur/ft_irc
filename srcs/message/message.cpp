@@ -64,4 +64,21 @@ void	ft_irc::Message::setCallback(void (*callback)(ft_irc::Client&, ft_irc::Clie
 	return ;
 }
 
+/* METHODS */
 
+void	ft_irc::Message::execute(void){
+	if (this->_callback)
+		this->_callback(*this->_sender, *this->_receiver, this->_payload);
+	return ;
+}
+
+void	ft_irc::Message::appendPayload(std::string payload){
+	this->_payload += payload;
+	return ;
+}
+
+std::string	ft_irc::Message::parsePayload(void) const {
+	std::size_t pos = this->_payload.find(" ");
+	std::string arg = this->_payload.substr(pos+1, this->_payload.size() - pos);
+	return (arg);
+}

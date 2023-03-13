@@ -127,6 +127,7 @@ void	ft_irc::Client::setChannels(std::vector<std::string> channels){	//! deep co
 
 /* METHODS */
 
+
 /* OVERLOADS */
 
 std::ostream& ft_irc::operator<<(std::ostream& os, const ft_irc::Client& client)

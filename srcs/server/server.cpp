@@ -175,50 +175,24 @@ void	ft_irc::Server::run(void){
 
 		for (std::vector<struct pollfd>::iterator it = this->_fds.begin(); it != this->_fds.end(); ++it) {
 
-			if ((*it).fd != -1 && (*it).revents & POLLIN)
-			{
-				char buffer[1024];
+			if ((*it).fd != -1 && (*it).revents & POLLIN){
 				ft_irc::Message	msg;
-
-				int bytes_received = recv((*it).fd, buffer, sizeof(buffer), 0);
-				if (bytes_received == -1)
-				{
-					std::cerr << "Error: message receiving failed" << std::endl;
-					close((*it).fd);
-					(*it).fd = -1;
+				while (this->_clients[(*it).fd].getNickname() == "" &&
+						this->_clients[(*it).fd].getUsername() == "" &&
+						this->_clients[(*it).fd].getRealname() == "" &&
+						this->_clients[(*it).fd].getHost() == "") {
+						std::cerr << "Waiting for client to send NICK, USER" << std::endl;
+						char buffer[1024];
+						int bytes_received = recv((*it).fd, buffer, 1024, 0);
+						if (bytes_received > 0){
+							msg.appendPayload(buffer);
+							if (std::string(buffer).find("NICK")){}
+						}
 				}
-				else if (bytes_received == 0)
-				{
-					std::cout << "Client closed the connection" << std::endl;
-					_clients.erase((*it).fd);
-					close((*it).fd);
-					(*it).fd = -1;
-				}
-				else
-				{
-					std::string msg(buffer, bytes_received);
-					ft_irc::Message Message(msg);
-
-					std::cerr << msg << std::endl;
-
-					// if (client.getMessage().substr(0, 8) == "CAP LS\r\n") {
-					// 	ft_irc::Client client(((*it).fd), msg);
-					// 	this->_clients.push_back(client);
-
-					// 	std::string cap_response = "CAP * LS :\r\n";
-					// 	if (client.getSockfd() > 0 &&
-					// 		client.getNickname() != "" &&
-					// 		client.getRealname()!= "" &&
-					// 		client.getUsername() != "" &&
-					// 		client.getHost() != "")
-					// 		send((*it).fd, cap_response.c_str(), cap_response.length(), 0);
-					// } else {
-					// 	client.setMessage(msg);
-					// }
-				}
+				std::cerr << msg.getPayload() << std::endl;
 			}
 		}
-	}
 	return ;
+	}
 }
 
