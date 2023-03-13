@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:32 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/13 13:21:32 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/03/12 17:54:54 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ namespace ft_irc
 
 			~Client(void);
 
-			Client						&operator=(Client const & rhs);
+			Client	&operator=(Client const & rhs);
 
 			int							getSockfd(void) const;
 			std::string					getNickname(void) const;

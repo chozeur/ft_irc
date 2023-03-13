@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:36 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/13 13:21:04 by flcarval         ###   ########.fr       */
+/*   Updated: 2023/03/12 16:06:50 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ namespace ft_irc{
 			void				run(void);
 
 		private:
-
+			std::vector<struct pollfd>			_fds;
+			std::vector<Client>					_clients;
 			long								_port;
 			std::string							_password;
 			struct sockaddr_in					_serv_addr;
