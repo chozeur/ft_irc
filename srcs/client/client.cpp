@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:54 by flcarval          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/03/07 22:43:01 by flcarval         ###   ########.fr       */
-=======
-/*   Updated: 2023/03/10 18:19:48 by rvrignon         ###   ########.fr       */
->>>>>>> rolexx
+/*   Updated: 2023/03/12 18:41:02 by rvrignon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,28 +14,25 @@
 
 /* CONSTRUCTORS */
 
-ft_irc::Client::Client(void){return ;}
+ft_irc::Client::Client(void){
+	std::cout << "New Client created" << std::endl;
+	return ;
+}
 
 ft_irc::Client::Client(Client const & rhs){
 	*this = rhs;
 	return ;
 }
 
-ft_irc::Client::Client(ft_irc::Server &server):
-	_server(&server),
-	_nickname(""),
+ft_irc::Client::Client(const int &sockfd, const std::string nickname):
+	_sockfd(sockfd),
+	_nickname(nickname),
 	_username(""),
 	_realname(""),
 	_password(""),
-	_host(""){
-	memset(&this->_cli_addr, 0, sizeof(struct sockaddr_in));
-	this->_cli_addr.sin_family = AF_INET;
-	this->_cli_addr.sin_addr.s_addr = INADDR_ANY;
-	this->_cli_addr.sin_port = htons(this->_server->getPort());
-	this->_cli_len = sizeof(_cli_addr);
-	this->_sockfd = accept(this->_server->getSockfd(), (struct sockaddr *) &(this->_cli_addr), &(this->_cli_len));
-	if (this->_sockfd < 0)
-		throw (std::runtime_error("Error : accept"));
+	_host("") {
+	std::cerr << *this << std::endl;
+	return ;
 }
 
 /* DESTRUCTOR */
@@ -53,11 +46,7 @@ ft_irc::Client::~Client(void){
 
 ft_irc::Client&	ft_irc::Client::operator=(Client const &rhs){
 	if (this != &rhs){
-		this->_cli_addr = rhs._cli_addr;
-		this->_cli_len = rhs._cli_len;
 		this->_sockfd = rhs._sockfd;
-		for (int i = 0; i < 2048; i++)
-			this->_buffer[i] = rhs._buffer[i];
 		this->_nickname = rhs._nickname;
 		this->_username = rhs._username;
 		this->_realname = rhs._realname;
@@ -70,20 +59,8 @@ ft_irc::Client&	ft_irc::Client::operator=(Client const &rhs){
 
 /* GETTERS */
 
-struct sockaddr_in	ft_irc::Client::getCliAddr(void) const {
-	return (this->_cli_addr);
-}
-
-socklen_t	ft_irc::Client::getCliLen(void) const {
-	return (this->_cli_len);
-}
-
 int	ft_irc::Client::getSockfd(void) const {
 	return (this->_sockfd);
-}
-
-char	*ft_irc::Client::getBuffer(void){
-	return (this->_buffer);
 }
 
 std::string	ft_irc::Client::getNickname(void) const {
@@ -112,24 +89,10 @@ std::vector<std::string>	ft_irc::Client::getChannels(void) const {
 
 /* SETTERS */
 
-void	ft_irc::Client::setCliAddr(struct sockaddr_in cli_addr){
-	this->_cli_addr = cli_addr;
-	return ;
-}
-
-void	ft_irc::Client::setCliLen(socklen_t cli_len){
-	this->_cli_len = cli_len;
-	return ;
-}
 
 void	ft_irc::Client::setSockfd(int sockfd){
 	this->_sockfd = sockfd;
-	return ;
-}
-
-void	ft_irc::Client::setBuffer(char *buffer){
-	for (int i = 0; i < 2048 && buffer[i]; i++)
-		this->_buffer[i] = buffer[i];
+	std::cout << "client sockfd : " << _sockfd << std::endl;
 	return ;
 }
 
@@ -165,3 +128,12 @@ void	ft_irc::Client::setChannels(std::vector<std::string> channels){	//! deep co
 
 
 /* METHODS */
+
+/* OVERLOADS */
+
+std::ostream& ft_irc::operator<<(std::ostream& os, const ft_irc::Client& client)
+{
+    os << "Client [nickname=" << client.getNickname() << ", sockfd=" << client.getSockfd() << "]";
+    return os;
+}
+
