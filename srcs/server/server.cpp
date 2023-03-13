@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   server.cpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/21 15:15:40 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/13 22:20:18 by rvrignon         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "server.hpp"
 
 /* CONSTRUCTORS */
@@ -74,6 +62,24 @@ char **ft_irc::Server::getEnv(void) const
 	return (this->_env);
 }
 
+ft_irc::Client* ft_irc::Server::getClientPointer(int fd) {
+    std::vector<Client>::iterator it;
+    for (it = this->_clients.begin(); it != this->_clients.end(); it++) {
+        if (it->getSockfd() == fd)
+            return &(*it);
+    }
+    return NULL;
+}
+
+std::vector<ft_irc::Client>::iterator ft_irc::Server::getClientIterator(int fd) {
+    std::vector<Client>::iterator it;
+    for (it = this->_clients.begin(); it != this->_clients.end(); it++) {
+        if (it->getSockfd() == fd)
+            return it;
+    }
+    return this->_clients.end();
+}
+
 /* SETTERS */
 void ft_irc::Server::setPort(long port)
 {
@@ -132,16 +138,6 @@ void ft_irc::Server::init(std::string password, long port, char **env)
 	return;
 }
 
-bool isFdOpen(int fd)
-{
-    int flags = fcntl(fd, F_GETFL);
-    if (flags == -1) {
-        return false;
-    }
-
-    return true;
-}
-
 void ft_irc::Server::run(void)
 {
 	std::cout << "Server listening on 127.0.0.1:" << _port << std::endl;
@@ -190,21 +186,31 @@ void ft_irc::Server::run(void)
 				if (bytes_received == -1)
 				{
 					std::cerr << "Error: message receiving failed on fd : " << this->_fds[i].fd << std::endl;
+					std::vector<Client>::iterator client_it = getClientIterator(this->_fds[i].fd);
+					if (client_it != this->_clients.end()) {
+						this->_clients.erase(client_it);
+					}
 					close(this->_fds[i].fd);
 					this->_fds[i].fd = -1;
 				}
 				else if (bytes_received == 0)
 				{
 					std::cerr << "Client " << this->_fds[i].fd << " closed the connection" << std::endl;
+					std::vector<Client>::iterator client_it = getClientIterator(this->_fds[i].fd);
+					if (client_it != this->_clients.end()) {
+						this->_clients.erase(client_it);
+					}
 					close(this->_fds[i].fd);
 					this->_fds[i].fd = -1;
+					std::cerr << "_clients.size() = " << this->_clients.size() << std::endl << std::endl;
+
 				}
 				else
 				{
 					std::string message(buffer, bytes_received);	
 					if (message.substr(0, 8) == "CAP LS\r\n" || message.substr(0, 4) == "NICK" || message.substr(0, 4) == "USER") {
 						if (clientInit(this->_fds[i].fd, message)) {
-							sendIrcResponse(this->_fds[i].fd, findClient(this->_fds[i].fd));
+							sendIrcResponse(this->_fds[i].fd, getClientPointer(this->_fds[i].fd));
 						}
 					}
 				}
@@ -358,18 +364,6 @@ void ft_irc::Server::clientCommand(int fd, std::string message) {
 	std::cerr << "This is an other command" << std::cout;
 }
 
-ft_irc::Client ft_irc::Server::findClient(int fd) {
-	
-	ft_irc::Client client;
-	
-	for (std::vector<Client>::iterator it = this->_clients.begin(); it != this->_clients.end(); it++) {
-		if ((*it).getSockfd() == fd)
-			client = (*it);
-	}
-	
-	return client;
-}
-
 int ft_irc::Server::createClient(const int sockfd, const std::string nickname, const std::string username, const std::string realname,const std::string password,const std::string servername,const std::string host) { 
 	// Return 0 if Nickname is already taken
 	ft_irc::Client client(sockfd, nickname, username, realname, password, servername, host);
@@ -378,14 +372,19 @@ int ft_irc::Server::createClient(const int sockfd, const std::string nickname, c
 	return 1;
 }
 
-void ft_irc::Server::sendIrcResponse(int sockfd, ft_irc::Client client) const {
-	std::cerr << client << std::endl << std::endl; 
-	std::string cap_response = "CAP * LS :\r\n";
-	std::string welcome_msg = ":" + client.getServerName() + " 001 " + client.getNickname() + " :Welcome to the Internet Relay Network " + client.getNickname() + "!" + client.getUsername() + "@" + client.getHost() + "\r\n";
-	std::string version_msg = ":" + client.getServerName() + " 002 " + client.getNickname() + " :Your host is " + client.getServerName() + ", running version X.Y.Z\r\n";
-	std::string created_msg = ":" + client.getServerName() + " 003 " + client.getNickname() + " :This server was created on [date]\r\n";
-	send(sockfd, cap_response.c_str(), cap_response.length(), 0);
-	send(sockfd, welcome_msg.c_str(), welcome_msg.length(), 0);
-	send(sockfd, version_msg.c_str(), version_msg.length(), 0);
-	send(sockfd, created_msg.c_str(), created_msg.length(), 0);
+void ft_irc::Server::sendIrcResponse(int sockfd, ft_irc::Client *client) const {
+    if (!client) {
+        std::cerr << "Error: Null client pointer passed to sendIrcResponse" << std::endl;
+        return;
+    }
+
+	std::cerr << *client << std::endl << std::endl;
+    std::string cap_response = "CAP * LS :\r\n";
+    std::string welcome_msg = ":" + client->getServerName() + " 001 " + client->getNickname() + " :Welcome to the Internet Relay Network " + client->getNickname() + "!" + client->getUsername() + "@" + client->getHost() + "\r\n";
+    std::string version_msg = ":" + client->getServerName() + " 002 " + client->getNickname() + " :Your host is " + client->getServerName() + ", running version X.Y.Z\r\n";
+    std::string created_msg = ":" + client->getServerName() + " 003 " + client->getNickname() + " :This server was created on [date]\r\n";
+    send(sockfd, cap_response.c_str(), cap_response.length(), 0);
+    send(sockfd, welcome_msg.c_str(), welcome_msg.length(), 0);
+    send(sockfd, version_msg.c_str(), version_msg.length(), 0);
+    send(sockfd, created_msg.c_str(), created_msg.length(), 0);
 }
