@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   server.hpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/21 15:15:36 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/13 14:01:03 by rvrignon         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
@@ -40,21 +28,24 @@ namespace ft_irc{
 
 			Server				&operator=(Server const &rhs);
 
-		
-			long				getPort(void)const;
-			std::string			getPassword(void)const;
-			struct sockaddr_in	getServAddr(void)const;
-			int					getSockfd(void)const;
-			char				**getEnv(void)const;
+			std::vector<struct pollfd>			getFds(void)const;
+			std::map<int,Client>				getClients(void)const;
+			long								getPort(void)const;
+			std::string							getPassword(void)const;
+			struct sockaddr_in					getServAddr(void)const;
+			int									getSockfd(void)const;
+			char								**getEnv(void)const;
 
-			void				setPort(long port);
-			void				setPassword(std::string password);
-			void				setServAddr(struct sockaddr_in);
-			void				setSockfd(int fd);
-			void				setEnv(char **env);
+			void								setFds(std::vector<struct pollfd> fds);
+			std::map<int,Client>				setClients(std::map<int,Client> clients);
+			void								setPort(long port);
+			void								setPassword(std::string password);
+			void								setServAddr(struct sockaddr_in);
+			void								setSockfd(int fd);
+			void								setEnv(char **env);
 
-			void				init(std::string password, long port, char **env);
-			void				run(void);
+			void								init(std::string password, long port, char **env);
+			void								run(void);
 
 		private:
 			std::vector<struct pollfd>			_fds;

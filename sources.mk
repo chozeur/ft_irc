@@ -19,6 +19,12 @@ SOURCES		+=                        		\
 		srcs/server/server.cpp           	\
 
 
+## SRCS/MESSAGE ##
+
+SOURCES		+=                        		\
+		srcs/message/message.cpp         	\
+
+
 ## SRCS/CHANNEL ##
 
 SOURCES		+=                        		\
