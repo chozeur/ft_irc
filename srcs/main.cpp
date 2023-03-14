@@ -26,8 +26,7 @@ int	main(int ac, char **av, char **env){
 
 	while (server)
 		serv.run();
-
-	std::cerr << "Turn off server here" << std::endl;
+	serv.stop();
 	return (0);
 }
 

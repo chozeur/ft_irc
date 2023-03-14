@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   client.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/27 13:30:54 by flcarval          #+#    #+#             */
+/*   Updated: 2023/03/14 18:15:46 by tbrebion         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "client.hpp"
 
 /* CONSTRUCTORS */
@@ -11,22 +23,13 @@ ft_irc::Client::Client(Client const & rhs){
 	return ;
 }
 
-ft_irc::Client::Client(
-	int sockfd, 
-	const std::string nickname, 
-	const std::string username, 
-	const std::string realname,
-	const std::string password,
-	const std::string servername,
-	const std::string host ) :
+ft_irc::Client::Client(int sockfd):
 	_sockfd(sockfd),
-	_nickname(nickname),
-	_username(username),
-	_realname(realname),
-	_password(password),
-	_servername(servername),
-	_host(host) {
-	std::cerr << *this << std::endl;
+	_nickname(""),
+	_username(""),
+	_realname(""),
+	_password(""),
+	_host("") {
 	return ;
 }
 
@@ -45,7 +48,6 @@ ft_irc::Client&	ft_irc::Client::operator=(Client const &rhs){
 		this->_username = rhs._username;
 		this->_realname = rhs._realname;
 		this->_password = rhs._password;
-		this->_servername = rhs._servername;
 		this->_host = rhs._host;
 		this->_channels = rhs._channels;
 	}
@@ -62,10 +64,6 @@ std::string	ft_irc::Client::getNickname(void) const {
 	return (this->_nickname);
 }
 
-std::string	ft_irc::Client::getMessage(void) const {
-	return (this->_message);
-}
-
 std::string	ft_irc::Client::getUsername(void) const {
 	return (this->_username);
 }
@@ -78,13 +76,14 @@ std::string	ft_irc::Client::getPassword(void) const {
 	return (this->_password);
 }
 
-std::string	ft_irc::Client::getServerName(void) const {
-	return (this->_servername);
-}
-
 std::string	ft_irc::Client::getHost(void) const {
 	return (this->_host);
 }
+
+std::string	ft_irc::Client::getServername(void) const {
+	return (this->_servername);
+}
+
 
 std::vector<std::string>	ft_irc::Client::getChannels(void) const {
 	return (this->_channels);
@@ -95,12 +94,6 @@ std::vector<std::string>	ft_irc::Client::getChannels(void) const {
 
 void	ft_irc::Client::setSockfd(int sockfd){
 	this->_sockfd = sockfd;
-	std::cout << "client sockfd : " << _sockfd << std::endl;
-	return ;
-}
-
-void	ft_irc::Client::setMessage(std::string message){
-	this->_message += message;
 	return ;
 }
 
@@ -129,7 +122,7 @@ void	ft_irc::Client::setHost(std::string host){
 	return ;
 }
 
-void	ft_irc::Client::setServerName(std::string servername){
+void	ft_irc::Client::setServername(std::string servername){
 	this->_servername = servername;
 	return ;
 }
@@ -139,14 +132,12 @@ void	ft_irc::Client::setChannels(std::vector<std::string> channels){	//! deep co
 	return ;
 }
 
-
 /* METHODS */
 
 /* OVERLOADS */
 
 std::ostream& ft_irc::operator<<(std::ostream& os, const ft_irc::Client& client)
 {
-    os << "Client [sockfd : " << client.getSockfd() << ", nickname : " << client.getNickname() << ", realname :" << client.getRealname() << ", servername : " << client.getServerName() << ", hostname : " << client.getHost() << "]";
+    os << "Client [sockfd : " << client.getSockfd() << ", nickname : " << client.getNickname() << ", realname :" << client.getRealname() << ", servername : " << client.getServername() << ", hostname : " << client.getHost() << "]";
     return os;
 }
-

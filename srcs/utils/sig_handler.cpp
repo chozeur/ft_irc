@@ -7,3 +7,4 @@ void	sig_handler(int sig){
         server = false;
     }
 }
+

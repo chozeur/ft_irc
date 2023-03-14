@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.hpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/21 15:15:36 by tbrebion          #+#    #+#             */
+/*   Updated: 2023/03/14 18:25:34 by tbrebion         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
@@ -9,11 +21,9 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include <poll.h>
-#include <fcntl.h>
 #include "../client/client.hpp"
-#include "../message/message.hpp"
 
-# define MAX_CLIENTS 3
+# define MAX_CLIENTS 4
 
 extern bool	server;
 
@@ -31,14 +41,13 @@ namespace ft_irc{
 
 			Server									&operator=(Server const &rhs);
 
-		
 			long									getPort(void)const;
 			std::string								getPassword(void)const;
 			struct sockaddr_in						getServAddr(void)const;
 			int										getSockfd(void)const;
 			char									**getEnv(void)const;
 			Client									*getClientPointer(int fd);
-			std::vector<Client>::iterator 			getClientIterator(int fd);
+			std::vector<Client>::iterator			getClientIterator(int fd);
 
 			void									setPort(long port);
 			void									setPassword(std::string password);
@@ -48,12 +57,14 @@ namespace ft_irc{
 
 			void									init(std::string password, long port, char **env);
 			void									run(void);
+			void									stop(void);
 			int										clientInit(int fd, std::string message);
-			void									clientCommand(int fd, std::string message);
-			int										createClient(const int sockfd, const std::string nickname, const std::string username, const std::string realname,const std::string password,const std::string servername,const std::string host);
+			int 									parsingNickname(std::string nickname);
+			int 									parsingPassword(std::string password)const;
 			void									sendIrcResponse(int sockfd, ft_irc::Client *client) const;
+			void									closeClient(int i);
 		private:
-			std::vector<struct pollfd>				_fds;
+			struct pollfd							_fds[MAX_CLIENTS + 1];
 			std::vector<Client>						_clients;
 			long									_port;
 			std::string								_password;
