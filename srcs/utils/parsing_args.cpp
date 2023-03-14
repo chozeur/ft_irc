@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_args.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 23:17:42 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/10 15:19:52 by rvrignon         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:07:47 by tbrebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ long	parsing_args(int ac, char **av, char **env){
 
 	if (!(*env))
 		throw std::runtime_error("Error : no environment variables");
-	// if (ac != 3)
-	// 	throw std::runtime_error("Error : ./ircserv <port> <password>");
-	// if (av[2][0] == '\0')
-	// 	throw std::runtime_error("Error : password's size must at least 1");
+	if (ac != 3)
+		throw std::runtime_error("Error : ./ircserv <port> <password>");
+	if (av[2][0] == '\0')
+		throw std::runtime_error("Error : password's size must at least 1");
 	if (av[1][0] == '\0')
 		throw std::runtime_error("Error : port must be a number between 1 and 65535");
 	port = strtol(av[1], &endptr, port);
