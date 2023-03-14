@@ -6,7 +6,7 @@
 /*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:54 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/14 15:24:01 by tbrebion         ###   ########.fr       */
+/*   Updated: 2023/03/14 18:15:46 by tbrebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 /* CONSTRUCTORS */
 
 ft_irc::Client::Client(void){
-	std::cout << "New Client created" << std::endl;
 	return ;
 }
 
@@ -95,7 +94,6 @@ std::vector<std::string>	ft_irc::Client::getChannels(void) const {
 
 void	ft_irc::Client::setSockfd(int sockfd){
 	this->_sockfd = sockfd;
-	std::cout << "client sockfd : " << _sockfd << std::endl;
 	return ;
 }
 

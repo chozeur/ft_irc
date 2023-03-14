@@ -6,7 +6,7 @@
 /*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:36 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/14 17:22:39 by tbrebion         ###   ########.fr       */
+/*   Updated: 2023/03/14 18:25:34 by tbrebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ namespace ft_irc{
 
 			void									init(std::string password, long port, char **env);
 			void									run(void);
+			void									stop(void);
 			int										clientInit(int fd, std::string message);
 			int 									parsingNickname(std::string nickname);
 			int 									parsingPassword(std::string password)const;
