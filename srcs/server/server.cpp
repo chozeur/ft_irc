@@ -365,7 +365,7 @@ int ft_irc::Server::clientInit(int fd, std::string message)
 void ft_irc::Server::clientCommand(int fd, std::string message) {
 	(void)fd;
 	(void)message;
-	std::cerr << "This is an other command" << std::cout;
+	std::cerr << "This is an other command" << std::endl;
 }
 
 int ft_irc::Server::createClient(const int sockfd, const std::string nickname, const std::string username, const std::string realname,const std::string password,const std::string servername,const std::string host) { 
