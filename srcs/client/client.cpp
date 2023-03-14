@@ -6,7 +6,7 @@
 /*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:54 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/14 14:30:27 by tbrebion         ###   ########.fr       */
+/*   Updated: 2023/03/14 15:24:01 by tbrebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ ft_irc::Client::Client(int sockfd):
 	_realname(""),
 	_password(""),
 	_host("") {
-	std::cout << "New Client created on Sockfd : " << _sockfd << std::endl; 
 	return ;
 }
 
@@ -82,6 +81,11 @@ std::string	ft_irc::Client::getHost(void) const {
 	return (this->_host);
 }
 
+std::string	ft_irc::Client::getServername(void) const {
+	return (this->_servername);
+}
+
+
 std::vector<std::string>	ft_irc::Client::getChannels(void) const {
 	return (this->_channels);
 }
@@ -120,6 +124,11 @@ void	ft_irc::Client::setHost(std::string host){
 	return ;
 }
 
+void	ft_irc::Client::setServername(std::string servername){
+	this->_servername = servername;
+	return ;
+}
+
 void	ft_irc::Client::setChannels(std::vector<std::string> channels){	//! deep copy
 	this->_channels = channels;
 	return ;
@@ -131,6 +140,6 @@ void	ft_irc::Client::setChannels(std::vector<std::string> channels){	//! deep co
 
 std::ostream& ft_irc::operator<<(std::ostream& os, const ft_irc::Client& client)
 {
-    os << "Client [sockfd : " << client.getSockfd() << "]" << std::endl;
+    os << "Client [sockfd : " << client.getSockfd() << ", nickname : " << client.getNickname() << ", realname :" << client.getRealname() << ", servername : " << client.getServername() << ", hostname : " << client.getHost() << "]";
     return os;
 }

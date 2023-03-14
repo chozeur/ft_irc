@@ -6,7 +6,7 @@
 /*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:32 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/14 14:29:37 by tbrebion         ###   ########.fr       */
+/*   Updated: 2023/03/14 15:23:50 by tbrebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ namespace ft_irc
 			std::string					getRealname(void) const;
 			std::string					getPassword(void) const;
 			std::string					getHost(void) const;
+			std::string					getServername(void) const;
 			std::vector<std::string>	getChannels(void) const;
 
 			void						setSockfd(int sockfd);
@@ -51,6 +52,7 @@ namespace ft_irc
 			void						setRealname(std::string realname);
 			void						setPassword(std::string password);
 			void						setHost(std::string host);
+			void						setServername(std::string servername);
 			void						setChannels(std::vector<std::string> channels);
 
 		private:
@@ -60,6 +62,7 @@ namespace ft_irc
 			std::string					_realname;
 			std::string					_password;
 			std::string					_host;
+			std::string					_servername;
 			std::vector<std::string>	_channels;
 	};
 

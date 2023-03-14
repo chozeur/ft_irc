@@ -6,7 +6,7 @@
 /*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:36 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/14 14:27:49 by tbrebion         ###   ########.fr       */
+/*   Updated: 2023/03/14 15:26:00 by tbrebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ namespace ft_irc{
 
 			~Server(void);
 
-			Server				&operator=(Server const &rhs);
+			Server									&operator=(Server const &rhs);
 
 			long									getPort(void)const;
 			std::string								getPassword(void)const;
@@ -49,23 +49,25 @@ namespace ft_irc{
 			Client									*getClientPointer(int fd);
 			std::vector<Client>::iterator			getClientIterator(int fd);
 
-			void				setPort(long port);
-			void				setPassword(std::string password);
-			void				setServAddr(struct sockaddr_in);
-			void				setSockfd(int fd);
-			void				setEnv(char **env);
+			void									setPort(long port);
+			void									setPassword(std::string password);
+			void									setServAddr(struct sockaddr_in);
+			void									setSockfd(int fd);
+			void									setEnv(char **env);
 
-			void				init(std::string password, long port, char **env);
-			void				run(void);
-
+			void									init(std::string password, long port, char **env);
+			void									run(void);
+			int										clientInit(int fd, std::string message);
+			void 									parsingClient(int fd, std::string message, int lines);
+			void									sendIrcResponse(int sockfd, ft_irc::Client *client) const;
 		private:
-			struct pollfd						_fds[MAX_CLIENTS + 1];
-			std::vector<Client>					_clients;
-			long								_port;
-			std::string							_password;
-			struct sockaddr_in					_serv_addr;
-			int									_sockfd;
-			char								**_env;
+			struct pollfd							_fds[MAX_CLIENTS + 1];
+			std::vector<Client>						_clients;
+			long									_port;
+			std::string								_password;
+			struct sockaddr_in						_serv_addr;
+			int										_sockfd;
+			char									**_env;
 	};
 }
 
