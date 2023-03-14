@@ -24,6 +24,7 @@ namespace ft_irc
 			Client	&operator=(Client const & rhs);
 
 			int							getSockfd(void) const;
+			char						*getBuffer(void);
 			std::string					getNickname(void) const;
 			std::string					getMessage(void) const;
 			std::string					getUsername(void) const;
@@ -34,7 +35,6 @@ namespace ft_irc
 			std::vector<std::string>	getChannels(void) const;
 
 			void						setSockfd(int sockfd);
-			char						*getBuffer(void);
 			void						setBuffer(char *buffer);
 			void						setNickname(std::string nickname);
 			void						setMessage(std::string nickname);
