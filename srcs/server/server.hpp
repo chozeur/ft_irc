@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 15:15:36 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/10 18:05:48 by rvrignon         ###   ########.fr       */
+/*   Updated: 2023/03/14 14:27:49 by tbrebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 
 # define MAX_CLIENTS 4
 
+extern bool	server;
+
 namespace ft_irc{
 
 	class Server{
@@ -39,11 +41,13 @@ namespace ft_irc{
 
 			Server				&operator=(Server const &rhs);
 
-			long				getPort(void)const;
-			std::string			getPassword(void)const;
-			struct sockaddr_in	getServAddr(void)const;
-			int					getSockfd(void)const;
-			char				**getEnv(void)const;
+			long									getPort(void)const;
+			std::string								getPassword(void)const;
+			struct sockaddr_in						getServAddr(void)const;
+			int										getSockfd(void)const;
+			char									**getEnv(void)const;
+			Client									*getClientPointer(int fd);
+			std::vector<Client>::iterator			getClientIterator(int fd);
 
 			void				setPort(long port);
 			void				setPassword(std::string password);

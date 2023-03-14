@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:32 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/10 17:48:40 by rvrignon         ###   ########.fr       */
+/*   Updated: 2023/03/14 14:29:37 by tbrebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,9 @@ namespace ft_irc
 			std::string					_host;
 			std::vector<std::string>	_channels;
 	};
+
+std::ostream& operator<<(std::ostream& os, const ft_irc::Client& client);
+
 }
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvrignon <rvrignon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tbrebion <tbrebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:30:54 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/10 18:03:55 by rvrignon         ###   ########.fr       */
+/*   Updated: 2023/03/14 14:30:27 by tbrebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ ft_irc::Client::Client(int sockfd):
 /* DESTRUCTOR */
 
 ft_irc::Client::~Client(void){
-	close(this->_sockfd);
 	return ;
 }
 
@@ -46,6 +45,7 @@ ft_irc::Client::~Client(void){
 
 ft_irc::Client&	ft_irc::Client::operator=(Client const &rhs){
 	if (this != &rhs){
+		this->_sockfd = rhs._sockfd;
 		this->_nickname = rhs._nickname;
 		this->_username = rhs._username;
 		this->_realname = rhs._realname;
@@ -126,3 +126,11 @@ void	ft_irc::Client::setChannels(std::vector<std::string> channels){	//! deep co
 }
 
 /* METHODS */
+
+/* OVERLOADS */
+
+std::ostream& ft_irc::operator<<(std::ostream& os, const ft_irc::Client& client)
+{
+    os << "Client [sockfd : " << client.getSockfd() << "]" << std::endl;
+    return os;
+}
