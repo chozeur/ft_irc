@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <poll.h>
 #include "../client/client.hpp"
+#include "../../includes/utils.hpp"
 
 # define MAX_CLIENTS 4
 

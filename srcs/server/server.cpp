@@ -182,7 +182,7 @@ void	ft_irc::Server::run(void) {
 				} else {													
 					std::string message(buffer, bytes_received);
 
-					if (message.substr(0, 8) == "CAP LS\r\n" || message.substr(0, 4) == "PASS" || message.substr(0, 4) == "NICK" || message.substr(0, 4) == "USER"){
+					if (message.substr(0, 6) == "CAP LS" || message.substr(0, 4) == "PASS" || message.substr(0, 4) == "NICK" || message.substr(0, 4) == "USER"){
 						switch (clientInit(this->_fds[i].fd, message)) {
 							case -1 :
 								closeClient(i);
@@ -228,14 +228,17 @@ int ft_irc::Server::clientInit(int fd, std::string message){
             start_pos = end_pos;
         }
 		if (line.find("CAP LS") != std::string::npos){
+			removeAllOccurrences(line, "\n");
 			std::cout << "IRC SERVER => " << line << std::endl;		
 		}
         if (line.find("PASS") != std::string::npos){
+			removeAllOccurrences(line, "\n");
 			std::cout << "IRC SERVER => " << line << std::endl;
 			std::string::size_type space_pos = line.find(' ');
 			(getClientPointer(fd))->setPassword(line.substr(space_pos + 1));
 		}		
 		if (line.find("NICK") != std::string::npos){
+			removeAllOccurrences(line, "\n");
 			std::cout << "IRC SERVER => " << line << std::endl;
 			std::string::size_type space_pos = line.find(' ');
 			std::string nickname = line.substr(space_pos + 1);
@@ -248,6 +251,7 @@ int ft_irc::Server::clientInit(int fd, std::string message){
 			(getClientPointer(fd))->setNickname(nickname);
 		}
 		if (line.find("USER") != std::string::npos){
+			removeAllOccurrences(line, "\n");
 			std::cout << "IRC SERVER => " << line << std::endl;
 			std::string::size_type space_pos1 = line.find(' ');
 			std::string::size_type space_pos2 = line.find(' ', space_pos1 + 1);
@@ -264,6 +268,8 @@ int ft_irc::Server::clientInit(int fd, std::string message){
 			getClientPointer(fd)->setHost(hostname);
 			getClientPointer(fd)->setServername(servername);
 			getClientPointer(fd)->setRealname(realname);
+
+			std::cerr << "[" << getClientPointer(fd)->getPassword() << "]" << std::endl;
 
 			if (!parsingPassword(getClientPointer(fd)->getPassword())) {
 				std::cout << "IRC SERVER => Bad password, try again." << std::endl;
