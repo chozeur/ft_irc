@@ -21,7 +21,7 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
     std::vector<Channel> channels = *(message->getServer()->getChannels());
 	removeAllOccurrences(param2, "#");
 
-	ft_irc::Channel *channel = getChannelPointer(param2);
+	// ft_irc::Channel *channel = getChannelPointer(param2);
 	return ; 	
 }
 
