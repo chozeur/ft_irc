@@ -7,6 +7,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <sstream>
 #include <unistd.h>
 #include <poll.h>
 #include "../client/client.hpp"
@@ -35,6 +36,8 @@ namespace ft_irc{
 			Server											&operator=(Server const &rhs);
 
 			// GETTERS
+			std::string										getName(void)const;
+			std::string										getIp(void)const;
 			long											getPort(void)const;
 			std::string										getPassword(void)const;
 			struct sockaddr_in								getServAddr(void)const;
@@ -48,6 +51,8 @@ namespace ft_irc{
 			std::map<std::string, CommandFunction> 			*getCommands(void);
 
 			// SETTERS
+			void											setName(std::string name);
+			void											setIp(std::string ip);
 			void											setPort(long port);
 			void											setPassword(std::string password);
 			void											setServAddr(struct sockaddr_in);
@@ -75,12 +80,16 @@ namespace ft_irc{
 			static void										whois(ft_irc::Message* Message, const std::string& param); 
 
 		private:
-			struct pollfd									_fds[MAX_CLIENTS + 1];
+			std::string 									_name;
+			std::string										_ip;
 			long											_port;
 			std::string										_password;
+
+			struct pollfd									_fds[MAX_CLIENTS + 1];
 			struct sockaddr_in								_serv_addr;
 			int												_sockfd;
 			char											**_env;
+
 			std::vector<Client>								_clients;
 			std::vector<Channel>							_channels;
 			std::map<std::string, CommandFunction>			_commands;

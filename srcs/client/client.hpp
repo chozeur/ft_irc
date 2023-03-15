@@ -8,6 +8,8 @@
 # include <netinet/in.h>
 # include <string.h>
 # include <unistd.h>
+#include <algorithm>
+
 
 namespace ft_irc
 {
@@ -22,6 +24,7 @@ namespace ft_irc
 			~Client(void);
 
 			Client	&operator=(Client const & rhs);
+			bool 	operator==(const Client &other) const;
 
 			int							getSockfd(void) const;
 			std::string					getNickname(void) const;

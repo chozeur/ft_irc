@@ -42,6 +42,10 @@ ft_irc::Client&	ft_irc::Client::operator=(Client const &rhs){
 	return (*this);
 }
 
+bool ft_irc::Client::operator==(const Client &other) const {
+	return this->_nickname == other._nickname;
+}
+
 /* GETTERS */
 
 int	ft_irc::Client::getSockfd(void) const {
