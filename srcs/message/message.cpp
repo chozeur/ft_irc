@@ -9,7 +9,18 @@ ft_irc::Message::Message(Message const &rhs){
 	return ;
 }
 
-ft_irc::Message::Message(std::string payload): _payload(payload){return ;}
+ft_irc::Message::Message(std::string payload,
+		ft_irc::Client* sender,
+		ft_irc::Server* server
+		):
+		_payload(payload),
+		_sender(sender),
+		_receiver(NULL),
+		_channel(NULL),
+		_callback(NULL){
+	this->parsePayload();
+	return ;
+}
 
 /* DESTRUCTOR */
 
@@ -19,9 +30,10 @@ ft_irc::Message::~Message(void){return ;}
 
 ft_irc::Message&	ft_irc::Message::operator=(Message const &rhs){
 	if (this != &rhs){
+		this->_server = rhs._server;
 		this->_sender = rhs._sender;
 		this->_receiver = rhs._receiver;
-		tis->_channel = rhs._channel;
+		this->_channel = rhs._channel;
 		this->_payload = rhs._payload;
 		this->_callback = rhs._callback;
 	}
@@ -30,12 +42,20 @@ ft_irc::Message&	ft_irc::Message::operator=(Message const &rhs){
 
 /* GETTERS */
 
-ft_irc::Client&	ft_irc::Message::getSender(void) const {
+ft_irc::Server*	ft_irc::Message::getServer(void) const {
+	return (this->_server);
+}
+
+ft_irc::Client*	ft_irc::Message::getSender(void) const {
 	return (*this->_sender);
 }
 
-ft_irc::Client&	ft_irc::Message::getReceiver(void) const {
+ft_irc::Client*	ft_irc::Message::getReceiver(void) const {
 	return (*this->_receiver);
+}
+
+ft_irc::Channel*	ft_irc::Message::getChannel(void) const {
+	return (*this->_channel);
 }
 
 std::string	ft_irc::Message::getPayload(void) const {
@@ -48,13 +68,23 @@ void	(*ft_irc::Message::getCallback(void))(ft_irc::Client&, ft_irc::Client&, std
 
 /* SETTERS */
 
-void	ft_irc::Message::setSender(ft_irc::Client& sender){
-	this->_sender = &sender;
+void	ft_irc::Message::setServer(ft_irc::Server* server){
+	this->_server = server;
 	return ;
 }
 
-void	ft_irc::Message::setReceiver(ft_irc::Client& receiver){
-	this->_receiver = &receiver;
+void	ft_irc::Message::setSender(ft_irc::Client* sender){
+	this->_sender = sender;
+	return ;
+}
+
+void	ft_irc::Message::setReceiver(ft_irc::Client* receiver){
+	this->_receiver = receiver;
+	return ;
+}
+
+void	ft_irc::Message::setChannel(ft_irc::Channel* channel){
+	this->_channel = channel;
 	return ;
 }
 
