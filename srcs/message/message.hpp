@@ -3,8 +3,12 @@
 
 # include <iostream>
 # include "../client/client.hpp"
+# include "../channel/channel.hpp"
+# include "../../includes/utils.hpp"
 
 namespace	ft_irc {
+
+	class	Server;
 
 	class	Message {
 
@@ -36,16 +40,18 @@ namespace	ft_irc {
 
 		private:
 
-			ft_irc::Server		*_server;
+			std::string			_payload;
 			ft_irc::Client		*_sender;
+			ft_irc::Server		*_server;
 			ft_irc::Client		*_receiver;
 			ft_irc::Channel		*_channel;
-			std::string			_payload;
 			void				(*_callback)(ft_irc::Client&, ft_irc::Client&, std::string);
 	};
 
+std::ostream& operator<<(std::ostream& os, const ft_irc::Message& message);
+
 }
 
-
+# include "../server/server.hpp"
 
 #endif

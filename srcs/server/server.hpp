@@ -10,6 +10,8 @@
 #include <unistd.h>
 #include <poll.h>
 #include "../client/client.hpp"
+#include "../channel/channel.hpp"
+#include "../message/message.hpp"
 #include "../../includes/utils.hpp"
 
 # define MAX_CLIENTS 4
@@ -37,7 +39,7 @@ namespace ft_irc{
 			char													**getEnv(void)const;
 			Client													*getClientPointer(int fd);
 			std::vector<Client>::iterator							getClientIterator(int fd);
-			std::map<std::string, void(*)(std::string)>				*getCommands(void)const;
+			std::map<std::string, void(*)(std::string)>				getCommands(void)const;
 
 			void													setPort(long port);
 			void													setPassword(std::string password);
@@ -55,12 +57,13 @@ namespace ft_irc{
 			void													closeClient(int i);
 		private:
 			struct pollfd											_fds[MAX_CLIENTS + 1];
-			std::vector<Client>										_clients;
 			long													_port;
 			std::string												_password;
 			struct sockaddr_in										_serv_addr;
 			int														_sockfd;
 			char													**_env;
+			std::vector<Client>										_clients;
+			std::vector<Channel>									_channels;
 			std::map<std::string, void(*)(std::string)>				_commands;
 	};
 }

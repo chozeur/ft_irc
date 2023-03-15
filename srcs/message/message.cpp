@@ -15,16 +15,19 @@ ft_irc::Message::Message(std::string payload,
 		):
 		_payload(payload),
 		_sender(sender),
+		_server(server),
 		_receiver(NULL),
 		_channel(NULL),
-		_callback(NULL){
+		_callback(NULL) {
 	this->parsePayload();
 	return ;
 }
 
 /* DESTRUCTOR */
 
-ft_irc::Message::~Message(void){return ;}
+ft_irc::Message::~Message(void){
+	return ;
+}
 
 /* INIT */
 
@@ -47,15 +50,15 @@ ft_irc::Server*	ft_irc::Message::getServer(void) const {
 }
 
 ft_irc::Client*	ft_irc::Message::getSender(void) const {
-	return (*this->_sender);
+	return (this->_sender);
 }
 
 ft_irc::Client*	ft_irc::Message::getReceiver(void) const {
-	return (*this->_receiver);
+	return (this->_receiver);
 }
 
 ft_irc::Channel*	ft_irc::Message::getChannel(void) const {
-	return (*this->_channel);
+	return (this->_channel);
 }
 
 std::string	ft_irc::Message::getPayload(void) const {
@@ -99,7 +102,13 @@ void	ft_irc::Message::setCallback(void (*callback)(ft_irc::Client&, ft_irc::Clie
 }
 
 void	ft_irc::Message::parsePayload(void) {
-	std::map<std::string, void(*)(std::string)>	*_commands = _server->getCommands();
+	cleanLine(_payload);
+	std::cerr << "IRC SERVER [" << _sender->getNickname() << "] => " << _payload << std::endl;
+}
 
-	
+
+std::ostream& ft_irc::operator<<(std::ostream& os, const ft_irc::Message& message)
+{
+    os << "New Message instance created for " << message.getSender()->getNickname();
+    return os;
 }
