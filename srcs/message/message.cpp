@@ -109,8 +109,11 @@ void	ft_irc::Message::parsePayload(void) {
 	std::string cmd = _payload.substr(0, pos);
 	std::string param = _payload.substr(pos + 1);
 
-	// Trouver comment utiliser la map
-	_server->getCommands()[cmd](_message, param);
+	std::map<std::string, CommandFunction>* commands = _server->getCommands();
+	if (commands->find(cmd) != commands->end()) {
+		CommandFunction func = (*commands)[cmd];
+		func(this, param);
+	}
 }
 
 

@@ -42,7 +42,7 @@ namespace ft_irc{
 			char											**getEnv(void)const;
 			Client											*getClientPointer(int fd);
 			std::vector<Client>::iterator					getClientIterator(int fd);
-			std::map<std::string, CommandFunction> const	*getCommands(void) const;
+			std::map<std::string, CommandFunction> 			*getCommands(void);
 
 			// SETTERS
 			void											setPort(long port);
@@ -68,6 +68,7 @@ namespace ft_irc{
 			static void										kick(ft_irc::Message* Message, const std::string& param); 
 			static void										list(ft_irc::Message* Message, const std::string& param); 
 			static void										names(ft_irc::Message* Message, const std::string& param); 
+			static void										whois(ft_irc::Message* Message, const std::string& param); 
 
 		private:
 			struct pollfd									_fds[MAX_CLIENTS + 1];

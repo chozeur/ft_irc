@@ -70,8 +70,8 @@ std::vector<ft_irc::Client>::iterator ft_irc::Server::getClientIterator(int fd) 
 	return this->_clients.end();
 }
 
-std::map<std::string, CommandFunction> const* ft_irc::Server::getCommands(void) const {
-    return &this->_commands;
+std::map<std::string, CommandFunction>* ft_irc::Server::getCommands(void) {
+    return (&(_commands));
 }
 
 /* SETTERS */
