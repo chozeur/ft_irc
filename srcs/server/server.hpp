@@ -40,8 +40,11 @@ namespace ft_irc{
 			struct sockaddr_in								getServAddr(void)const;
 			int												getSockfd(void)const;
 			char											**getEnv(void)const;
+			std::vector<Client>								*getClients(void);
 			Client											*getClientPointer(int fd);
 			std::vector<Client>::iterator					getClientIterator(int fd);
+			std::vector<Channel>							*getChannels(void);
+			Channel											*getChannelPointer(std::string name);
 			std::map<std::string, CommandFunction> 			*getCommands(void);
 
 			// SETTERS
@@ -54,6 +57,7 @@ namespace ft_irc{
 			// METHODS
 			void											init(std::string password, long port, char **env);
 			void											initCommands(void);
+			void											initChannels(void);
 			void											run(void);
 			void											stop(void);
 			int												clientInit(int fd, std::string message);
@@ -62,7 +66,7 @@ namespace ft_irc{
 			void											sendIrcResponse(int sockfd, ft_irc::Client *client) const;
 			void											closeClient(int i);
 		
-			//COMMANDS
+			//SERVER COMMANDS
 			static void										invite(ft_irc::Message* Message, const std::string& param); 
 			static void										join(ft_irc::Message* Message, const std::string& param); 
 			static void										kick(ft_irc::Message* Message, const std::string& param); 

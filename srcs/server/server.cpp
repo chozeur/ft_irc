@@ -52,6 +52,10 @@ char	**ft_irc::Server::getEnv(void)const{
 	return (this->_env);
 }
 
+std::vector<ft_irc::Client>* ft_irc::Server::getClients() {
+	return (&_clients);
+}
+
 ft_irc::Client* ft_irc::Server::getClientPointer(int fd) {
 	std::vector<Client>::iterator it;
 	for (it = this->_clients.begin(); it != this->_clients.end(); it++) {
@@ -68,6 +72,19 @@ std::vector<ft_irc::Client>::iterator ft_irc::Server::getClientIterator(int fd) 
 			return it;
 	}
 	return this->_clients.end();
+}
+
+std::vector<ft_irc::Channel>* ft_irc::Server::getChannels() {
+	return (&_channels);
+}
+
+ft_irc::Channel* ft_irc::Server::getChannelPointer(std::string name) {
+	std::vector<Channel>::iterator it;
+	for (it = this->_channels.begin(); it != this->_channels.end(); it++) {
+		if (it->getName() == name)
+			return &(*it);
+	}
+	return NULL;
 }
 
 std::map<std::string, CommandFunction>* ft_irc::Server::getCommands(void) {
@@ -103,6 +120,7 @@ void	ft_irc::Server::setEnv(char **env){
 /* METHODS */
 void	ft_irc::Server::init(std::string password, long port, char **env){
 	initCommands();
+	initChannels();
 	this->_port = port;
 	this->_password = password;
 	this->_sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -130,6 +148,13 @@ void	ft_irc::Server::init(std::string password, long port, char **env){
 	}
 	std::cout << "Server listening on 127.0.0.1:" << _port << std::endl;
 	return ;
+}
+
+void	ft_irc::Server::initChannels(void) {
+	ft_irc::Channel general("general");
+	ft_irc::Channel admin("admin");
+	_channels.push_back(general);
+	_channels.push_back(admin);
 }
 
 void	ft_irc::Server::run(void) {
