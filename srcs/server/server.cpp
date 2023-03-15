@@ -70,8 +70,8 @@ std::vector<ft_irc::Client>::iterator ft_irc::Server::getClientIterator(int fd) 
 	return this->_clients.end();
 }
 
-std::map<std::string, void(*)(std::string)>	ft_irc::Server::getCommands(void)const{
-	return (this->_commands);
+std::map<std::string, CommandFunction> const* ft_irc::Server::getCommands(void) const {
+    return &this->_commands;
 }
 
 /* SETTERS */
@@ -102,6 +102,7 @@ void	ft_irc::Server::setEnv(char **env){
 
 /* METHODS */
 void	ft_irc::Server::init(std::string password, long port, char **env){
+	initCommands();
 	this->_port = port;
 	this->_password = password;
 	this->_sockfd = socket(AF_INET, SOCK_STREAM, 0);

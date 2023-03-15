@@ -18,6 +18,7 @@ SOURCES		+=                            		\
 
 SOURCES		+=                            		\
 		srcs/server/server.cpp               	\
+		srcs/server/command.cpp					\
 
 
 ## SRCS/MESSAGE ##
