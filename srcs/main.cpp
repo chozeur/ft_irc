@@ -7,12 +7,12 @@
 #include "client/client.hpp"
 #include "../includes/utils.hpp"
 
-
-bool	stop = false;
+bool	server = true;
 
 int	main(int ac, char **av, char **env){
 
 	ft_irc::Server	serv;
+	signal(SIGINT, sig_handler);
 
 	try {
 		serv.init(
@@ -24,8 +24,9 @@ int	main(int ac, char **av, char **env){
 		return (1);
 	}
 
-	serv.run();
-
+	while (server)
+		serv.run();
+	serv.stop();
 	return (0);
 }
 

@@ -10,9 +10,11 @@
 #include <unistd.h>
 #include <poll.h>
 #include "../client/client.hpp"
-#include "../message/message.hpp"
+#include "../../includes/utils.hpp"
 
 # define MAX_CLIENTS 4
+
+extern bool	server;
 
 namespace ft_irc{
 
@@ -26,36 +28,38 @@ namespace ft_irc{
 
 			~Server(void);
 
-			Server				&operator=(Server const &rhs);
+			Server									&operator=(Server const &rhs);
 
-			std::vector<struct pollfd>			getFds(void)const;
-			std::map<int,Client>				getClients(void)const;
-			long								getPort(void)const;
-			std::string							getPassword(void)const;
-			struct sockaddr_in					getServAddr(void)const;
-			int									getSockfd(void)const;
-			char								**getEnv(void)const;
+			long									getPort(void)const;
+			std::string								getPassword(void)const;
+			struct sockaddr_in						getServAddr(void)const;
+			int										getSockfd(void)const;
+			char									**getEnv(void)const;
+			Client									*getClientPointer(int fd);
+			std::vector<Client>::iterator			getClientIterator(int fd);
 
-			void								setFds(std::vector<struct pollfd> fds);
-			std::map<int,Client>				setClients(std::map<int,Client> clients);
-			void								setPort(long port);
-			void								setPassword(std::string password);
-			void								setServAddr(struct sockaddr_in);
-			void								setSockfd(int fd);
-			void								setEnv(char **env);
+			void									setPort(long port);
+			void									setPassword(std::string password);
+			void									setServAddr(struct sockaddr_in);
+			void									setSockfd(int fd);
+			void									setEnv(char **env);
 
-			void								init(std::string password, long port, char **env);
-			void								run(void);
-
+			void									init(std::string password, long port, char **env);
+			void									run(void);
+			void									stop(void);
+			int										clientInit(int fd, std::string message);
+			int 									parsingNickname(std::string nickname);
+			int 									parsingPassword(std::string password)const;
+			void									sendIrcResponse(int sockfd, ft_irc::Client *client) const;
+			void									closeClient(int i);
 		private:
-			std::vector<struct pollfd>			_fds;
-			// std::vector<Client>					_clients;
-			std::map<int,Client>				_clients;
-			long								_port;
-			std::string							_password;
-			struct sockaddr_in					_serv_addr;
-			int									_sockfd;
-			char								**_env;
+			struct pollfd							_fds[MAX_CLIENTS + 1];
+			std::vector<Client>						_clients;
+			long									_port;
+			std::string								_password;
+			struct sockaddr_in						_serv_addr;
+			int										_sockfd;
+			char									**_env;
 	};
 }
 

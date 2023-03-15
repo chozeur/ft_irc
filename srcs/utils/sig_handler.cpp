@@ -1,9 +1,10 @@
 #include "../includes/utils.hpp"
 
-extern bool	stop;
+extern bool	server;
 
 void	sig_handler(int sig){
-
-	if (sig == SIGINT)
-		stop = true;
+    if (sig == SIGINT) {
+        server = false;
+    }
 }
+

@@ -3,7 +3,6 @@
 /* CONSTRUCTORS */
 
 ft_irc::Client::Client(void){
-	std::cout << "New Client created" << std::endl;
 	return ;
 }
 
@@ -12,22 +11,19 @@ ft_irc::Client::Client(Client const & rhs){
 	return ;
 }
 
-ft_irc::Client::Client(const int &sockfd, const std::string message):
+ft_irc::Client::Client(int sockfd):
 	_sockfd(sockfd),
 	_nickname(""),
-	_message(message),
 	_username(""),
 	_realname(""),
 	_password(""),
 	_host("") {
-	std::cerr << *this << std::endl;
 	return ;
 }
 
 /* DESTRUCTOR */
 
 ft_irc::Client::~Client(void){
-	close(this->_sockfd);
 	return ;
 }
 
@@ -56,10 +52,6 @@ std::string	ft_irc::Client::getNickname(void) const {
 	return (this->_nickname);
 }
 
-std::string	ft_irc::Client::getMessage(void) const {
-	return (this->_message);
-}
-
 std::string	ft_irc::Client::getUsername(void) const {
 	return (this->_username);
 }
@@ -76,6 +68,11 @@ std::string	ft_irc::Client::getHost(void) const {
 	return (this->_host);
 }
 
+std::string	ft_irc::Client::getServername(void) const {
+	return (this->_servername);
+}
+
+
 std::vector<std::string>	ft_irc::Client::getChannels(void) const {
 	return (this->_channels);
 }
@@ -85,12 +82,6 @@ std::vector<std::string>	ft_irc::Client::getChannels(void) const {
 
 void	ft_irc::Client::setSockfd(int sockfd){
 	this->_sockfd = sockfd;
-	std::cout << "client sockfd : " << _sockfd << std::endl;
-	return ;
-}
-
-void	ft_irc::Client::setMessage(std::string message){
-	this->_message += message;
 	return ;
 }
 
@@ -119,11 +110,15 @@ void	ft_irc::Client::setHost(std::string host){
 	return ;
 }
 
+void	ft_irc::Client::setServername(std::string servername){
+	this->_servername = servername;
+	return ;
+}
+
 void	ft_irc::Client::setChannels(std::vector<std::string> channels){	//! deep copy
 	this->_channels = channels;
 	return ;
 }
-
 
 /* METHODS */
 
@@ -132,7 +127,6 @@ void	ft_irc::Client::setChannels(std::vector<std::string> channels){	//! deep co
 
 std::ostream& ft_irc::operator<<(std::ostream& os, const ft_irc::Client& client)
 {
-    os << "Client [" << std::endl << "\tsockfd=" << client.getSockfd() << std::endl << "\tmessage : " << client.getMessage() << "]";
+    os << "Client [sockfd : " << client.getSockfd() << ", nickname : " << client.getNickname() << ", realname :" << client.getRealname() << ", servername : " << client.getServername() << ", hostname : " << client.getHost() << "]";
     return os;
 }
-

@@ -14,10 +14,10 @@ namespace ft_irc
 	class Client {
 
 		public:
-
+		
 			Client(void);
 			Client(Client const &rhs);
-			Client(const int &sockfd, const std::string nickname);
+			Client(int sockfd);
 
 			~Client(void);
 
@@ -25,32 +25,32 @@ namespace ft_irc
 
 			int							getSockfd(void) const;
 			std::string					getNickname(void) const;
-			std::string					getMessage(void) const;
 			std::string					getUsername(void) const;
 			std::string					getRealname(void) const;
 			std::string					getPassword(void) const;
 			std::string					getHost(void) const;
+			std::string					getServername(void) const;
 			std::vector<std::string>	getChannels(void) const;
 
 			void						setSockfd(int sockfd);
 			char						*getBuffer(void);
 			void						setBuffer(char *buffer);
 			void						setNickname(std::string nickname);
-			void						setMessage(std::string nickname);
 			void						setUsername(std::string username);
 			void						setRealname(std::string realname);
 			void						setPassword(std::string password);
 			void						setHost(std::string host);
+			void						setServername(std::string servername);
 			void						setChannels(std::vector<std::string> channels);
 
 		private:
 			int							_sockfd;
 			std::string					_nickname;
-			std::string					_message;
 			std::string					_username;
 			std::string					_realname;
 			std::string					_password;
 			std::string					_host;
+			std::string					_servername;
 			std::vector<std::string>	_channels;
 	};
 

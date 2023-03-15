@@ -2,21 +2,28 @@
 
 ## SRCS ##
 
-SOURCES		+=                        		\
-		srcs/main.cpp                    	\
+SOURCES		+=                            		\
+		srcs/main.cpp                        	\
 
 
 ## SRCS/UTILS ##
 
-SOURCES		+=                        		\
-		srcs/utils/sig_handler.cpp       	\
-		srcs/utils/parsing_args.cpp      	\
+SOURCES		+=                            		\
+		srcs/utils/removeOccurences.cpp      	\
+		srcs/utils/sig_handler.cpp           	\
+		srcs/utils/parsing_args.cpp          	\
 
 
 ## SRCS/SERVER ##
 
-SOURCES		+=                        		\
-		srcs/server/server.cpp           	\
+SOURCES		+=                            		\
+		srcs/server/server.cpp               	\
+
+
+## SRCS/MESSAGE ##
+
+SOURCES		+=                            		\
+		srcs/message/message.cpp             	\
 
 
 ## SRCS/MESSAGE ##
@@ -27,13 +34,13 @@ SOURCES		+=                        		\
 
 ## SRCS/CHANNEL ##
 
-SOURCES		+=                        		\
-		srcs/channel/channel.cpp         	\
+SOURCES		+=                            		\
+		srcs/channel/channel.cpp             	\
 
 
 ## SRCS/CLIENT ##
 
-SOURCES		+=                        		\
-		srcs/client/client.cpp           	\
+SOURCES		+=                            		\
+		srcs/client/client.cpp               	\
 
 
