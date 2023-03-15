@@ -19,7 +19,11 @@ ft_irc::Message::~Message(void){return ;}
 
 ft_irc::Message&	ft_irc::Message::operator=(Message const &rhs){
 	if (this != &rhs){
+		this->_sender = rhs._sender;
+		this->_receiver = rhs._receiver;
+		tis->_channel = rhs._channel;
 		this->_payload = rhs._payload;
+		this->_callback = rhs._callback;
 	}
 	return (*this);
 }

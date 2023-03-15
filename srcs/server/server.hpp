@@ -60,6 +60,7 @@ namespace ft_irc{
 			struct sockaddr_in						_serv_addr;
 			int										_sockfd;
 			char									**_env;
+			std::map<std::string, >
 	};
 }
 

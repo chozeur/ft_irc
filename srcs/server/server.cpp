@@ -53,21 +53,21 @@ char	**ft_irc::Server::getEnv(void)const{
 }
 
 ft_irc::Client* ft_irc::Server::getClientPointer(int fd) {
-    std::vector<Client>::iterator it;
-    for (it = this->_clients.begin(); it != this->_clients.end(); it++) {
-        if (it->getSockfd() == fd)
-            return &(*it);
-    }
-    return NULL;
+	std::vector<Client>::iterator it;
+	for (it = this->_clients.begin(); it != this->_clients.end(); it++) {
+		if (it->getSockfd() == fd)
+			return &(*it);
+	}
+	return NULL;
 }
 
 std::vector<ft_irc::Client>::iterator ft_irc::Server::getClientIterator(int fd) {
-    std::vector<Client>::iterator it;
-    for (it = this->_clients.begin(); it != this->_clients.end(); it++) {
-        if (it->getSockfd() == fd)
-            return it;
-    }
-    return this->_clients.end();
+	std::vector<Client>::iterator it;
+	for (it = this->_clients.begin(); it != this->_clients.end(); it++) {
+		if (it->getSockfd() == fd)
+			return it;
+	}
+	return this->_clients.end();
 }
 
 /* SETTERS */
@@ -154,11 +154,11 @@ void	ft_irc::Server::run(void) {
 				if (this->_fds[i].fd == -1)
 				{
 					this->_fds[i].fd = clientfd;
-					
+
 					ft_irc::Client new_client;
 					new_client.setSockfd(clientfd);
 					_clients.push_back(new_client);
-						
+
 					break;
 				}
 				if (i == MAX_CLIENTS) {
@@ -176,10 +176,10 @@ void	ft_irc::Server::run(void) {
 				if (bytes_received == -1 || bytes_received == 0) {
 					if (bytes_received == -1)
 						std::cerr << "Error: message receiving failed on fd : " << this->_fds[i].fd << std::endl;
-					else 
+					else
 						std::cerr << "Client " << this->_fds[i].fd << " closed the connection" << std::endl;
 					closeClient(i);
-				} else {													
+				} else {
 					std::string message(buffer, bytes_received);
 
 					if (message.substr(0, 6) == "CAP LS" || message.substr(0, 4) == "PASS" || message.substr(0, 4) == "NICK" || message.substr(0, 4) == "USER"){
@@ -190,13 +190,13 @@ void	ft_irc::Server::run(void) {
 							case 1 :
 								std::cout << *(getClientPointer(this->_fds[i].fd)) << std::endl;
 								sendIrcResponse(this->_fds[i].fd, getClientPointer(this->_fds[i].fd));
-								break;						 
+								break;
 						}
 					} else {
 						std::cout << "IRSSI CLIENT => " << message;
 					}
 
-					
+
 				}
 			}
 		}
@@ -215,28 +215,28 @@ void	ft_irc::Server::stop(void) {
 
 int ft_irc::Server::clientInit(int fd, std::string message){
 
-    std::string line;
-    std::string::size_type start_pos = 0;
+	std::string line;
+	std::string::size_type start_pos = 0;
 
-    while (start_pos != std::string::npos) {
-        std::string::size_type end_pos = message.find("\r\n", start_pos);
-        if (end_pos != std::string::npos) {
-            line = message.substr(start_pos, end_pos - start_pos);
-            start_pos = end_pos + 2;
-        } else {
-            line = message.substr(start_pos);
-            start_pos = end_pos;
-        }
+	while (start_pos != std::string::npos) {
+		std::string::size_type end_pos = message.find("\r\n", start_pos);
+		if (end_pos != std::string::npos) {
+			line = message.substr(start_pos, end_pos - start_pos);
+			start_pos = end_pos + 2;
+		} else {
+			line = message.substr(start_pos);
+			start_pos = end_pos;
+		}
 		if (line.find("CAP LS") != std::string::npos){
 			removeAllOccurrences(line, "\n");
-			std::cout << "IRC SERVER => " << line << std::endl;		
+			std::cout << "IRC SERVER => " << line << std::endl;
 		}
-        if (line.find("PASS") != std::string::npos){
+		if (line.find("PASS") != std::string::npos){
 			removeAllOccurrences(line, "\n");
 			std::cout << "IRC SERVER => " << line << std::endl;
 			std::string::size_type space_pos = line.find(' ');
 			(getClientPointer(fd))->setPassword(line.substr(space_pos + 1));
-		}		
+		}
 		if (line.find("NICK") != std::string::npos){
 			removeAllOccurrences(line, "\n");
 			std::cout << "IRC SERVER => " << line << std::endl;
@@ -263,7 +263,7 @@ int ft_irc::Server::clientInit(int fd, std::string message){
 			std::string hostname = line.substr(space_pos2 + 1, space_pos3 - space_pos2 - 1);
 			std::string servername = line.substr(space_pos3 + 1, colon_pos - space_pos3 - 2);
 			std::string realname = line.substr(colon_pos + 1, end_pos - 1);
-			
+
 			getClientPointer(fd)->setUsername(username);
 			getClientPointer(fd)->setHost(hostname);
 			getClientPointer(fd)->setServername(servername);
@@ -277,18 +277,18 @@ int ft_irc::Server::clientInit(int fd, std::string message){
 				send(fd, pass_res.c_str(), pass_res.length(), 0);
 				return (-1);
 			}
-			return (1);		
-		} 
+			return (1);
+		}
 	}
-    return 0;
+	return 0;
 }
 
 void ft_irc::Server::sendIrcResponse(int sockfd, ft_irc::Client *client) const {
-    if (!client) {
-        std::cerr << "Error: Null client pointer passed to sendIrcResponse" << std::endl;
-        return;
-    }
-	
+	if (!client) {
+		std::cerr << "Error: Null client pointer passed to sendIrcResponse" << std::endl;
+		return;
+	}
+
 	std::string cap_response = "CAP * LS :\r\n";
 	std::string welcome_msg = ":" + client->getServername() + " 001 " + client->getNickname() + " :Welcome to the Internet Relay Network " + client->getNickname() + "!" + client->getUsername() + "@" + client->getHost() + "\r\n";
 	std::string version_msg = ":" + client->getServername() + " 002 " + client->getNickname() + " :Your host is " + client->getServername() + ", running version X.Y.Z\r\n";

@@ -32,6 +32,7 @@ namespace	ft_irc {
 
 			ft_irc::Client		*_sender;
 			ft_irc::Client		*_receiver;
+			ft_irc::Channel		*_channel;
 			std::string			_payload;
 			void				(*_callback)(ft_irc::Client&, ft_irc::Client&, std::string);
 	};
