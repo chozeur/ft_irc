@@ -70,6 +70,10 @@ std::vector<ft_irc::Client>::iterator ft_irc::Server::getClientIterator(int fd) 
 	return this->_clients.end();
 }
 
+std::map<std::string, void(*)(std::string)>	*ft_irc::Server::getCommands(void)const{
+	return (this->_commands);
+}
+
 /* SETTERS */
 void	ft_irc::Server::setPort(long port){
 	this->_port = port;

@@ -30,37 +30,38 @@ namespace ft_irc{
 
 			Server									&operator=(Server const &rhs);
 
-			long									getPort(void)const;
-			std::string								getPassword(void)const;
-			struct sockaddr_in						getServAddr(void)const;
-			int										getSockfd(void)const;
-			char									**getEnv(void)const;
-			Client									*getClientPointer(int fd);
-			std::vector<Client>::iterator			getClientIterator(int fd);
+			long													getPort(void)const;
+			std::string												getPassword(void)const;
+			struct sockaddr_in										getServAddr(void)const;
+			int														getSockfd(void)const;
+			char													**getEnv(void)const;
+			Client													*getClientPointer(int fd);
+			std::vector<Client>::iterator							getClientIterator(int fd);
+			std::map<std::string, void(*)(std::string)>				*getCommands(void)const;
 
-			void									setPort(long port);
-			void									setPassword(std::string password);
-			void									setServAddr(struct sockaddr_in);
-			void									setSockfd(int fd);
-			void									setEnv(char **env);
+			void													setPort(long port);
+			void													setPassword(std::string password);
+			void													setServAddr(struct sockaddr_in);
+			void													setSockfd(int fd);
+			void													setEnv(char **env);
 
-			void									init(std::string password, long port, char **env);
-			void									run(void);
-			void									stop(void);
-			int										clientInit(int fd, std::string message);
-			int 									parsingNickname(std::string nickname);
-			int 									parsingPassword(std::string password)const;
-			void									sendIrcResponse(int sockfd, ft_irc::Client *client) const;
-			void									closeClient(int i);
+			void													init(std::string password, long port, char **env);
+			void													run(void);
+			void													stop(void);
+			int														clientInit(int fd, std::string message);
+			int 													parsingNickname(std::string nickname);
+			int 													parsingPassword(std::string password)const;
+			void													sendIrcResponse(int sockfd, ft_irc::Client *client) const;
+			void													closeClient(int i);
 		private:
-			struct pollfd							_fds[MAX_CLIENTS + 1];
-			std::vector<Client>						_clients;
-			long									_port;
-			std::string								_password;
-			struct sockaddr_in						_serv_addr;
-			int										_sockfd;
-			char									**_env;
-			std::map<std::string, >
+			struct pollfd											_fds[MAX_CLIENTS + 1];
+			std::vector<Client>										_clients;
+			long													_port;
+			std::string												_password;
+			struct sockaddr_in										_serv_addr;
+			int														_sockfd;
+			char													**_env;
+			std::map<std::string, void(*)(std::string)>				_commands;
 	};
 }
 

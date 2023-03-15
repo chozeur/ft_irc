@@ -32,6 +32,8 @@ namespace	ft_irc {
 			void				setPayload(std::string payload);
 			void				setCallback(void (*callback)(ft_irc::Client&, ft_irc::Client&, std::string));
 
+			void				parsePayload(void);
+
 		private:
 
 			ft_irc::Server		*_server;

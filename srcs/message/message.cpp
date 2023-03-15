@@ -98,4 +98,8 @@ void	ft_irc::Message::setCallback(void (*callback)(ft_irc::Client&, ft_irc::Clie
 	return ;
 }
 
+void	ft_irc::Message::parsePayload(void) {
+	std::map<std::string, void(*)(std::string)>	*_commands = _server->getCommands();
 
+	
+}
