@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   server.hpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/21 15:15:36 by tbrebion          #+#    #+#             */
-/*   Updated: 2023/03/07 22:23:05 by flcarval         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
@@ -19,8 +7,19 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <sstream>
 #include <unistd.h>
+#include <poll.h>
+#include "../client/client.hpp"
+#include "../channel/channel.hpp"
+#include "../message/message.hpp"
+#include "../../includes/utils.hpp"
 
+# define MAX_CLIENTS 4
+
+extern bool	server;
+
+typedef void (*CommandFunction)(ft_irc::Message*, const std::string&);
 
 namespace ft_irc{
 
@@ -34,30 +33,67 @@ namespace ft_irc{
 
 			~Server(void);
 
-			Server				&operator=(Server const &rhs);
+			Server											&operator=(Server const &rhs);
 
-			long				getPort(void)const;
-			std::string			getPassword(void)const;
-			struct sockaddr_in	getServAddr(void)const;
-			int					getSockfd(void)const;
-			char				**getEnv(void)const;
+			// GETTERS
+			std::string										getName(void)const;
+			std::string										getIp(void)const;
+			long											getPort(void)const;
+			std::string										getPassword(void)const;
+			struct sockaddr_in								getServAddr(void)const;
+			int												getSockfd(void)const;
+			char											**getEnv(void)const;
+			std::vector<Client>								*getClients(void);
+			Client											*getClientPointer(int fd);
+			std::vector<Client>::iterator					getClientIterator(int fd);
+			std::vector<Channel>							*getChannels(void);
+			Channel											*getChannelPointer(std::string name);
+			std::map<std::string, CommandFunction> 			*getCommands(void);
 
-			void				setPort(long port);
-			void				setPassword(std::string password);
-			void				setServAddr(struct sockaddr_in);
-			void				setSockfd(int fd);
-			void				setEnv(char **env);
+			// SETTERS
+			void											setName(std::string name);
+			void											setIp(std::string ip);
+			void											setPort(long port);
+			void											setPassword(std::string password);
+			void											setServAddr(struct sockaddr_in);
+			void											setSockfd(int fd);
+			void											setEnv(char **env);
 
-			void				init(std::string password, long port, char **env);
-			void				run(void);
+			// METHODS
+			void											init(std::string password, long port, char **env);
+			void											initCommands(void);
+			void											initChannels(void);
+			void											run(void);
+			void											stop(void);
+			int												clientInit(int fd, std::string message);
+			int 											parsingNickname(std::string nickname);
+			int 											parsingPassword(std::string password)const;
+			void											sendIrcResponse(int sockfd, ft_irc::Client *client) const;
+			void											closeClient(int i);
+
+			//SERVER COMMANDS
+			static void										invite(ft_irc::Message* Message, const std::string& param);
+			static void										join(ft_irc::Message* Message, const std::string& param);
+			static void										kick(ft_irc::Message* Message, const std::string& param);
+			static void										list(ft_irc::Message* Message, const std::string& param);
+			static void										names(ft_irc::Message* Message, const std::string& param);
+			static void										whois(ft_irc::Message* Message, const std::string& param);
+			static void										nick(ft_irc::Message* Message, const std::string& param);
+			static void										user(ft_irc::Message* Message, const std::string& param);
 
 		private:
-		
-			long								_port;
-			std::string							_password;
-			struct sockaddr_in					_serv_addr;
-			int									_sockfd;
-			char								**_env;
+			std::string 									_name;
+			std::string										_ip;
+			long											_port;
+			std::string										_password;
+
+			struct pollfd									_fds[MAX_CLIENTS + 1];
+			struct sockaddr_in								_serv_addr;
+			int												_sockfd;
+			char											**_env;
+			std::vector<Client>								_clients;
+			std::vector<Channel>							_channels;
+			std::map<std::string, CommandFunction>			_commands;
 	};
 }
 

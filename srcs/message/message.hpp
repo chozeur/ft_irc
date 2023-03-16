@@ -1,22 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   message.hpp                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: flcarval <flcarval@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/07 22:16:14 by flcarval          #+#    #+#             */
-/*   Updated: 2023/03/07 22:56:50 by flcarval         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef MESSAGE_HPP
 # define MESSAGE_HPP
 
 # include <iostream>
 # include "../client/client.hpp"
+# include "../channel/channel.hpp"
+# include "../../includes/utils.hpp"
 
 namespace	ft_irc {
+
+	class	Server;
 
 	class	Message {
 
@@ -24,32 +16,42 @@ namespace	ft_irc {
 
 			Message(void);
 			Message(Message const &rhs);
-			Message(std::string message);
+			Message(std::string payload, ft_irc::Client* sender, ft_irc::Server* server);
 
 			~Message(void);
 
 			Message				&operator=(Message const &rhs);
 
-			ft_irc::Client&		getSender(void) const;
-			ft_irc::Client&		getReceiver(void) const;
+			ft_irc::Server*		getServer(void) const;
+			ft_irc::Client*		getSender(void) const;
+			ft_irc::Client*		getReceiver(void) const;
+			ft_irc::Channel*	getChannel(void) const;
 			std::string			getPayload(void) const;
 			void				(*getCallback(void))(ft_irc::Client&, ft_irc::Client&, std::string);
 
-			void				setSender(ft_irc::Client& sender);
-			void				setReceiver(ft_irc::Client& receiver);
+			void				setServer(ft_irc::Server* server);
+			void				setSender(ft_irc::Client* sender);
+			void				setReceiver(ft_irc::Client* receiver);
+			void				setChannel(ft_irc::Channel* channel);
 			void				setPayload(std::string payload);
 			void				setCallback(void (*callback)(ft_irc::Client&, ft_irc::Client&, std::string));
 
+			void				parsePayload(void);
+
 		private:
 
-			ft_irc::Client		*_sender;
-			ft_irc::Client		*_receiver;
 			std::string			_payload;
+			ft_irc::Client		*_sender;
+			ft_irc::Server		*_server;
+			ft_irc::Client		*_receiver;
+			ft_irc::Channel		*_channel;
 			void				(*_callback)(ft_irc::Client&, ft_irc::Client&, std::string);
 	};
 
+std::ostream& operator<<(std::ostream& os, const ft_irc::Message& message);
+
 }
 
-
+# include "../server/server.hpp"
 
 #endif
