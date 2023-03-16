@@ -36,12 +36,13 @@ std::string ft_irc::Channel::getName(void) const
 	return (this->_name);
 }
 
-std::vector<ft_irc::Client> const &ft_irc::Channel::getClients(void) const
-{
-	return (this->_clients);
+std::vector<ft_irc::Client *> const &ft_irc::Channel::getClients() const {
+    return this->_clients;
 }
 
-std::vector<ft_irc::Client> const &ft_irc::Channel::getOperators(void) const
+
+
+std::vector<ft_irc::Client> const	 &ft_irc::Channel::getOperators(void) const
 {
 	return (this->_operators);
 }
@@ -58,7 +59,7 @@ void ft_irc::Channel::setName(std::string const &name)
 	this->_name = name;
 }
 
-void ft_irc::Channel::setClients(std::vector<ft_irc::Client> const &clients)
+void ft_irc::Channel::setClients(std::vector<ft_irc::Client *> const &clients)
 {
 	this->_clients = clients;
 }
@@ -75,13 +76,15 @@ void ft_irc::Channel::setBannedClients(std::vector<ft_irc::Client> const &banned
 
 /* METHODES */
 
-void ft_irc::Channel::addClient(Client &client) {
+void ft_irc::Channel::addClient(Client *client) {
+	std::cout << *this << std::endl;
 	this->_clients.push_back(client);
+	std::cout << *this << std::endl;
 }
 
 void ft_irc::Channel::removeClient(Client const &client)
 {
-    std::vector<Client>::iterator it = std::find(this->_clients.begin(), this->_clients.end(), client);
+	std::vector<Client *>::iterator it = std::find(this->_clients.begin(), this->_clients.end(), &client);
     if (it != this->_clients.end())
     {
         this->_clients.erase(it);
@@ -129,8 +132,22 @@ int ft_irc::Channel::isClientBanned(Client const &client) const
 }
 
 
-std::ostream& ft_irc::operator<<(std::ostream& os, const ft_irc::Channel& Channel)
+std::ostream& ft_irc::operator<<(std::ostream& os, ft_irc::Channel& Channel)
 {
-    os << "Channel [name : " << Channel.getName() << ", clients size : " << Channel.getClients().size() << "]";
+	std::ostringstream oss;
+	oss << Channel.getClients().size();
+	std::string message = "Channel [name : " + Channel.getName() + ", clients size : " + oss.str() + ", users : ";
+
+	std::vector<Client *> clients = Channel.getClients();
+
+	for (std::vector<Client *>::iterator it = clients.begin(); it != clients.end(); ++it) {
+		message += (*it)->getNickname();
+		if (it + 1!= clients.end())
+			message += ", ";
+	}
+
+	message += "]";
+
+    os << message;
     return os;
 }

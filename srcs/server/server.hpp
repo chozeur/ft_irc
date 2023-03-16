@@ -46,7 +46,7 @@ namespace ft_irc{
 			std::vector<Client>								*getClients(void);
 			Client											*getClientPointer(int fd);
 			std::vector<Client>::iterator					getClientIterator(int fd);
-			std::vector<Channel>							*getChannels(void);
+			std::vector<Channel*>							*getChannels(void);
 			Channel											*getChannelPointer(std::string name);
 			std::map<std::string, CommandFunction> 			*getCommands(void);
 
@@ -92,7 +92,7 @@ namespace ft_irc{
 			int												_sockfd;
 			char											**_env;
 			std::vector<Client>								_clients;
-			std::vector<Channel>							_channels;
+			std::vector<Channel*>							_channels;
 			std::map<std::string, CommandFunction>			_commands;
 	};
 }

@@ -37,7 +37,7 @@ std::string	ft_irc::Server::getName(void)const{
 }
 
 std::string	ft_irc::Server::getIp(void)const{
-	return (this->_name);
+	return (this->_ip);
 }
 
 long	ft_irc::Server::getPort(void) const {
@@ -82,17 +82,16 @@ std::vector<ft_irc::Client>::iterator ft_irc::Server::getClientIterator(int fd) 
 	return this->_clients.end();
 }
 
-std::vector<ft_irc::Channel>* ft_irc::Server::getChannels() {
-	return (&_channels);
+std::vector<ft_irc::Channel*>* ft_irc::Server::getChannels() {
+    return &_channels;
 }
 
 ft_irc::Channel* ft_irc::Server::getChannelPointer(std::string name) {
-	std::vector<Channel>::iterator it;
-	for (it = this->_channels.begin(); it != this->_channels.end(); it++) {
-		if (it->getName() == name)
-			return &(*it);
-	}
-	return NULL;
+    for (std::vector<Channel*>::iterator it = _channels.begin(); it != _channels.end(); ++it) {
+        if ((*it)->getName() == name)
+            return (*it);
+    }
+    return NULL;
 }
 
 std::map<std::string, CommandFunction>* ft_irc::Server::getCommands(void) {
@@ -170,12 +169,13 @@ void	ft_irc::Server::init(std::string password, long port, char **env){
 	return ;
 }
 
-void	ft_irc::Server::initChannels(void) {
-	ft_irc::Channel general("general");
-	ft_irc::Channel admin("admin");
-	_channels.push_back(general);
-	_channels.push_back(admin);
+void ft_irc::Server::initChannels() {
+    ft_irc::Channel* general = new Channel("general");
+    ft_irc::Channel* admin = new Channel("admin");
+    _channels.push_back(general);
+    _channels.push_back(admin);
 }
+
 
 void	ft_irc::Server::run(void) {
 	while (server) {
@@ -339,7 +339,7 @@ void 	ft_irc::Server::sendIrcResponse(int sockfd, ft_irc::Client *client) const 
 	std::string welcome_msg = ":" + _ip + " 001 " + client->getNickname() + " :\033[32mWelcome to the " + _name + " " + client->getNickname() + "!" + client->getUsername() + "@" + client->getHost() + "\033[0m\r\n";
 	std::string version_msg = ":" + _ip + " 002 " + client->getNickname() + " :\033[32mYour host is " + client->getServername() + ":" + port + ", running version 1.0.2\033[0m\r\n";
 	std::string created_msg = ":" + _ip + " 003 " + client->getNickname() + " :\033[32mThis server was created in 42 School\033[0m\r\n";
-	std::string ascii_msg = ":" + _ip + " 004 " + client->getNickname() + " :" + "_____________________________________\n" + "_____________________________________\n" + "                                    \n" + "                                   (_)\n" + " __      _____ _ __ ___ _ __   ___  _ \n" + " \\ \\ /\\ / / _ \\ '__/ _ \\ '_ \\ / _ \\| |\n" + "  \\ V  V /  __/ | |  __/ | | | (_) | |\n" + "   \\_/\\_/ \\___|_|  \\___|_| |_|\\___/|_| . RC\n" + "                                      \n" + "                                      \n" + " _____________________________________\n" + " _____________________________________\r\n\n";
+	std::string ascii_msg = ":" + _ip + " 004 " + client->getNickname() + " :" + "_____________________________________\n" + "_____________________________________\n" + "                                    \n" + "                                   (_)\n" + " __      _____ _ __ ___ _ __   ___  _ \n" + " \\ \\ /\\ / / _ \\ '__/ _ \\ '_ \\ / _ \\| |\n" + "  \\ V  V /  __/ | |  __/ | | | (_) | |\n" + "   \\_/\\_/ \\___|_|  \\___|_| |_|\\___/|_| . RC\n" + "                                      \n" + "                                      \n" + " _____________________________________\n" + " _____________________________________\n\r\n";
 	send(sockfd, cap_response.c_str(), cap_response.length(), 0);
 	send(sockfd, welcome_msg.c_str(), welcome_msg.length(), 0);
 	send(sockfd, version_msg.c_str(), version_msg.length(), 0);
