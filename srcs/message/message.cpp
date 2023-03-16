@@ -109,6 +109,8 @@ void	ft_irc::Message::parsePayload(void) {
 	std::string cmd = _payload.substr(0, pos);
 	std::string param = _payload.substr(pos + 1);
 
+	std::cerr << "cmd: " << cmd  << "param: " << param << std::endl;
+
 	std::map<std::string, CommandFunction>* commands = _server->getCommands();
 	if (commands->find(cmd) != commands->end()) {
 		CommandFunction func = (*commands)[cmd];
@@ -119,6 +121,6 @@ void	ft_irc::Message::parsePayload(void) {
 
 std::ostream& ft_irc::operator<<(std::ostream& os, const ft_irc::Message& message)
 {
-    os << "New Message instance created for " << message.getSender()->getNickname();
-    return os;
+	os << "New Message instance created for " << message.getSender()->getNickname();
+	return os;
 }

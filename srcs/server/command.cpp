@@ -7,6 +7,7 @@ void ft_irc::Server::initCommands(void) {
 	_commands.insert(std::make_pair("LIST", &Server::list));
 	_commands.insert(std::make_pair("NAMES", &Server::names));
 	_commands.insert(std::make_pair("WHOIS", &Server::whois));
+	_commands.insert(std::make_pair("NICK", &Server::nick));
 }
 
 void ft_irc::Server::invite(ft_irc::Message* message, const std::string& param) {
@@ -96,5 +97,15 @@ void ft_irc::Server::whois(ft_irc::Message* message, const std::string& param) {
 void	ft_irc::Server::nick(ft_irc::Message* message, const std::string& param) {
 	(void)message;
 	std::cerr << "NICK FUNCTION CALLED WITH PARAM = " << param << std::endl;
+	std::cerr << "Sender = " << *(message->getSender()) << std::endl;
+	if (message->getServer()->parsingNickname(param)){
+		std::string nick_res = ":" + message->getSender()->getNickname() + "!" + message->getSender()->getUsername() + "@" + message->getSender()->getHost() +" NICK :" + param;
+		message->getSender()->setNickname(param);
+		send(message->getSender()->getSockfd(), nick_res.c_str(), nick_res.length(), 0);
+	}
+	else {
+		std::string nick_res = ":" + message->getServer()->getIp() + " 433 * " + param + ":Nickname is already in use.";
+		send(message->getSender()->getSockfd(), nick_res.c_str(), nick_res.length(), 0);
+	}
 	return ;
 }
