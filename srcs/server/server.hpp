@@ -66,8 +66,8 @@ namespace ft_irc{
 			void											run(void);
 			void											stop(void);
 			int												clientInit(int fd, std::string message);
-			int 											parsingNickname(std::string nickname);
-			int 											parsingPassword(std::string password)const;
+			bool 											parsingNickname(std::string nickname);
+			bool 											parsingPassword(std::string password)const;
 			void											sendIrcResponse(int sockfd, ft_irc::Client *client) const;
 			void											closeClient(int i);
 

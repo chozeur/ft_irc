@@ -227,7 +227,7 @@ void	ft_irc::Server::run(void) {
 				} else {
 					std::string message(buffer, bytes_received);
 
-					if (message.substr(0, 6) == "CAP LS" || message.substr(0, 4) == "PASS" || message.substr(0, 4) == "NICK" || message.substr(0, 4) == "USER"){
+					if (message.substr(0, 6) == "CAP LS" || message.substr(0, 4) == "PASS" /* || message.substr(0, 4) == "NICK"  */|| message.substr(0, 4) == "USER"){
 						switch (clientInit(this->_fds[i].fd, message)) {
 							case -1 :
 								closeClient(i);
@@ -236,7 +236,7 @@ void	ft_irc::Server::run(void) {
 								sendIrcResponse(this->_fds[i].fd, getClientPointer(this->_fds[i].fd));
 								break;
 						}
-					} 
+					}
 					else {
 						ft_irc::Message *command = new Message(message, getClientPointer(this->_fds[i].fd), this);
 						delete command;
@@ -288,7 +288,7 @@ int 	ft_irc::Server::clientInit(int fd, std::string message){
 			std::string nickname = line.substr(space_pos + 1);
 			if (!parsingNickname(nickname)){
 				std::cout << "\033[1m" << _name << "\033[0m" << " => Nickname "<< nickname << " is already in use" << std::endl;
-				std::string nick_res = "IRC_SERVER 433 * " + nickname + ":Nickname is already in use.";
+				std::string nick_res = ":" + this->getIp() + " 433 * " + nickname + ":Nickname is already in use.";
 				send(fd, nick_res.c_str(), nick_res.length(), 0);
 				return (-1);
 			}
@@ -348,17 +348,17 @@ void 	ft_irc::Server::sendIrcResponse(int sockfd, ft_irc::Client *client) const 
 }
 
 
-int 	ft_irc::Server::parsingNickname(std::string nickname){
+bool	ft_irc::Server::parsingNickname(std::string nickname){
 	for (std::vector<Client>::iterator it = _clients.begin(); it != _clients.end(); ++it)
 		if ((*it).getNickname() == nickname)
-			return (0);
-	return (1);
+			return (false);
+	return (true);
 }
 
-int 	ft_irc::Server::parsingPassword(std::string password)const{
+bool	ft_irc::Server::parsingPassword(std::string password)const{
 	if (this->_password != password)
-		return (0);
-	return (1);
+		return (false);
+	return (true);
 }
 
 void 	ft_irc::Server::closeClient(int i) {
