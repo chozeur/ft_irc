@@ -70,14 +70,16 @@ namespace ft_irc{
 			int 											parsingPassword(std::string password)const;
 			void											sendIrcResponse(int sockfd, ft_irc::Client *client) const;
 			void											closeClient(int i);
-		
+
 			//SERVER COMMANDS
-			static void										invite(ft_irc::Message* Message, const std::string& param); 
-			static void										join(ft_irc::Message* Message, const std::string& param); 
-			static void										kick(ft_irc::Message* Message, const std::string& param); 
-			static void										list(ft_irc::Message* Message, const std::string& param); 
-			static void										names(ft_irc::Message* Message, const std::string& param); 
-			static void										whois(ft_irc::Message* Message, const std::string& param); 
+			static void										invite(ft_irc::Message* Message, const std::string& param);
+			static void										join(ft_irc::Message* Message, const std::string& param);
+			static void										kick(ft_irc::Message* Message, const std::string& param);
+			static void										list(ft_irc::Message* Message, const std::string& param);
+			static void										names(ft_irc::Message* Message, const std::string& param);
+			static void										whois(ft_irc::Message* Message, const std::string& param);
+			static void										nick(ft_irc::Message* Message, const std::string& param);
+			static void										user(ft_irc::Message* Message, const std::string& param);
 
 		private:
 			std::string 									_name;
@@ -89,7 +91,6 @@ namespace ft_irc{
 			struct sockaddr_in								_serv_addr;
 			int												_sockfd;
 			char											**_env;
-
 			std::vector<Client>								_clients;
 			std::vector<Channel>							_channels;
 			std::map<std::string, CommandFunction>			_commands;

@@ -11,18 +11,18 @@ void ft_irc::Server::initCommands(void) {
 
 void ft_irc::Server::invite(ft_irc::Message* message, const std::string& param) {
 	(void)message;
-    std::cerr << "INVITE FUNCTION CALLED WITH PARAM = " << param << std::endl;
-	return ; 
+	std::cerr << "INVITE FUNCTION CALLED WITH PARAM = " << param << std::endl;
+	return ;
 }
 
 void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
 	(void)message;
 	ft_irc::Server *server = message->getServer();
 	ft_irc::Channel *channel;
-    std::vector<Channel> *channels = server->getChannels();
+	std::vector<Channel> *channels = server->getChannels();
 
 	std::string param2 = param;
-	
+
 	if (param2.find("&") == 0) {
 		// CANAL PRIVE
 		removeAllOccurrences(param2, "&");
@@ -32,8 +32,8 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
 			channels->push_back(*(channel));
 		}
 		channel->addClient(*(message->getSender()));
-		std::string msg = message->getSender()->getNickname() + ":" + + " JOIN &" + channel->getName() + '\n'; 
-		
+		std::string msg = message->getSender()->getNickname() + ":" + + " JOIN &" + channel->getName() + '\n';
+
 		// send names of clients in the channel to the user who just joined
 		std::string names_msg = ":" + server->getIp() + " 353 " + message->getSender()->getNickname() + " = &" + channel->getName() + " :";
 		std::vector<Client> clients = channel->getClients();
@@ -44,8 +44,8 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
 
 		send(message->getSender()->getSockfd(), msg.c_str(), msg.length(), 0);
 		send(message->getSender()->getSockfd(), names_msg.c_str(), names_msg.length(), 0);
-	} 
-	
+	}
+
 	else if (param2.find("#") == 0) {
 		// CANAL PUBLIC
 		removeAllOccurrences(param2, "#");
@@ -56,8 +56,8 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
 		}
 		std::cerr << *channel << std::endl;
 		channel->addClient(*(message->getSender()));
-		std::string msg = message->getSender()->getNickname() + ":" + + " JOIN #" + channel->getName() + '\n'; 
-	
+		std::string msg = message->getSender()->getNickname() + ":" + + " JOIN #" + channel->getName() + '\n';
+
 		// send names of clients in the channel to the user who just joined
 		std::string names_msg = ":" + server->getIp() + " 353 " + message->getSender()->getNickname() + " = #" + channel->getName() + " :";
 		std::vector<Client> clients = channel->getClients();
@@ -69,8 +69,8 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
 
 		send(message->getSender()->getSockfd(), msg.c_str(), msg.length(), 0);
 		send(message->getSender()->getSockfd(), names_msg.c_str(), names_msg.length(), 0);
-	} 
-	
+	}
+
 	else {
 		// ERROR
 	}
@@ -78,8 +78,8 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
 
 void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
 	(void)message;
-    std::cerr << "KICK FUNCTION CALLED WITH PARAM = " << param << std::endl;
-	return ; 
+	std::cerr << "KICK FUNCTION CALLED WITH PARAM = " << param << std::endl;
+	return ;
 }
 
 void ft_irc::Server::list(ft_irc::Message* message, const std::string& param) {
@@ -92,17 +92,23 @@ void ft_irc::Server::list(ft_irc::Message* message, const std::string& param) {
 		list += test;
 	}
 	send(fd, list.c_str(), list.length(), 0);
-	return ; 
+	return ;
 }
 
 void ft_irc::Server::names(ft_irc::Message* message, const std::string& param) {
 	(void)message;
-    std::cerr << "NAMES FUNCTION CALLED WITH PARAM = " << param << std::endl;
-	return ; 
+	std::cerr << "NAMES FUNCTION CALLED WITH PARAM = " << param << std::endl;
+	return ;
 }
 
 void ft_irc::Server::whois(ft_irc::Message* message, const std::string& param) {
 	(void)message;
-    std::cerr << "WHOIS FUNCTION CALLED WITH PARAM = " << param << std::endl;
-	return ; 
+	std::cerr << "WHOIS FUNCTION CALLED WITH PARAM = " << param << std::endl;
+	return ;
+}
+
+void	ft_irc::Server::nick(ft_irc::Message* message, const std::string& param) {
+	(void)message;
+	std::cerr << "NICK FUNCTION CALLED WITH PARAM = " << param << std::endl;
+	return ;
 }
