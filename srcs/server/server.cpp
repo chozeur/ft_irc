@@ -273,21 +273,21 @@ int 	ft_irc::Server::clientInit(int fd, std::string message){
 		}
 		if (line.find("CAP LS") != std::string::npos){
 			removeAllOccurrences(line, "\n");
-			std::cout << _name << " => " << line << std::endl;
+			std::cout << "\033[1m" << _name << "\033[0m" << " => " << line << std::endl;
 		}
 		if (line.find("PASS") != std::string::npos){
 			removeAllOccurrences(line, "\n");
-			std::cout << _name << " => " << line << std::endl;
+			std::cout << "\033[1m" << _name << "\033[0m" << " => " << line << std::endl;
 			std::string::size_type space_pos = line.find(' ');
 			(getClientPointer(fd))->setPassword(line.substr(space_pos + 1));
 		}
 		if (line.find("NICK") != std::string::npos){
 			removeAllOccurrences(line, "\n");
-			std::cout << _name << " => " << line << std::endl;
+			std::cout << "\033[1m" << _name << "\033[0m" << " => " << line << std::endl;
 			std::string::size_type space_pos = line.find(' ');
 			std::string nickname = line.substr(space_pos + 1);
 			if (!parsingNickname(nickname)){
-				std::cout << _name << " => Nickname "<< nickname << " is already in use" << std::endl;
+				std::cout << "\033[1m" << _name << "\033[0m" << " => Nickname "<< nickname << " is already in use" << std::endl;
 				std::string nick_res = "IRC_SERVER 433 * " + nickname + ":Nickname is already in use.";
 				send(fd, nick_res.c_str(), nick_res.length(), 0);
 				return (-1);
@@ -296,7 +296,7 @@ int 	ft_irc::Server::clientInit(int fd, std::string message){
 		}
 		if (line.find("USER") != std::string::npos){
 			removeAllOccurrences(line, "\n");
-			std::cout << _name << " => " << line << std::endl;
+			std::cout << "\033[1m" << _name << "\033[0m" << " => " << line << std::endl;
 			std::string::size_type space_pos1 = line.find(' ');
 			std::string::size_type space_pos2 = line.find(' ', space_pos1 + 1);
 			std::string::size_type space_pos3 = line.find(' ', space_pos2 + 1);
@@ -314,7 +314,7 @@ int 	ft_irc::Server::clientInit(int fd, std::string message){
 			getClientPointer(fd)->setRealname(realname);
 
 			if (!parsingPassword(getClientPointer(fd)->getPassword())) {
-				std::cout << _name << " => Bad password, try again." << std::endl;
+				std::cout << "\033[1m" << _name << "\033[0m" << " => Bad password, try again." << std::endl;
 				std::string pass_res = "NOTICE " + getClientPointer(fd)->getNickname() + ":Invalid password. Please try again.";
 				send(fd, pass_res.c_str(), pass_res.length(), 0);
 				return (-1);
@@ -362,7 +362,7 @@ int 	ft_irc::Server::parsingPassword(std::string password)const{
 }
 
 void 	ft_irc::Server::closeClient(int i) {
-	std::cerr << _name << " => [" << getClientPointer(_fds[i].fd)->getNickname() << "] CONNECTION CLOSED" << std::endl;
+	std::cerr << "\033[1m" << _name << "\033[0m => [" << getClientPointer(_fds[i].fd)->getNickname() << "] CONNECTION CLOSED" << std::endl;
 	std::vector<Client>::iterator client_it = getClientIterator(this->_fds[i].fd);
 	if (client_it != this->_clients.end()) {
 		this->_clients.erase(client_it);

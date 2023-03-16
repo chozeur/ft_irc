@@ -33,7 +33,6 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
 		}
 		channel->addClient(*(message->getSender()));
 		std::string msg = message->getSender()->getNickname() + ":" + + " JOIN &" + channel->getName() + '\n'; 
-		send(message->getSender()->getSockfd(), msg.c_str(), msg.length(), 0);
 		
 		// send names of clients in the channel to the user who just joined
 		std::string names_msg = ":" + server->getIp() + " 353 " + message->getSender()->getNickname() + " = &" + channel->getName() + " :";
@@ -42,6 +41,8 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
 			names_msg += it->getNickname() + " ";
 		}
 		names_msg += '\n';
+
+		send(message->getSender()->getSockfd(), msg.c_str(), msg.length(), 0);
 		send(message->getSender()->getSockfd(), names_msg.c_str(), names_msg.length(), 0);
 	} 
 	
@@ -56,8 +57,7 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
 		std::cerr << *channel << std::endl;
 		channel->addClient(*(message->getSender()));
 		std::string msg = message->getSender()->getNickname() + ":" + + " JOIN #" + channel->getName() + '\n'; 
-		send(message->getSender()->getSockfd(), msg.c_str(), msg.length(), 0);
-		
+	
 		// send names of clients in the channel to the user who just joined
 		std::string names_msg = ":" + server->getIp() + " 353 " + message->getSender()->getNickname() + " = #" + channel->getName() + " :";
 		std::vector<Client> clients = channel->getClients();
@@ -66,6 +66,8 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
 		}
 		names_msg += '\n';
 		std::cerr << *channel << std::endl;
+
+		send(message->getSender()->getSockfd(), msg.c_str(), msg.length(), 0);
 		send(message->getSender()->getSockfd(), names_msg.c_str(), names_msg.length(), 0);
 	} 
 	

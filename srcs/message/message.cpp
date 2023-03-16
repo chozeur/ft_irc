@@ -103,7 +103,7 @@ void	ft_irc::Message::setCallback(void (*callback)(ft_irc::Client&, ft_irc::Clie
 
 void	ft_irc::Message::parsePayload(void) {
 	cleanLine(_payload);
-	std::cerr << _server->getName() << " [" << _sender->getNickname() << "] => " << _payload << std::endl;
+	std::cerr << "\033[1m" << _server->getName() << " [\033[32m" << _sender->getNickname() << "\033[0m] => " << _payload << std::endl;
 
 	size_t pos = _payload.find(' ');
 	std::string cmd = _payload.substr(0, pos);
