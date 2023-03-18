@@ -234,7 +234,7 @@ void	ft_irc::Server::run(void) {
 								break;
 							case 1 :
 								sendIrcResponse(this->_fds[i].fd, getClientPointer(this->_fds[i].fd));
-								printClients();
+								// printClients();
 								break;
 						}
 					}

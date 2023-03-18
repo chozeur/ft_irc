@@ -77,9 +77,7 @@ void ft_irc::Channel::setBannedClients(std::vector<ft_irc::Client> const &banned
 /* METHODES */
 
 void ft_irc::Channel::addClient(Client *client) {
-	std::cout << this << std::endl;
 	this->_clients.push_back(client);
-	std::cout << this << std::endl;
 }
 
 void ft_irc::Channel::removeClient(Client const &client)

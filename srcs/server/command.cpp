@@ -8,6 +8,8 @@ void ft_irc::Server::initCommands(void) {
 	_commands.insert(std::make_pair("NAMES", &Server::names));
 	_commands.insert(std::make_pair("WHOIS", &Server::whois));
 	_commands.insert(std::make_pair("NICK", &Server::nick));
+	_commands.insert(std::make_pair("PRIVMSG", &Server::privmsg));
+
 }
 
 void ft_irc::Server::invite(ft_irc::Message* message, const std::string& param) {
@@ -82,7 +84,72 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
     }
 }
 
+void ft_irc::Server::privmsg(ft_irc::Message* message, const std::string& param) {
+    // On récupère le serveur, le canal et la liste des canaux du serveur
+    ft_irc::Server *server = message->getServer();
+    ft_irc::Channel *channel;
+    std::string channelName;
+    std::string messageText;
 
+    std::string param2 = param;
+
+    std::size_t pos = param2.find('#');
+    if (pos != std::string::npos) {
+        pos++;
+        std::size_t endpos = param2.find(" :", pos);
+        if (endpos != std::string::npos) {
+            channelName = param2.substr(pos, endpos - pos);
+        }
+    }
+
+    std::size_t messagePos = param2.find(" :");
+    if (messagePos != std::string::npos) {
+        messageText = param2.substr(messagePos + 2);
+    }
+
+
+    removeAllOccurrences(param2, "#");
+
+    // Si le paramètre commence par un '#', c'est un message à envoyer à un canal
+    if (param[0] == '#') {
+        // On récupère le canal correspondant au nom
+        channel = server->getChannelPointer(channelName);
+        if (!channel) {
+            // Si le canal n'existe pas, on envoie un message d'erreur à l'utilisateur
+            std::string msg = ":" + server->getIp() + " 401 " + message->getSender()->getNickname() + " " + param2 + " :No such channel\r\n";
+            if (send(message->getSender()->getSockfd(), msg.c_str(), msg.length(), 0) == -1) {
+                std::cerr << "Error SEND" << std::endl;
+            }
+        } else {
+            // On envoie le message à tous les clients du canal, sauf celui qui a envoyé le message
+            std::string msg = ":" + message->getSender()->getNickname() + "!" + message->getSender()->getUsername() + "@" + message->getSender()->getHost() + " PRIVMSG #" + channel->getName() + " :" + messageText + "\r\n";
+            std::vector<Client *> channel_clients = channel->getClients();
+            for (std::vector<Client *>::iterator it = channel_clients.begin(); it != channel_clients.end(); ++it) {
+                if ((*it)->getNickname() != message->getSender()->getNickname()) {
+                    if (send((*it)->getSockfd(), msg.c_str(), msg.length(), 0) == -1) {
+                        std::cerr << "Error SEND" << std::endl;
+                    }
+                }
+            }
+        }
+    } else {
+        // Si le paramètre ne commence pas par un '#', c'est un message à envoyer à un client
+        Client *client = server->getClientPointer(message->getSender()->getSockfd());
+        if (!client) {
+            // Si le client n'existe pas, on envoie un message d'erreur à l'utilisateur
+            std::string msg = ":" + server->getIp() + " 401 " + message->getSender()->getNickname() + " " + param2 + " :No such nick/channel\r\n";
+            if (send(message->getSender()->getSockfd(), msg.c_str(), msg.length(), 0) == -1) {
+                std::cerr << "Error SEND" << std::endl;
+            }
+        } else {
+            // Si le client existe, on envoie le message à ce client
+            std::string msg = ":" + message->getSender()->getNickname() + "!" + message->getSender()->getUsername() + "@" + message->getSender()->getHost() + " PRIVMSG " + client->getNickname() + " :" + param2 + "\r\n";
+            if (send(client->getSockfd(), msg.c_str(), msg.length(), 0) == -1) {
+                std::cerr << "Error SEND" << std::endl;
+            }
+        }
+    }
+}
 
 void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
 	(void)message;
