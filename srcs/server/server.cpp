@@ -227,21 +227,8 @@ void	ft_irc::Server::run(void) {
 				} else {
 					std::string message(buffer, bytes_received);
 
-					if (message.substr(0, 6) == "CAP LS" || message.substr(0, 4) == "PASS" /* || message.substr(0, 4) == "NICK"  */|| message.substr(0, 4) == "USER"){
-						switch (clientInit(this->_fds[i].fd, message)) {
-							case -1 :
-								closeClient(i);
-								break;
-							case 1 :
-								sendIrcResponse(this->_fds[i].fd, getClientPointer(this->_fds[i].fd));
-								// printClients();
-								break;
-						}
-					}
-					else {
-						ft_irc::Message *command = new Message(message, getClientPointer(this->_fds[i].fd), this);
-						delete command;
-					}
+					ft_irc::Message *command = new Message(message, getClientPointer(this->_fds[i].fd), this);
+					delete command;
 				}
 			}
 		}
@@ -256,74 +243,6 @@ void	ft_irc::Server::stop(void) {
 			closeClient(i);
 	close(this->_sockfd);
 	std::cerr << "Turn off server here" << std::endl;
-}
-
-int 	ft_irc::Server::clientInit(int fd, std::string message){
-
-	std::string line;
-	std::string::size_type start_pos = 0;
-
-	while (start_pos != std::string::npos) {
-		std::string::size_type end_pos = message.find("\r\n", start_pos);
-		if (end_pos != std::string::npos) {
-			line = message.substr(start_pos, end_pos - start_pos);
-			start_pos = end_pos + 2;
-		} else {
-			line = message.substr(start_pos);
-			start_pos = end_pos;
-		}
-		if (line.find("CAP LS") != std::string::npos){
-			removeAllOccurrences(line, "\n");
-			std::cout << "\033[1m" << _name << "\033[0m" << " => " << line << std::endl;
-		}
-		if (line.find("PASS") != std::string::npos){
-			removeAllOccurrences(line, "\n");
-			std::cout << "\033[1m" << _name << "\033[0m" << " => " << line << std::endl;
-			std::string::size_type space_pos = line.find(' ');
-			(getClientPointer(fd))->setPassword(line.substr(space_pos + 1));
-		}
-		if (line.find("NICK") != std::string::npos){
-			removeAllOccurrences(line, "\n");
-			std::cout << "\033[1m" << _name << "\033[0m" << " => " << line << std::endl;
-			std::string::size_type space_pos = line.find(' ');
-			std::string nickname = line.substr(space_pos + 1);
-			if (!parsingNickname(nickname)){
-				std::cout << "\033[1m" << _name << "\033[0m" << " => Nickname "<< nickname << " is already in use" << std::endl;
-				std::string nick_res = ":" + this->getIp() + " 433 * " + nickname + ":Nickname is already in use.";
-				send(fd, nick_res.c_str(), nick_res.length(), 0);
-				return (-1);
-			}
-			(getClientPointer(fd))->setNickname(nickname);
-		}
-		if (line.find("USER") != std::string::npos){
-			removeAllOccurrences(line, "\n");
-			std::cout << "\033[1m" << _name << "\033[0m" << " => " << line << std::endl;
-			std::string::size_type space_pos1 = line.find(' ');
-			std::string::size_type space_pos2 = line.find(' ', space_pos1 + 1);
-			std::string::size_type space_pos3 = line.find(' ', space_pos2 + 1);
-			std::string::size_type colon_pos = line.find(':');
-			std::string::size_type end_pos = line.find('\n');
-
-			std::string username = line.substr(space_pos1 + 1, space_pos2 - space_pos1 - 1);
-			std::string hostname = line.substr(space_pos2 + 1, space_pos3 - space_pos2 - 1);
-			std::string servername = line.substr(space_pos3 + 1, colon_pos - space_pos3 - 2);
-			std::string realname = line.substr(colon_pos + 1, end_pos - 1);
-
-			getClientPointer(fd)->setUsername(username);
-			getClientPointer(fd)->setHost(hostname);
-			getClientPointer(fd)->setServername(servername);
-			getClientPointer(fd)->setRealname(realname);
-
-			if (!parsingPassword(getClientPointer(fd)->getPassword())) {
-				std::cout << "\033[1m" << _name << "\033[0m" << " => Bad password, try again." << std::endl;
-				std::string pass_res = "NOTICE " + getClientPointer(fd)->getNickname() + ":Invalid password. Please try again.";
-				send(fd, pass_res.c_str(), pass_res.length(), 0);
-				return (-1);
-			}
-			return (1);
-		}
-	}
-	return 0;
 }
 
 void 	ft_irc::Server::sendIrcResponse(int sockfd, ft_irc::Client *client) const {
@@ -376,4 +295,12 @@ void ft_irc::Server::printClients(void) {
 	for (std::vector<Client*>::iterator it = _clients.begin(); it != _clients.end(); it++) {
 		std::cout << **it << std::endl;
 	}
+}
+
+void ft_irc::Server::sendToAllClients(std::string &msg) {
+    for (std::vector<ft_irc::Client *>::iterator it = this->_clients.begin(); it != this->_clients.end(); ++it) {
+        if (send((*it)->getSockfd(), msg.c_str(), msg.size(), 0) == -1) {
+            std::cerr << "Error sending message to client" << std::endl;
+        }
+    }
 }

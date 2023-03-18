@@ -1,16 +1,154 @@
 #include "server.hpp"
 
 void ft_irc::Server::initCommands(void) {
+	_commands.insert(std::make_pair("CAP", &Server::cap));
+	_commands.insert(std::make_pair("PASS", &Server::pass));
+	_commands.insert(std::make_pair("NICK", &Server::nick));
+	_commands.insert(std::make_pair("USER", &Server::user));
+
 	_commands.insert(std::make_pair("INVITE", &Server::invite));
 	_commands.insert(std::make_pair("JOIN", &Server::join));
 	_commands.insert(std::make_pair("KICK", &Server::kick));
 	_commands.insert(std::make_pair("LIST", &Server::list));
 	_commands.insert(std::make_pair("NAMES", &Server::names));
 	_commands.insert(std::make_pair("WHOIS", &Server::whois));
-	_commands.insert(std::make_pair("NICK", &Server::nick));
 	_commands.insert(std::make_pair("PRIVMSG", &Server::privmsg));
 
 }
+
+// INITIALISATION CLIENT
+
+void ft_irc::Server::cap(ft_irc::Message* message, const std::string& param) {
+	ft_irc::Server *server = message->getServer();
+    std::string param2  = param;
+    std::string::size_type pos = param2.find('\n');
+    std::string first;
+    std::string rest;
+
+    if (pos != std::string::npos) {
+        first = param2.substr(0, pos);
+        rest = param2.substr(pos + 1);
+    }
+
+    std::istringstream iss(first);
+    std::string command, argument;
+    iss >> command >> argument;
+
+    if (argument == "LS")
+        std::cout << "\033[1m" << server->getName() << "\033[0m" << " => " << first << std::endl;
+
+    if (!rest.empty() && rest.size() > 1 && argument == "LS") {
+        pass(message, rest);
+    }
+
+	return ;
+}
+
+void ft_irc::Server::pass(ft_irc::Message* message, const std::string& param) {
+    ft_irc::Server *server = message->getServer();
+    std::string param2  = param;
+    std::string::size_type pos = param2.find('\n');
+    std::string first;
+    std::string rest;
+
+    if (pos != std::string::npos) {
+        first = param2.substr(0, pos);
+        rest = param2.substr(pos + 1);
+    }
+
+    cleanLine(first);
+    removeAllOccurrences(first, "\n");
+    std::cout << "\033[1m" << server->getName() << "\033[0m" << " => " << first << std::endl;
+    std::string::size_type space_pos = first.find(' ');
+    server->getClientPointer(message->getSender()->getSockfd())->setPassword(first.substr(space_pos + 1));
+
+    if (!rest.empty() && rest.size() > 1) {
+        nick(message, rest);
+    }
+	return ;
+}
+
+void ft_irc::Server::nick(ft_irc::Message* message, const std::string& param) {
+    ft_irc::Server *server = message->getServer();
+    ft_irc::Client *client = server->getClientPointer(message->getSender()->getSockfd());
+
+    std::string param2 = param;
+    std::string::size_type pos = param2.find('\n');
+    std::string first;
+    std::string rest;
+
+    if (pos != std::string::npos) {
+        first = param2.substr(0, pos);
+        rest = param2.substr(pos + 1);
+    }
+
+    cleanLine(first);
+    removeAllOccurrences(first, "\n");
+
+    std::string::size_type space_pos = first.find(' ');
+    std::string nickname = first.substr(space_pos + 1);
+
+    if (!server->parsingNickname(nickname)) {
+        std::cout << "\033[1m" << server->getName() << "\033[0m" << " => Nickname " << nickname << " is already in use" << std::endl;
+        std::string nick_res = ":" + server->getIp() + " 433 * " + nickname + " :Nickname is already in use.\r\n";
+        send(message->getSender()->getSockfd(), nick_res.c_str(), nick_res.length(), 0);
+        return;
+    }
+
+    if (!client->getNickname().empty()) {
+        // L'utilisateur a déjà un nickname, nous devons donc mettre à jour son nickname
+        std::string oldNickname = client->getNickname();
+        client->setNickname(nickname);
+
+        // Envoie un message d'information à tous les clients du serveur
+        std::string msg = ":" + oldNickname + "!" + client->getUsername() + "@" + client->getHost() + " NICK :" + nickname + "\r\n";
+        server->sendToAllClients(msg);
+    } else {
+        // L'utilisateur n'a pas encore de nickname, nous devons simplement enregistrer son nickname
+        client->setNickname(nickname);
+    }
+
+    if (!rest.empty() && rest.size() > 1) {
+        user(message, rest);
+    }
+}
+
+
+void ft_irc::Server::user(ft_irc::Message* message, const std::string& param) {
+    ft_irc::Server *server = message->getServer();
+    std::string line  = param;
+
+    cleanLine(line);
+    removeAllOccurrences(line, "\n");
+    std::cout << "\033[1m" << server->getName() << "\033[0m" << " => " << line << std::endl;
+    std::string::size_type space_pos1 = line.find(' ');
+    std::string::size_type space_pos2 = line.find(' ', space_pos1 + 1);
+    std::string::size_type space_pos3 = line.find(' ', space_pos2 + 1);
+    std::string::size_type colon_pos = line.find(':');
+    std::string::size_type end_pos = line.find('\n');
+
+    std::string username = line.substr(space_pos1 + 1, space_pos2 - space_pos1 - 1);
+    std::string hostname = line.substr(space_pos2 + 1, space_pos3 - space_pos2 - 1);
+    std::string servername = line.substr(space_pos3 + 1, colon_pos - space_pos3 - 2);
+    std::string realname = line.substr(colon_pos + 1, end_pos - 1);
+
+    server->getClientPointer(message->getSender()->getSockfd())->setUsername(username);
+    server->getClientPointer(message->getSender()->getSockfd())->setHost(hostname);
+    server->getClientPointer(message->getSender()->getSockfd())->setServername(servername);
+    server->getClientPointer(message->getSender()->getSockfd())->setRealname(realname);
+
+    if (!server->parsingPassword(server->getClientPointer(message->getSender()->getSockfd())->getPassword())) {
+        std::cout << "\033[1m" << server->getName() << "\033[0m" << " => Bad password, try again." << std::endl;
+        std::string pass_res = "NOTICE " + server->getClientPointer(message->getSender()->getSockfd())->getNickname() + ":Invalid password. Please try again.";
+        send(message->getSender()->getSockfd(), pass_res.c_str(), pass_res.length(), 0);
+        return ;
+    }
+    server->sendIrcResponse(message->getSender()->getSockfd(), message->getSender());
+	return ;
+}
+
+// METHODS
+
 
 void ft_irc::Server::invite(ft_irc::Message* message, const std::string& param) {
 	(void)message;
@@ -26,6 +164,9 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
 
     // On supprime le caractère '#' au début du paramètre pour récupérer le nom du canal
     std::string param2 = param;
+    size_t pos = param2.find(" ");
+    param2 = param2.substr(pos + 1);
+    cleanLine(param2);
     removeAllOccurrences(param2, "#");
 
     // Si le canal n'existe pas, on le crée et on l'ajoute à la liste des canaux du serveur
@@ -91,7 +232,10 @@ void ft_irc::Server::privmsg(ft_irc::Message* message, const std::string& param)
     std::string channelName;
     std::string messageText;
 
-    std::string param2 = param;
+    std::string test = param;
+    cleanLine(test);
+    size_t postwo = test.find(' ');
+    std::string param2 = test.substr(postwo + 1);
 
     std::size_t pos = param2.find('#');
     if (pos != std::string::npos) {
@@ -108,10 +252,10 @@ void ft_irc::Server::privmsg(ft_irc::Message* message, const std::string& param)
     }
 
 
-    removeAllOccurrences(param2, "#");
-
     // Si le paramètre commence par un '#', c'est un message à envoyer à un canal
-    if (param[0] == '#') {
+    if (param2[0] == '#') {
+        removeAllOccurrences(param2, "#");
+
         // On récupère le canal correspondant au nom
         channel = server->getChannelPointer(channelName);
         if (!channel) {
@@ -179,21 +323,5 @@ void ft_irc::Server::names(ft_irc::Message* message, const std::string& param) {
 void ft_irc::Server::whois(ft_irc::Message* message, const std::string& param) {
 	(void)message;
 	std::cerr << "WHOIS FUNCTION CALLED WITH PARAM = " << param << std::endl;
-	return ;
-}
-
-void	ft_irc::Server::nick(ft_irc::Message* message, const std::string& param) {
-	(void)message;
-	std::cerr << "NICK FUNCTION CALLED WITH PARAM = " << param << std::endl;
-	std::cerr << "Sender = " << *(message->getSender()) << std::endl;
-	if (message->getServer()->parsingNickname(param)){
-		std::string nick_res = ":" + message->getSender()->getNickname() + "!" + message->getSender()->getUsername() + "@" + message->getSender()->getHost() +" NICK :" + param;
-		message->getSender()->setNickname(param);
-		send(message->getSender()->getSockfd(), nick_res.c_str(), nick_res.length(), 0);
-	}
-	else {
-		std::string nick_res = ":" + message->getServer()->getIp() + " 433 * " + param + ":Nickname is already in use.";
-		send(message->getSender()->getSockfd(), nick_res.c_str(), nick_res.length(), 0);
-	}
 	return ;
 }

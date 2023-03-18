@@ -102,23 +102,22 @@ void	ft_irc::Message::setCallback(void (*callback)(ft_irc::Client&, ft_irc::Clie
 }
 
 void	ft_irc::Message::parsePayload(void) {
-	cleanLine(_payload);
-	std::cerr << "\033[1m" << _server->getName() << " [\033[32m" << _sender->getNickname() << "\033[0m] => " << _payload << std::endl;
-
+	if (!(_payload.substr(0, 6) == "CAP LS" || _payload.substr(0, 4) == "PASS" || _payload.substr(0, 4) == "NICK" || _payload.substr(0, 4) == "USER")){
+		cleanLine(_payload);
+		std::cerr << "\033[1m" << _server->getName() << " [\033[32m" << _sender->getNickname() << "\033[0m] => " << _payload << std::endl;
+	}
 	size_t pos = _payload.find(' ');
 	std::string cmd = _payload.substr(0, pos);
-	std::string param = _payload.substr(pos + 1);
 
 	std::map<std::string, CommandFunction>* commands = _server->getCommands();
 	if (commands->find(cmd) != commands->end()) {
 		CommandFunction func = (*commands)[cmd];
-		func(this, param);
+		func(this, _payload);
 	}
 }
 
 
-std::ostream& ft_irc::operator<<(std::ostream& os, const ft_irc::Message& message)
-{
+std::ostream& ft_irc::operator<<(std::ostream& os, const ft_irc::Message& message) {
 	os << "New Message instance created for " << message.getSender()->getNickname();
 	return os;
 }

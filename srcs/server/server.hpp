@@ -66,21 +66,23 @@ namespace ft_irc{
 			void											run(void);
 			void											stop(void);
 			void											printClients(void);
-			int												clientInit(int fd, std::string message);
 			bool 											parsingNickname(std::string nickname);
 			bool 											parsingPassword(std::string password)const;
 			void											sendIrcResponse(int sockfd, ft_irc::Client *client) const;
 			void											closeClient(int i);
+			void											sendToAllClients(std::string &msg);
 
 			//SERVER COMMANDS
+			static void										cap(ft_irc::Message* Message, const std::string& param);
+			static void										pass(ft_irc::Message* Message, const std::string& param);
+			static void										nick(ft_irc::Message* Message, const std::string& param);
+			static void										user(ft_irc::Message* Message, const std::string& param);
 			static void										invite(ft_irc::Message* Message, const std::string& param);
 			static void										join(ft_irc::Message* Message, const std::string& param);
 			static void										kick(ft_irc::Message* Message, const std::string& param);
 			static void										list(ft_irc::Message* Message, const std::string& param);
 			static void										names(ft_irc::Message* Message, const std::string& param);
 			static void										whois(ft_irc::Message* Message, const std::string& param);
-			static void										nick(ft_irc::Message* Message, const std::string& param);
-			static void										user(ft_irc::Message* Message, const std::string& param);
 			static void										privmsg(ft_irc::Message* message, const std::string& param);
 
 		private:
