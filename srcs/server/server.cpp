@@ -1,6 +1,7 @@
 #include "server.hpp"
 
 /* CONSTRUCTORS */
+
 ft_irc::Server::Server(void){return ;}
 
 ft_irc::Server::Server(Server const &rhs){
@@ -14,12 +15,14 @@ ft_irc::Server::Server(std::string password, long port, char **env){
 }
 
 /* DESTRUCTOR */
+
 ft_irc::Server::~Server(void){
 	close(this->_sockfd);
 	return ;
 }
 
 /* INIT */
+
 ft_irc::Server&	ft_irc::Server::operator=(Server const &rhs){
 	if (this != &rhs){
 		this->_port = rhs._port;
@@ -32,6 +35,7 @@ ft_irc::Server&	ft_irc::Server::operator=(Server const &rhs){
 }
 
 /* GETTERS */
+
 std::string	ft_irc::Server::getName(void)const{
 	return (this->_name);
 }
@@ -99,6 +103,7 @@ std::map<std::string, CommandFunction>* ft_irc::Server::getCommands(void) {
 }
 
 /* SETTERS */
+
 void	ft_irc::Server::setName(std::string name){
 	this->_name = name;
 	return ;
@@ -135,6 +140,7 @@ void	ft_irc::Server::setEnv(char **env){
 }
 
 /* METHODS */
+
 void	ft_irc::Server::init(std::string password, long port, char **env){
 	initCommands();
 	initChannels();
@@ -175,7 +181,6 @@ void ft_irc::Server::initChannels() {
     _channels.push_back(general);
     _channels.push_back(admin);
 }
-
 
 void	ft_irc::Server::run(void) {
 	while (server) {
@@ -238,9 +243,10 @@ void	ft_irc::Server::run(void) {
 }
 
 void	ft_irc::Server::stop(void) {
-	for (int i = 1; i < MAX_CLIENTS + 1; i++)
-		if (this->_fds[i].fd != -1)
-			closeClient(i);
+	for (std::vector<Channel *>::iterator it = _channels.begin(); it != _channels.end(); it++)
+		delete ((*it));
+	for (std::vector<Client *>::iterator it = _clients.begin(); it != _clients.end(); it++)
+		delete ((*it));
 	close(this->_sockfd);
 	std::cerr << "Turn off server here" << std::endl;
 }
@@ -267,7 +273,6 @@ void 	ft_irc::Server::sendIrcResponse(int sockfd, ft_irc::Client *client) const 
 	send(sockfd, ascii_msg.c_str(), ascii_msg.length(), 0);
 }
 
-
 bool ft_irc::Server::parsingNickname(std::string nickname) {
     for (std::vector<Client*>::iterator it = _clients.begin(); it != _clients.end(); ++it)
         if ((*it)->getNickname() == nickname)
@@ -286,6 +291,7 @@ void ft_irc::Server::closeClient(int i) {
 	std::vector<Client *>::iterator client_it = getClientIterator(this->_fds[i].fd);
 	if (client_it != this->_clients.end()) {
 		this->_clients.erase(client_it);
+		delete (*(client_it));
 	}
 	close(this->_fds[i].fd);
 	this->_fds[i].fd = -1;

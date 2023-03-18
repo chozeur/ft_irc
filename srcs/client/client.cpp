@@ -24,6 +24,7 @@ ft_irc::Client::Client(int sockfd):
 /* DESTRUCTOR */
 
 ft_irc::Client::~Client(void){
+	std::cerr << "Client destructor called" << std::endl;
 	return ;
 }
 
@@ -76,13 +77,11 @@ std::string	ft_irc::Client::getServername(void) const {
 	return (this->_servername);
 }
 
-
 std::vector<std::string>	ft_irc::Client::getChannels(void) const {
 	return (this->_channels);
 }
 
 /* SETTERS */
-
 
 void	ft_irc::Client::setSockfd(int sockfd){
 	this->_sockfd = sockfd;

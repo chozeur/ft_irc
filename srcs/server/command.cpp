@@ -113,7 +113,6 @@ void ft_irc::Server::nick(ft_irc::Message* message, const std::string& param) {
     }
 }
 
-
 void ft_irc::Server::user(ft_irc::Message* message, const std::string& param) {
     ft_irc::Server *server = message->getServer();
     std::string line  = param;
@@ -148,7 +147,6 @@ void ft_irc::Server::user(ft_irc::Message* message, const std::string& param) {
 }
 
 // METHODS
-
 
 void ft_irc::Server::invite(ft_irc::Message* message, const std::string& param) {
 	(void)message;

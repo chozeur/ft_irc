@@ -116,7 +116,6 @@ void	ft_irc::Message::parsePayload(void) {
 	}
 }
 
-
 std::ostream& ft_irc::operator<<(std::ostream& os, const ft_irc::Message& message) {
 	os << "New Message instance created for " << message.getSender()->getNickname();
 	return os;
