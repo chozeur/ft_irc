@@ -46,7 +46,7 @@ namespace ft_irc {
 			std::vector<Client>			_banned_clients;
 	};
 
-std::ostream& operator<<(std::ostream& os, ft_irc::Channel& channel);
+std::ostream& operator<<(std::ostream& os, ft_irc::Channel* channel);
 
 }
 

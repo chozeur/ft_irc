@@ -43,9 +43,9 @@ namespace ft_irc{
 			struct sockaddr_in								getServAddr(void)const;
 			int												getSockfd(void)const;
 			char											**getEnv(void)const;
-			std::vector<Client>								*getClients(void);
+			std::vector<Client *>							*getClients(void);
 			Client											*getClientPointer(int fd);
-			std::vector<Client>::iterator					getClientIterator(int fd);
+			std::vector<Client *>::iterator					getClientIterator(int fd);
 			std::vector<Channel*>							*getChannels(void);
 			Channel											*getChannelPointer(std::string name);
 			std::map<std::string, CommandFunction> 			*getCommands(void);
@@ -65,6 +65,7 @@ namespace ft_irc{
 			void											initChannels(void);
 			void											run(void);
 			void											stop(void);
+			void											printClients(void);
 			int												clientInit(int fd, std::string message);
 			bool 											parsingNickname(std::string nickname);
 			bool 											parsingPassword(std::string password)const;
@@ -91,8 +92,8 @@ namespace ft_irc{
 			struct sockaddr_in								_serv_addr;
 			int												_sockfd;
 			char											**_env;
-			std::vector<Client>								_clients;
-			std::vector<Channel*>							_channels;
+			std::vector<Client *>							_clients;
+			std::vector<Channel *>							_channels;
 			std::map<std::string, CommandFunction>			_commands;
 	};
 }

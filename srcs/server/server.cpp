@@ -60,23 +60,23 @@ char	**ft_irc::Server::getEnv(void)const{
 	return (this->_env);
 }
 
-std::vector<ft_irc::Client>* ft_irc::Server::getClients() {
+std::vector<ft_irc::Client *> *ft_irc::Server::getClients() {
 	return (&_clients);
 }
 
 ft_irc::Client* ft_irc::Server::getClientPointer(int fd) {
-	std::vector<Client>::iterator it;
-	for (it = this->_clients.begin(); it != this->_clients.end(); it++) {
-		if (it->getSockfd() == fd)
-			return &(*it);
-	}
-	return NULL;
+    std::vector<Client *>::iterator it;
+    for (it = this->_clients.begin(); it != this->_clients.end(); it++) {
+        if ((*it)->getSockfd() == fd)
+            return (*it);
+    }
+    return NULL;
 }
 
-std::vector<ft_irc::Client>::iterator ft_irc::Server::getClientIterator(int fd) {
-	std::vector<Client>::iterator it;
+std::vector<ft_irc::Client *>::iterator ft_irc::Server::getClientIterator(int fd) {
+	std::vector<Client *>::iterator it;
 	for (it = this->_clients.begin(); it != this->_clients.end(); it++) {
-		if (it->getSockfd() == fd)
+		if ((*it)->getSockfd() == fd)
 			return it;
 	}
 	return this->_clients.end();
@@ -202,8 +202,8 @@ void	ft_irc::Server::run(void) {
 				{
 					this->_fds[i].fd = clientfd;
 
-					ft_irc::Client new_client;
-					new_client.setSockfd(clientfd);
+					ft_irc::Client* new_client = new Client;
+					new_client->setSockfd(clientfd);
 					_clients.push_back(new_client);
 
 					break;
@@ -234,6 +234,7 @@ void	ft_irc::Server::run(void) {
 								break;
 							case 1 :
 								sendIrcResponse(this->_fds[i].fd, getClientPointer(this->_fds[i].fd));
+								printClients();
 								break;
 						}
 					}
@@ -348,11 +349,11 @@ void 	ft_irc::Server::sendIrcResponse(int sockfd, ft_irc::Client *client) const 
 }
 
 
-bool	ft_irc::Server::parsingNickname(std::string nickname){
-	for (std::vector<Client>::iterator it = _clients.begin(); it != _clients.end(); ++it)
-		if ((*it).getNickname() == nickname)
-			return (false);
-	return (true);
+bool ft_irc::Server::parsingNickname(std::string nickname) {
+    for (std::vector<Client*>::iterator it = _clients.begin(); it != _clients.end(); ++it)
+        if ((*it)->getNickname() == nickname)
+            return false;
+    return true;
 }
 
 bool	ft_irc::Server::parsingPassword(std::string password)const{
@@ -361,12 +362,18 @@ bool	ft_irc::Server::parsingPassword(std::string password)const{
 	return (true);
 }
 
-void 	ft_irc::Server::closeClient(int i) {
+void ft_irc::Server::closeClient(int i) {
 	std::cerr << "\033[1m" << _name << "\033[0m => [" << getClientPointer(_fds[i].fd)->getNickname() << "] CONNECTION CLOSED" << std::endl;
-	std::vector<Client>::iterator client_it = getClientIterator(this->_fds[i].fd);
+	std::vector<Client *>::iterator client_it = getClientIterator(this->_fds[i].fd);
 	if (client_it != this->_clients.end()) {
 		this->_clients.erase(client_it);
 	}
 	close(this->_fds[i].fd);
 	this->_fds[i].fd = -1;
+}
+
+void ft_irc::Server::printClients(void) {
+	for (std::vector<Client*>::iterator it = _clients.begin(); it != _clients.end(); it++) {
+		std::cout << **it << std::endl;
+	}
 }

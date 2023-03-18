@@ -17,51 +17,72 @@ void ft_irc::Server::invite(ft_irc::Message* message, const std::string& param) 
 }
 
 void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
+    // On récupère le serveur, le canal et la liste des canaux du serveur
     ft_irc::Server *server = message->getServer();
     ft_irc::Channel *channel;
     std::vector<Channel*> *channels = server->getChannels();
 
+    // On supprime le caractère '#' au début du paramètre pour récupérer le nom du canal
     std::string param2 = param;
+    removeAllOccurrences(param2, "#");
 
-    if (param2.find("#") == 0) {
-        // CANAL PUBLIC
-        removeAllOccurrences(param2, "#");
-        channel = server->getChannelPointer(param2);
-        if (!channel) {
-            channel = new Channel(param2);
-            channels->push_back(channel);
+    // Si le canal n'existe pas, on le crée et on l'ajoute à la liste des canaux du serveur
+    channel = server->getChannelPointer(param2);
+    if (!channel) {
+        channel = new Channel(param2);
+        channels->push_back(channel);
+    }
+
+    // On ajoute l'utilisateur qui a envoyé le message au canal
+    channel->addClient(message->getSender());
+
+    // On envoie un message de bienvenue à l'utilisateur qui a rejoint le canal
+    std::string msg = message->getSender()->getNickname() + ":" + " JOIN #" + channel->getName() + "\r\n";
+    if (send(message->getSender()->getSockfd(), msg.c_str(), msg.length(), 0) == -1) {
+        std::cerr << "Error SEND" << std::endl;
+    }
+
+    // AU client qui rejoint
+    // ------------------------------
+
+    // On envoie la liste des noms des clients présents dans le canal à l'utilisateur qui vient de rejoindre le canal
+    std::string names_msg = ":" + message->getServer()->getIp() + " 353 " + message->getSender()->getNickname() + " = #" + channel->getName() + " :";
+    const std::vector<Client *>& clients = channel->getClients();
+
+    // On parcourt la liste des clients dans le canal et on ajoute leur nom au message
+    for (std::vector<Client *>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
+        names_msg += " " + (*it)->getNickname();
+    }
+
+    // On termine le message avec un espace et un retour à la ligne
+    names_msg += " \r\n";
+
+    // std::cerr << names_msg << std::endl;
+
+    // A tous les clients presents ds le canal
+    // ---------------------------------
+
+    // On envoie le message de la liste des noms des clients présents dans le canal à tous les clients du canal
+    for (std::vector<Client *>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
+        if (send((*it)->getSockfd(), names_msg.c_str(), names_msg.length(), 0) == -1) {
+            std::cerr << "2 ERROR SEND" << std::endl;
         }
-        channel->addClient(message->getSender());
-        std::string msg = message->getSender()->getNickname() + ":" + + " JOIN #" + channel->getName() + "\r\n";
+    }
 
-        // send welcome message to the joining client
-        send(message->getSender()->getSockfd(), msg.c_str(), msg.length(), 0);
 
-		// send names of clients in the channel to all clients except the joining client
-		std::string names_msg = ":" + message->getServer()->getIp() + " 353 " + message->getSender()->getNickname() + " = #" + channel->getName() + " :";
-		const std::vector<Client *>& clients = channel->getClients();
-		for (std::vector<Client *>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
-			if ((*it)->getSockfd() != message->getSender()->getSockfd()) {
-				names_msg += (*it)->getNickname() + " ";
-				send((*it)->getSockfd(), names_msg.c_str(), names_msg.length(), 0);
-			}
-		}
-		names_msg += "\r\n";
-        
-        // send JOIN message to all clients in the channel
-        std::string join_msg = message->getSender()->getNickname() + " JOIN #" + channel->getName() + "\r\n";
-        for (std::vector<Channel*>::iterator it = channels->begin(); it != channels->end(); ++it) {
-            std::vector<Client *> clients = (*it)->getClients();
-            for (std::vector<Client *>::iterator it2 = clients.begin(); it2 != clients.end(); ++it2) {
-                if ((*it2)->getSockfd() != message->getSender()->getSockfd()) {
-                    send((*it2)->getSockfd(), join_msg.c_str(), join_msg.length(), 0);
-                }
+    // send JOIN message to all clients in the channel
+    std::string join_msg = message->getSender()->getNickname() + ": JOIN #" + channel->getName() + "\r\n";
+    std::vector<Client *> channel_clients = channel->getClients();
+    for (std::vector<Client *>::iterator it = channel_clients.begin(); it != channel_clients.end(); ++it) {
+        if ((*it)->getSockfd() != message->getSender()->getSockfd()) {
+            if (send((*it)->getSockfd(), join_msg.c_str(), join_msg.length(), 0) == -1) {
+                std::cerr << "3 ERROR SEND" << std::endl;
             }
         }
-    } else {
-        // ERROR
     }
 }
+
+
 
 void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
 	(void)message;
