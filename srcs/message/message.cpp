@@ -39,11 +39,11 @@ ft_irc::Message&	ft_irc::Message::operator=(Message const &rhs){
 
 /* GETTERS */
 
-ft_irc::Server*	ft_irc::Message::getServer(void) const {
+ft_irc::Server*		ft_irc::Message::getServer(void) const {
 	return (this->_server);
 }
 
-ft_irc::Client*	ft_irc::Message::getSender(void) const {
+ft_irc::Client*		ft_irc::Message::getSender(void) const {
 	return (this->_sender);
 }
 
@@ -55,7 +55,7 @@ ft_irc::Client*	ft_irc::Message::getSender(void) const {
 // 	return (this->_channel);
 // }
 
-std::string	ft_irc::Message::getPayload(void) const {
+std::string			ft_irc::Message::getPayload(void) const {
 	return (this->_payload);
 }
 
@@ -65,17 +65,17 @@ std::string	ft_irc::Message::getPayload(void) const {
 
 /* SETTERS */
 
-void	ft_irc::Message::setServer(ft_irc::Server* server){
+void				ft_irc::Message::setServer(ft_irc::Server* server){
 	this->_server = server;
 	return ;
 }
 
-void	ft_irc::Message::setSender(ft_irc::Client* sender){
+void				ft_irc::Message::setSender(ft_irc::Client* sender){
 	this->_sender = sender;
 	return ;
 }
 
-void	ft_irc::Message::setPayload(std::string payload){
+void				ft_irc::Message::setPayload(std::string payload){
 	this->_payload = payload;
 	return ;
 }
@@ -95,7 +95,7 @@ void	ft_irc::Message::setPayload(std::string payload){
 // 	return ;
 // }
 
-void	ft_irc::Message::parsePayload(void) {
+void				ft_irc::Message::parsePayload(void) {
 	if (!(_payload.substr(0, 6) == "CAP LS" || _payload.substr(0, 4) == "PASS" || _payload.substr(0, 4) == "NICK" || _payload.substr(0, 4) == "USER")){
 		cleanLine(_payload);
 		std::cerr << "\033[1m" << _server->getName() << " [\033[32m" << _sender->getNickname() << "\033[0m] => " << _payload << std::endl;
@@ -110,7 +110,7 @@ void	ft_irc::Message::parsePayload(void) {
 	}
 }
 
-std::ostream& ft_irc::operator<<(std::ostream& os, const ft_irc::Message& message) {
+std::ostream& 		ft_irc::operator<<(std::ostream& os, const ft_irc::Message& message) {
 	os << "New Message instance created for " << message.getSender()->getNickname();
 	return os;
 }

@@ -51,7 +51,7 @@ ft_irc::Client::~Client(void){
 
 /* INIT */
 
-ft_irc::Client&	ft_irc::Client::operator=(Client const &rhs){
+ft_irc::Client&				ft_irc::Client::operator=(Client const &rhs){
 	if (this != &rhs){
 		this->_isSet = rhs._isSet;
 		this->_isBot = rhs._isBot;
@@ -67,41 +67,41 @@ ft_irc::Client&	ft_irc::Client::operator=(Client const &rhs){
 	return (*this);
 }
 
-bool ft_irc::Client::operator==(const Client &other) const {
+bool 						ft_irc::Client::operator==(const Client &other) const {
 	return this->_nickname == other._nickname;
 }
 
 /* GETTERS */
 
-int	ft_irc::Client::getSockfd(void) const {
+int							ft_irc::Client::getSockfd(void) const {
 	return (this->_sockfd);
 }
 
-std::string	ft_irc::Client::getNickname(void) const {
+std::string					ft_irc::Client::getNickname(void) const {
 	return (this->_nickname);
 }
 
-std::string	ft_irc::Client::getUsername(void) const {
+std::string					ft_irc::Client::getUsername(void) const {
 	return (this->_username);
 }
 
-std::string	ft_irc::Client::getRealname(void) const {
+std::string					ft_irc::Client::getRealname(void) const {
 	return (this->_realname);
 }
 
-std::string	ft_irc::Client::getPassword(void) const {
+std::string					ft_irc::Client::getPassword(void) const {
 	return (this->_password);
 }
 
-std::string	ft_irc::Client::getHost(void) const {
+std::string					ft_irc::Client::getHost(void) const {
 	return (this->_host);
 }
 
-std::string	ft_irc::Client::getServername(void) const {
+std::string					ft_irc::Client::getServername(void) const {
 	return (this->_servername);
 }
 
-std::string	ft_irc::Client::getUserLine(void) const {
+std::string					ft_irc::Client::getUserLine(void) const {
 	return (this->_userLine);
 }
 
@@ -111,70 +111,70 @@ std::vector<std::string>	ft_irc::Client::getChannels(void) const {
 
 /* SETTERS */
 
-void	ft_irc::Client::setSockfd(int sockfd){
+void						ft_irc::Client::setSockfd(int sockfd){
 	this->_sockfd = sockfd;
 	return ;
 }
 
-void	ft_irc::Client::setNickname(std::string nickname){
+void						ft_irc::Client::setNickname(std::string nickname){
 	this->_nickname = nickname;
 	return ;
 }
 
-void	ft_irc::Client::setUsername(std::string username){
+void						ft_irc::Client::setUsername(std::string username){
 	this->_username = username;
 	return ;
 }
 
-void	ft_irc::Client::setRealname(std::string realname){
+void						ft_irc::Client::setRealname(std::string realname){
 	this->_realname = realname;
 	return ;
 }
 
-void	ft_irc::Client::setPassword(std::string password){
+void						ft_irc::Client::setPassword(std::string password){
 	this->_password = password;
 	return ;
 }
 
-void	ft_irc::Client::setHost(std::string host){
+void						ft_irc::Client::setHost(std::string host){
 	this->_host = host;
 	return ;
 }
 
-void	ft_irc::Client::setServername(std::string servername){
+void						ft_irc::Client::setServername(std::string servername){
 	this->_servername = servername;
 	return ;
 }
 
-void	ft_irc::Client::setUserLine(std::string userLine){
+void						ft_irc::Client::setUserLine(std::string userLine){
 	this->_userLine = userLine;
 	return ;
 }
 
-void	ft_irc::Client::setChannels(std::vector<std::string> channels){	//! deep copy
+void						ft_irc::Client::setChannels(std::vector<std::string> channels){	//! deep copy
 	this->_channels = channels;
 	return ;
 }
 
-void ft_irc::Client::setIsBot(bool isBot) {
+void 						ft_irc::Client::setIsBot(bool isBot) {
     _isBot = isBot;
 }
 
-void ft_irc::Client::setIsSet(bool isSet) {
+void 						ft_irc::Client::setIsSet(bool isSet) {
     _isSet = isSet;
 }
 
 /* METHODS */
 
-bool ft_irc::Client::isBot() const {
+bool 						ft_irc::Client::isBot() const {
     return _isBot;
 }
 
-bool ft_irc::Client::isSet() const {
+bool 						ft_irc::Client::isSet() const {
     return _isSet;
 }
 
-void ft_irc::Client::handleMessage(int serverSockFd, std::string text, Client *bot, Client *receiver) {
+void 						ft_irc::Client::handleMessage(int serverSockFd, std::string text, Client *bot, Client *receiver) {
     (void)text;
 	(void)serverSockFd;
 	std::string response;
