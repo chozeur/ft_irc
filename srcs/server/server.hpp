@@ -50,6 +50,7 @@ namespace ft_irc{
 			std::vector<Channel*>							*getChannels(void);
 			Channel											*getChannelPointer(std::string name);
 			std::map<std::string, CommandFunction> 			*getCommands(void);
+			struct pollfd									*getFds(void);
 
 			// SETTERS
 			void											setName(std::string name);

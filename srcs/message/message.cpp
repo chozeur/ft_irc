@@ -15,10 +15,7 @@ ft_irc::Message::Message(std::string payload,
 		):
 		_payload(payload),
 		_sender(sender),
-		_server(server),
-		_receiver(NULL),
-		_channel(NULL),
-		_callback(NULL) {
+		_server(server) {
 	this->parsePayload();
 	return ;
 }
@@ -35,10 +32,7 @@ ft_irc::Message&	ft_irc::Message::operator=(Message const &rhs){
 	if (this != &rhs){
 		this->_server = rhs._server;
 		this->_sender = rhs._sender;
-		this->_receiver = rhs._receiver;
-		this->_channel = rhs._channel;
 		this->_payload = rhs._payload;
-		this->_callback = rhs._callback;
 	}
 	return (*this);
 }
@@ -53,21 +47,21 @@ ft_irc::Client*	ft_irc::Message::getSender(void) const {
 	return (this->_sender);
 }
 
-ft_irc::Client*	ft_irc::Message::getReceiver(void) const {
-	return (this->_receiver);
-}
+// ft_irc::Client*	ft_irc::Message::getReceiver(void) const {
+// 	return (this->_receiver);
+// }
 
-ft_irc::Channel*	ft_irc::Message::getChannel(void) const {
-	return (this->_channel);
-}
+// ft_irc::Channel*	ft_irc::Message::getChannel(void) const {
+// 	return (this->_channel);
+// }
 
 std::string	ft_irc::Message::getPayload(void) const {
 	return (this->_payload);
 }
 
-void	(*ft_irc::Message::getCallback(void))(ft_irc::Client&, ft_irc::Client&, std::string){
-	return (this->_callback);
-}
+// void	(*ft_irc::Message::getCallback(void))(ft_irc::Client&, ft_irc::Client&, std::string){
+// 	return (this->_callback);
+// }
 
 /* SETTERS */
 
@@ -81,25 +75,25 @@ void	ft_irc::Message::setSender(ft_irc::Client* sender){
 	return ;
 }
 
-void	ft_irc::Message::setReceiver(ft_irc::Client* receiver){
-	this->_receiver = receiver;
-	return ;
-}
-
-void	ft_irc::Message::setChannel(ft_irc::Channel* channel){
-	this->_channel = channel;
-	return ;
-}
-
 void	ft_irc::Message::setPayload(std::string payload){
 	this->_payload = payload;
 	return ;
 }
 
-void	ft_irc::Message::setCallback(void (*callback)(ft_irc::Client&, ft_irc::Client&, std::string)){
-	this->_callback = callback;
-	return ;
-}
+// void	ft_irc::Message::setReceiver(ft_irc::Client* receiver){
+// 	this->_receiver = receiver;
+// 	return ;
+// }
+
+// void	ft_irc::Message::setChannel(ft_irc::Channel* channel){
+// 	this->_channel = channel;
+// 	return ;
+// }
+
+// void	ft_irc::Message::setCallback(void (*callback)(ft_irc::Client&, ft_irc::Client&, std::string)){
+// 	this->_callback = callback;
+// 	return ;
+// }
 
 void	ft_irc::Message::parsePayload(void) {
 	if (!(_payload.substr(0, 6) == "CAP LS" || _payload.substr(0, 4) == "PASS" || _payload.substr(0, 4) == "NICK" || _payload.substr(0, 4) == "USER")){

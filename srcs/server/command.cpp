@@ -92,14 +92,18 @@ void ft_irc::Server::nick(ft_irc::Message* message, const std::string& param) {
 
     if (nickname.empty()) {
         std::string nick_res = ":" + server->getIp() + " 433 * " + nickname + " NICK :Nickname can't be empty. Usage /nick newNickname\r\n";
-        send(message->getSender()->getSockfd(), nick_res.c_str(), nick_res.length(), 0);
+        send(client->getSockfd(), nick_res.c_str(), nick_res.length(), 0);
+        if (!rest.empty() && rest.size() > 1)
+            client->setUserLine(rest);
         return;
     }
 
-    if (!server->parsingNickname(message->getSender()->getSockfd(), nickname)) {
+    if (!server->parsingNickname(client->getSockfd(), nickname)) {
         std::string nick_res = ":" + server->getIp() + " 433 * " + nickname + " NICK :Nickname is already in use. Usage /nick freeNickname\r\n";
-        send(message->getSender()->getSockfd(), nick_res.c_str(), nick_res.length(), 0);
-        return;
+        send(client->getSockfd(), nick_res.c_str(), nick_res.length(), 0);
+        if (!rest.empty() && rest.size() > 1)
+            client->setUserLine(rest);
+        return ;
     }
 
     if (!client->getNickname().empty()) {
@@ -115,9 +119,10 @@ void ft_irc::Server::nick(ft_irc::Message* message, const std::string& param) {
         client->setNickname(nickname);
     }
 
-    if (!rest.empty() && rest.size() > 1) {
-        user(message, rest);
-    }
+    if (!rest.empty() && rest.size() > 1)
+        user(message, rest); 
+    else if (!client->isSet() && !client->getUserLine().empty())
+        user(message, client->getUserLine());
 }
 
 void ft_irc::Server::user(ft_irc::Message* message, const std::string& param) {
@@ -138,27 +143,48 @@ void ft_irc::Server::user(ft_irc::Message* message, const std::string& param) {
     std::string servername = line.substr(space_pos3 + 1, colon_pos - space_pos3 - 2);
     std::string realname = line.substr(colon_pos + 1, end_pos - 1);
 
-    server->getClientPointerByFd(message->getSender()->getSockfd())->setUsername(username);
-    server->getClientPointerByFd(message->getSender()->getSockfd())->setHost(hostname);
-    server->getClientPointerByFd(message->getSender()->getSockfd())->setServername(servername);
-    server->getClientPointerByFd(message->getSender()->getSockfd())->setRealname(realname);
+    ft_irc::Client *client = server->getClientPointerByFd(message->getSender()->getSockfd());
+    client->setUsername(username);
+    client->setHost(hostname);
+    client->setServername(servername);
+    client->setRealname(realname);
 
-    if (!server->parsingPassword(server->getClientPointerByFd(message->getSender()->getSockfd())->getPassword())) {
-        std::string pass_res = "NOTICE " + server->getClientPointerByFd(message->getSender()->getSockfd())->getNickname() + ":Invalid password. Please try again.\r\n";
-        send(message->getSender()->getSockfd(), pass_res.c_str(), pass_res.length(), 0);
+    if (!server->parsingPassword(client->getPassword())) {
+        std::string pass_res = "NOTICE " + client->getNickname() + " :Invalid password. Please try again.\r\n";
+        send(client->getSockfd(), pass_res.c_str(), pass_res.length(), 0);
+
+        int fd = client->getSockfd();
+
+        // Set a -1 le fd ouvert dans la struct pollfd
+        for (int i = 1; i <= MAX_CLIENTS; i++) {
+            if (server->getFds()[i].fd == fd)
+                server->getFds()[i].fd = -1;
+        }
+
+        // Retirer le client de la liste des clients et supprimer son objet de la mémoire
+        std::vector<ft_irc::Client *> *clients = server->getClients();
+        for (std::vector<ft_irc::Client *>::iterator it = clients->begin(); it != clients->end(); ++it) {
+            if (*it == client) {
+                clients->erase(it);
+                delete client;
+                break;
+            }
+        }
+
+        close(fd);
         return ;
     }
 
-    if (!server->parsingNickname(message->getSender()->getSockfd(), server->getClientPointerByFd(message->getSender()->getSockfd())->getNickname())) {
-        std::string pass_res = "NOTICE " + server->getClientPointerByFd(message->getSender()->getSockfd())->getNickname() + ":Empty or already used nickname. Please try again\r\n";
-        send(message->getSender()->getSockfd(), pass_res.c_str(), pass_res.length(), 0);
+    if (client->getNickname().empty()) {
+        client->setUserLine(param);
         return ;
     }
 
-    server->sendIrcResponse(message->getSender()->getSockfd(), message->getSender());
+    server->sendIrcResponse(client->getSockfd(), client);
 
-    // server->printClients();
-	return ;
+    client->setIsSet(true);
+
+    return ;
 }
 
 // METHODS

@@ -2,23 +2,43 @@
 
 /* CONSTRUCTORS */
 
-ft_irc::Client::Client(void){
+ft_irc::Client::Client(void):
+	_isSet(false),
+	_isBot(false),
+	_sockfd(-1),
+	_nickname(""),
+	_username(""),
+	_realname(""),
+	_password(""),
+	_host(""),
+	_userLine(""){
 	return ;
 }
 
-ft_irc::Client::Client(Client const & rhs){
+ft_irc::Client::Client(Client const & rhs):
+	_isSet(false),
+	_isBot(false),
+	_sockfd(-1),
+	_nickname(""),
+	_username(""),
+	_realname(""),
+	_password(""),
+	_host(""),
+	_userLine(""){
 	*this = rhs;
 	return ;
 }
 
 ft_irc::Client::Client(int sockfd):
+	_isSet(false),
 	_isBot(false),
 	_sockfd(sockfd),
 	_nickname(""),
 	_username(""),
 	_realname(""),
 	_password(""),
-	_host("") {
+	_host(""),
+	_userLine("") {
 	return ;
 }
 
@@ -33,12 +53,15 @@ ft_irc::Client::~Client(void){
 
 ft_irc::Client&	ft_irc::Client::operator=(Client const &rhs){
 	if (this != &rhs){
+		this->_isSet = rhs._isSet;
+		this->_isBot = rhs._isBot;
 		this->_sockfd = rhs._sockfd;
 		this->_nickname = rhs._nickname;
 		this->_username = rhs._username;
 		this->_realname = rhs._realname;
 		this->_password = rhs._password;
 		this->_host = rhs._host;
+		this->_userLine = rhs._userLine;
 		this->_channels = rhs._channels;
 	}
 	return (*this);
@@ -76,6 +99,10 @@ std::string	ft_irc::Client::getHost(void) const {
 
 std::string	ft_irc::Client::getServername(void) const {
 	return (this->_servername);
+}
+
+std::string	ft_irc::Client::getUserLine(void) const {
+	return (this->_userLine);
 }
 
 std::vector<std::string>	ft_irc::Client::getChannels(void) const {
@@ -119,6 +146,11 @@ void	ft_irc::Client::setServername(std::string servername){
 	return ;
 }
 
+void	ft_irc::Client::setUserLine(std::string userLine){
+	this->_userLine = userLine;
+	return ;
+}
+
 void	ft_irc::Client::setChannels(std::vector<std::string> channels){	//! deep copy
 	this->_channels = channels;
 	return ;
@@ -128,10 +160,18 @@ void ft_irc::Client::setIsBot(bool isBot) {
     _isBot = isBot;
 }
 
+void ft_irc::Client::setIsSet(bool isSet) {
+    _isSet = isSet;
+}
+
 /* METHODS */
 
 bool ft_irc::Client::isBot() const {
     return _isBot;
+}
+
+bool ft_irc::Client::isSet() const {
+    return _isSet;
 }
 
 void ft_irc::Client::handleMessage(int serverSockFd, std::string text, Client *bot, Client *receiver) {

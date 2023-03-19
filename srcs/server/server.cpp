@@ -111,6 +111,10 @@ std::map<std::string, CommandFunction>* ft_irc::Server::getCommands(void) {
     return (&(_commands));
 }
 
+struct pollfd *ft_irc::Server::getFds(void){
+	return (_fds);
+}
+
 /* SETTERS */
 
 void	ft_irc::Server::setName(std::string name){
@@ -176,10 +180,7 @@ void	ft_irc::Server::init(std::string password, long port, char **env){
 	this->_fds[0].fd = this->_sockfd;
 	this->_fds[0].events = POLLIN;
 
-	this->_fds[MAX_CLIENTS+1].fd = socket(AF_INET, SOCK_STREAM, 0);
-	if (this->_fds[MAX_CLIENTS+1].fd < 0)
-		std::cerr << "Error: socket creation failed for bot" << std::endl;
-	Client* bot = new Client(this->_fds[MAX_CLIENTS+1].fd);
+	Client* bot = new Client(-1);
 	bot->setIsBot(true);
 	bot->setNickname("MasterBot");
 	_clients.push_back(bot);
