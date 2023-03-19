@@ -85,6 +85,8 @@ void ft_irc::Server::nick(ft_irc::Message* message, const std::string& param) {
     cleanLine(first);
     removeAllOccurrences(first, "\n");
 
+    std::cout << "\033[1m" << server->getName() << "\033[0m" << " => " << first << std::endl;
+
     std::string::size_type space_pos = first.find(' ');
     std::string nickname = first.substr(space_pos + 1);
 
