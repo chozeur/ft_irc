@@ -293,9 +293,11 @@ void 	ft_irc::Server::sendIrcResponse(int sockfd, ft_irc::Client *client) const 
 	send(sockfd, ascii_msg.c_str(), ascii_msg.length(), 0);
 }
 
-bool ft_irc::Server::parsingNickname(std::string nickname) {
-    for (std::vector<Client*>::iterator it = _clients.begin(); it != _clients.end(); ++it)
-        if ((*it)->getNickname() == nickname)
+bool ft_irc::Server::parsingNickname(int fd, std::string nickname) {
+	if (nickname.empty())
+		return false;
+	for (std::vector<Client*>::iterator it = _clients.begin(); it != _clients.end(); ++it)
+        if ((*it)->getNickname() == nickname && (*it)->getSockfd() != fd)
             return false;
     return true;
 }

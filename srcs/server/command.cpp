@@ -90,9 +90,14 @@ void ft_irc::Server::nick(ft_irc::Message* message, const std::string& param) {
     std::string::size_type space_pos = first.find(' ');
     std::string nickname = first.substr(space_pos + 1);
 
-    if (!server->parsingNickname(nickname)) {
-        std::cout << "\033[1m" << server->getName() << "\033[0m" << " => Nickname " << nickname << " is already in use" << std::endl;
-        std::string nick_res = ":" + server->getIp() + " 433 * " + nickname + " :Nickname is already in use.\r\n";
+    if (nickname.empty()) {
+        std::string nick_res = ":" + server->getIp() + " 433 * " + nickname + " NICK :Nickname can't be empty. Usage /nick newNickname\r\n";
+        send(message->getSender()->getSockfd(), nick_res.c_str(), nick_res.length(), 0);
+        return;
+    }
+
+    if (!server->parsingNickname(message->getSender()->getSockfd(), nickname)) {
+        std::string nick_res = ":" + server->getIp() + " 433 * " + nickname + " NICK :Nickname is already in use. Usage /nick freeNickname\r\n";
         send(message->getSender()->getSockfd(), nick_res.c_str(), nick_res.length(), 0);
         return;
     }
@@ -139,11 +144,17 @@ void ft_irc::Server::user(ft_irc::Message* message, const std::string& param) {
     server->getClientPointerByFd(message->getSender()->getSockfd())->setRealname(realname);
 
     if (!server->parsingPassword(server->getClientPointerByFd(message->getSender()->getSockfd())->getPassword())) {
-        std::cout << "\033[1m" << server->getName() << "\033[0m" << " => Bad password, try again." << std::endl;
-        std::string pass_res = "NOTICE " + server->getClientPointerByFd(message->getSender()->getSockfd())->getNickname() + ":Invalid password. Please try again.";
+        std::string pass_res = "NOTICE " + server->getClientPointerByFd(message->getSender()->getSockfd())->getNickname() + ":Invalid password. Please try again.\r\n";
         send(message->getSender()->getSockfd(), pass_res.c_str(), pass_res.length(), 0);
         return ;
     }
+
+    if (!server->parsingNickname(message->getSender()->getSockfd(), server->getClientPointerByFd(message->getSender()->getSockfd())->getNickname())) {
+        std::string pass_res = "NOTICE " + server->getClientPointerByFd(message->getSender()->getSockfd())->getNickname() + ":Empty or already used nickname. Please try again\r\n";
+        send(message->getSender()->getSockfd(), pass_res.c_str(), pass_res.length(), 0);
+        return ;
+    }
+
     server->sendIrcResponse(message->getSender()->getSockfd(), message->getSender());
 
     // server->printClients();
@@ -171,7 +182,15 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
     cleanLine(param2);
     removeAllOccurrences(param2, "#");
 
-    // Si le canal n'existe pas, on le crée et on l'ajoute à la liste des canaux du serveur
+    std::cerr << "JOIN param = " << param2 << std::endl;
+
+    if (pos == std::string::npos) {
+        std::string chan_res = ":" + server->getIp() + " 461 * " + message->getSender()->getNickname() + " JOIN :Channel name missing. Usage: /join #channel\r\n";
+        send(message->getSender()->getSockfd(), chan_res.c_str(), chan_res.length(), 0);
+        return ;
+    }
+
+    // Si le canal n'existe pas, on le crée et on l'ajoute à la liste des canaux du serveur    
     channel = server->getChannelPointer(param2);
     if (!channel) {
         channel = new Channel(param2);
