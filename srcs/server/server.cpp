@@ -68,10 +68,19 @@ std::vector<ft_irc::Client *> *ft_irc::Server::getClients() {
 	return (&_clients);
 }
 
-ft_irc::Client* ft_irc::Server::getClientPointer(int fd) {
+ft_irc::Client* ft_irc::Server::getClientPointerByFd(int fd) {
     std::vector<Client *>::iterator it;
     for (it = this->_clients.begin(); it != this->_clients.end(); it++) {
         if ((*it)->getSockfd() == fd)
+            return (*it);
+    }
+    return NULL;
+}
+
+ft_irc::Client* ft_irc::Server::getClientPointerByNick(std::string nick) {
+    std::vector<Client *>::iterator it;
+    for (it = this->_clients.begin(); it != this->_clients.end(); it++) {
+        if ((*it)->getNickname() == nick)
             return (*it);
     }
     return NULL;
@@ -166,6 +175,15 @@ void	ft_irc::Server::init(std::string password, long port, char **env){
 	}
 	this->_fds[0].fd = this->_sockfd;
 	this->_fds[0].events = POLLIN;
+
+	this->_fds[MAX_CLIENTS+1].fd = socket(AF_INET, SOCK_STREAM, 0);
+	if (this->_fds[MAX_CLIENTS+1].fd < 0)
+		std::cerr << "Error: socket creation failed for bot" << std::endl;
+	Client* bot = new Client(this->_fds[MAX_CLIENTS+1].fd);
+	bot->setIsBot(true);
+	bot->setNickname("MasterBot");
+	_clients.push_back(bot);
+
 	for (int i = 1; i <= MAX_CLIENTS; ++i)
 	{
 		this->_fds[i].fd = -1;
@@ -209,6 +227,7 @@ void	ft_irc::Server::run(void) {
 
 					ft_irc::Client* new_client = new Client;
 					new_client->setSockfd(clientfd);
+					new_client->setIsBot(false);
 					_clients.push_back(new_client);
 
 					break;
@@ -232,7 +251,7 @@ void	ft_irc::Server::run(void) {
 				} else {
 					std::string message(buffer, bytes_received);
 
-					ft_irc::Message *command = new Message(message, getClientPointer(this->_fds[i].fd), this);
+					ft_irc::Message *command = new Message(message, getClientPointerByFd(this->_fds[i].fd), this);
 					delete command;
 				}
 			}
@@ -245,8 +264,9 @@ void	ft_irc::Server::run(void) {
 void	ft_irc::Server::stop(void) {
 	for (std::vector<Channel *>::iterator it = _channels.begin(); it != _channels.end(); it++)
 		delete ((*it));
-	for (std::vector<Client *>::iterator it = _clients.begin(); it != _clients.end(); it++)
-		delete ((*it));
+	for (std::vector<Client *>::iterator it = _clients.begin(); it != _clients.end(); it++) {
+		delete (*it);
+	}
 	close(this->_sockfd);
 	std::cerr << "Turn off server here" << std::endl;
 }
@@ -287,7 +307,7 @@ bool	ft_irc::Server::parsingPassword(std::string password)const{
 }
 
 void ft_irc::Server::closeClient(int i) {
-	std::cerr << "\033[1m" << _name << "\033[0m => [" << getClientPointer(_fds[i].fd)->getNickname() << "] CONNECTION CLOSED" << std::endl;
+	std::cerr << "\033[1m" << _name << "\033[0m => [" << getClientPointerByFd(_fds[i].fd)->getNickname() << "] CONNECTION CLOSED" << std::endl;
 	std::vector<Client *>::iterator client_it = getClientIterator(this->_fds[i].fd);
 	if (client_it != this->_clients.end()) {
 		this->_clients.erase(client_it);

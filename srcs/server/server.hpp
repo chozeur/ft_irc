@@ -44,7 +44,8 @@ namespace ft_irc{
 			int												getSockfd(void)const;
 			char											**getEnv(void)const;
 			std::vector<Client *>							*getClients(void);
-			Client											*getClientPointer(int fd);
+			Client											*getClientPointerByFd(int fd);
+			Client											*getClientPointerByNick(std::string nick);
 			std::vector<Client *>::iterator					getClientIterator(int fd);
 			std::vector<Channel*>							*getChannels(void);
 			Channel											*getChannelPointer(std::string name);

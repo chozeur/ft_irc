@@ -60,7 +60,7 @@ void ft_irc::Server::pass(ft_irc::Message* message, const std::string& param) {
     removeAllOccurrences(first, "\n");
     std::cout << "\033[1m" << server->getName() << "\033[0m" << " => " << first << std::endl;
     std::string::size_type space_pos = first.find(' ');
-    server->getClientPointer(message->getSender()->getSockfd())->setPassword(first.substr(space_pos + 1));
+    server->getClientPointerByFd(message->getSender()->getSockfd())->setPassword(first.substr(space_pos + 1));
 
     if (!rest.empty() && rest.size() > 1) {
         nick(message, rest);
@@ -70,7 +70,7 @@ void ft_irc::Server::pass(ft_irc::Message* message, const std::string& param) {
 
 void ft_irc::Server::nick(ft_irc::Message* message, const std::string& param) {
     ft_irc::Server *server = message->getServer();
-    ft_irc::Client *client = server->getClientPointer(message->getSender()->getSockfd());
+    ft_irc::Client *client = server->getClientPointerByFd(message->getSender()->getSockfd());
 
     std::string param2 = param;
     std::string::size_type pos = param2.find('\n');
@@ -131,18 +131,20 @@ void ft_irc::Server::user(ft_irc::Message* message, const std::string& param) {
     std::string servername = line.substr(space_pos3 + 1, colon_pos - space_pos3 - 2);
     std::string realname = line.substr(colon_pos + 1, end_pos - 1);
 
-    server->getClientPointer(message->getSender()->getSockfd())->setUsername(username);
-    server->getClientPointer(message->getSender()->getSockfd())->setHost(hostname);
-    server->getClientPointer(message->getSender()->getSockfd())->setServername(servername);
-    server->getClientPointer(message->getSender()->getSockfd())->setRealname(realname);
+    server->getClientPointerByFd(message->getSender()->getSockfd())->setUsername(username);
+    server->getClientPointerByFd(message->getSender()->getSockfd())->setHost(hostname);
+    server->getClientPointerByFd(message->getSender()->getSockfd())->setServername(servername);
+    server->getClientPointerByFd(message->getSender()->getSockfd())->setRealname(realname);
 
-    if (!server->parsingPassword(server->getClientPointer(message->getSender()->getSockfd())->getPassword())) {
+    if (!server->parsingPassword(server->getClientPointerByFd(message->getSender()->getSockfd())->getPassword())) {
         std::cout << "\033[1m" << server->getName() << "\033[0m" << " => Bad password, try again." << std::endl;
-        std::string pass_res = "NOTICE " + server->getClientPointer(message->getSender()->getSockfd())->getNickname() + ":Invalid password. Please try again.";
+        std::string pass_res = "NOTICE " + server->getClientPointerByFd(message->getSender()->getSockfd())->getNickname() + ":Invalid password. Please try again.";
         send(message->getSender()->getSockfd(), pass_res.c_str(), pass_res.length(), 0);
         return ;
     }
     server->sendIrcResponse(message->getSender()->getSockfd(), message->getSender());
+
+    // server->printClients();
 	return ;
 }
 
@@ -274,21 +276,36 @@ void ft_irc::Server::privmsg(ft_irc::Message* message, const std::string& param)
                 }
             }
         }
-    } else {
+    } 
+    
+    else {
         // Si le paramètre ne commence pas par un '#', c'est un message à envoyer à un client
-        Client *client = server->getClientPointer(message->getSender()->getSockfd());
+        std::string nickname;
+        std::string contenu;
+        std::size_t colonPos = param2.find(" :");
+        if (colonPos != std::string::npos) {
+            nickname = param2.substr(0, colonPos);
+            contenu = param2.substr(colonPos + 2);
+        }
+
+        Client *client = server->getClientPointerByNick(nickname);
+
         if (!client) {
             // Si le client n'existe pas, on envoie un message d'erreur à l'utilisateur
-            std::string msg = ":" + server->getIp() + " 401 " + message->getSender()->getNickname() + " " + param2 + " :No such nick/channel\r\n";
+            std::string msg = ":" + server->getIp() + " 401 " + message->getSender()->getNickname() + " " + nickname + " :No such nick/channel\r\n";
             if (send(message->getSender()->getSockfd(), msg.c_str(), msg.length(), 0) == -1) {
                 std::cerr << "Error SEND" << std::endl;
             }
+        } else if (client->isBot()) {
+            // Si le client est un bot, on traite le message avec la méthode handleMessage() de la classe BotClient
+            // std::string messageToSend = ":" + message->getSender()->getNickname() + " PRIVMSG " + client->getNickname() + " :" + contenu + "\r\n";
+            // send(message->getSender()->getSockfd(), messageToSend.c_str(), messageToSend.length(), 0);
+            client->handleMessage(server->getSockfd(), contenu, client, message->getSender());
         } else {
-            // Si le client existe, on envoie le message à ce client
-            std::string msg = ":" + message->getSender()->getNickname() + "!" + message->getSender()->getUsername() + "@" + message->getSender()->getHost() + " PRIVMSG " + client->getNickname() + " :" + param2 + "\r\n";
-            if (send(client->getSockfd(), msg.c_str(), msg.length(), 0) == -1) {
+            // Si le client n'est pas un bot, on envoie le message à ce client
+            std::string msg = ":" + message->getSender()->getNickname() + "!" + message->getSender()->getUsername() + "@" + message->getSender()->getHost() + " PRIVMSG " + client->getNickname() + " :" + contenu + "\r\n";
+            if (send(client->getSockfd(), msg.c_str(), msg.length(), 0) == -1)
                 std::cerr << "Error SEND" << std::endl;
-            }
         }
     }
 }

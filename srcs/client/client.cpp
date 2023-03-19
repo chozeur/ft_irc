@@ -12,6 +12,7 @@ ft_irc::Client::Client(Client const & rhs){
 }
 
 ft_irc::Client::Client(int sockfd):
+	_isBot(false),
 	_sockfd(sockfd),
 	_nickname(""),
 	_username(""),
@@ -123,7 +124,38 @@ void	ft_irc::Client::setChannels(std::vector<std::string> channels){	//! deep co
 	return ;
 }
 
+void ft_irc::Client::setIsBot(bool isBot) {
+    _isBot = isBot;
+}
+
 /* METHODS */
+
+bool ft_irc::Client::isBot() const {
+    return _isBot;
+}
+
+void ft_irc::Client::handleMessage(int serverSockFd, std::string text, Client *bot, Client *receiver) {
+    (void)text;
+	(void)serverSockFd;
+	std::string response;
+
+	if (text == "ping") {
+        response = "Pong!";
+    } else if (text == "hello") {
+        response = "Bonjour!";
+    } else if (text == "time") {
+        time_t now = time(0);
+        response = "Il est " + std::string(ctime(&now));
+    } else if (text == "help") {
+		response = "Les commandes disponibles sont : ping, hello, time.";
+	} else {
+        response = "Commande inconnue";
+    }
+
+    std::string messageToSend = ":" + bot->getNickname() + " PRIVMSG " + receiver->getNickname() + " :" + response + "\r\n";
+    send(receiver->getSockfd(), messageToSend.c_str(), messageToSend.length(), 0);
+}
+
 
 /* OVERLOADS */
 

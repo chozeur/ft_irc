@@ -8,7 +8,7 @@
 # include <netinet/in.h>
 # include <string.h>
 # include <unistd.h>
-#include <algorithm>
+# include <algorithm>
 
 
 namespace ft_irc
@@ -21,7 +21,7 @@ namespace ft_irc
 			Client(Client const &rhs);
 			Client(int sockfd);
 
-			~Client(void);
+			virtual ~Client(void);
 
 			Client	&operator=(Client const & rhs);
 			bool 	operator==(const Client &other) const;
@@ -45,8 +45,13 @@ namespace ft_irc
 			void						setHost(std::string host);
 			void						setServername(std::string servername);
 			void						setChannels(std::vector<std::string> channels);
+		    void						setIsBot(bool isBot);
+
+			bool						isBot() const;
+			void						handleMessage(int serverSockFd, std::string text, Client *bot, Client *receiver);
 
 		private:
+			bool						_isBot;
 			int							_sockfd;
 			std::string					_nickname;
 			std::string					_username;
