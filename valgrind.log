@@ -1,0 +1,673 @@
+==3136330== Memcheck, a memory error detector
+==3136330== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==3136330== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==3136330== Command: ./ircserv 1234 pass
+==3136330== Parent PID: 3133434
+==3136330== 
+==3136330== Invalid read of size 4
+==3136330==    at 0x41722C: ft_irc::Client::getSockfd() const (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40526A: ft_irc::Server::getClientPointerByFd(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405CDC: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4de942c is 12 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 4
+==3136330==    at 0x41722C: ft_irc::Client::getSockfd() const (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40526A: ft_irc::Server::getClientPointerByFd(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40B3F0: ft_irc::Server::pass(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40AF8E: ft_irc::Server::cap(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x41205D: ft_irc::Message::parsePayload() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x411A57: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405D0C: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4de942c is 12 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 4
+==3136330==    at 0x41722C: ft_irc::Client::getSockfd() const (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40526A: ft_irc::Server::getClientPointerByFd(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40B619: ft_irc::Server::nick(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40B4B7: ft_irc::Server::pass(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40AF8E: ft_irc::Server::cap(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x41205D: ft_irc::Message::parsePayload() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x411A57: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405D0C: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4de942c is 12 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 8
+==3136330==    at 0x49C2B18: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==3136330==    by 0x417266: ft_irc::Client::getNickname[abi:cxx11]() const (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x4076D1: ft_irc::Server::parsingNickname(int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40BD14: ft_irc::Server::nick(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40B4B7: ft_irc::Server::pass(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40AF8E: ft_irc::Server::cap(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x41205D: ft_irc::Message::parsePayload() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x411A57: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405D0C: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4de9438 is 24 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 8
+==3136330==    at 0x49C2B1F: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==3136330==    by 0x417266: ft_irc::Client::getNickname[abi:cxx11]() const (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x4076D1: ft_irc::Server::parsingNickname(int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40BD14: ft_irc::Server::nick(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40B4B7: ft_irc::Server::pass(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40AF8E: ft_irc::Server::cap(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x41205D: ft_irc::Message::parsePayload() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x411A57: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405D0C: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4de9430 is 16 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 2
+==3136330==    at 0x484FF60: memcpy@GLIBC_2.2.5 (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x49C2AF3: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==3136330==    by 0x417266: ft_irc::Client::getNickname[abi:cxx11]() const (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x4076D1: ft_irc::Server::parsingNickname(int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40BD14: ft_irc::Server::nick(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40B4B7: ft_irc::Server::pass(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40AF8E: ft_irc::Server::cap(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x41205D: ft_irc::Message::parsePayload() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x411A57: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405D0C: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4de9440 is 32 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 2
+==3136330==    at 0x484FF6F: memcpy@GLIBC_2.2.5 (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x49C2AF3: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==3136330==    by 0x417266: ft_irc::Client::getNickname[abi:cxx11]() const (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x4076D1: ft_irc::Server::parsingNickname(int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40BD14: ft_irc::Server::nick(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40B4B7: ft_irc::Server::pass(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40AF8E: ft_irc::Server::cap(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x41205D: ft_irc::Message::parsePayload() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x411A57: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405D0C: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4de9444 is 36 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 4
+==3136330==    at 0x41722C: ft_irc::Client::getSockfd() const (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40526A: ft_irc::Server::getClientPointerByFd(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40CB78: ft_irc::Server::user(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40C5D3: ft_irc::Server::nick(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40B4B7: ft_irc::Server::pass(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40AF8E: ft_irc::Server::cap(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x41205D: ft_irc::Message::parsePayload() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x411A57: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405D0C: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4de942c is 12 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 4
+==3136330==    at 0x41722C: ft_irc::Client::getSockfd() const (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40526A: ft_irc::Server::getClientPointerByFd(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405EC6: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4de942c is 12 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 8
+==3136330==    at 0x49C2B18: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==3136330==    by 0x417266: ft_irc::Client::getNickname[abi:cxx11]() const (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405ED6: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4de9438 is 24 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 8
+==3136330==    at 0x49C2B1F: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==3136330==    by 0x417266: ft_irc::Client::getNickname[abi:cxx11]() const (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405ED6: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4de9430 is 16 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 2
+==3136330==    at 0x484FF60: memcpy@GLIBC_2.2.5 (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x49C2AF3: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==3136330==    by 0x417266: ft_irc::Client::getNickname[abi:cxx11]() const (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405ED6: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4de9440 is 32 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 2
+==3136330==    at 0x484FF6F: memcpy@GLIBC_2.2.5 (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x49C2AF3: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==3136330==    by 0x417266: ft_irc::Client::getNickname[abi:cxx11]() const (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405ED6: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4de9444 is 36 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 4
+==3136330==    at 0x41722C: ft_irc::Client::getSockfd() const (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40546A: ft_irc::Server::getClientIterator(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405F3C: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4de942c is 12 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 1
+==3136330==    at 0x484FF90: memcpy@GLIBC_2.2.5 (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x49C2AF3: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==3136330==    by 0x417266: ft_irc::Client::getNickname[abi:cxx11]() const (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x4076D1: ft_irc::Server::parsingNickname(int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40BD14: ft_irc::Server::nick(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40B4B7: ft_irc::Server::pass(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40AF8E: ft_irc::Server::cap(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x41205D: ft_irc::Message::parsePayload() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x411A57: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405D0C: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4df0374 is 36 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 4
+==3136330==    at 0x41722C: ft_irc::Client::getSockfd() const (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x407728: ft_irc::Server::parsingNickname(int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40BD14: ft_irc::Server::nick(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40B4B7: ft_irc::Server::pass(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40AF8E: ft_irc::Server::cap(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x41205D: ft_irc::Message::parsePayload() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x411A57: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405D0C: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4df035c is 12 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 4
+==3136330==    at 0x41722C: ft_irc::Client::getSockfd() const (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40526A: ft_irc::Server::getClientPointerByFd(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40CB78: ft_irc::Server::user(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x41205D: ft_irc::Message::parsePayload() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x411A57: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405D0C: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4df035c is 12 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 4
+==3136330==    at 0x41722C: ft_irc::Client::getSockfd() const (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40526A: ft_irc::Server::getClientPointerByFd(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40B619: ft_irc::Server::nick(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x41205D: ft_irc::Message::parsePayload() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x411A57: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405D0C: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4df035c is 12 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 4
+==3136330==    at 0x41722C: ft_irc::Client::getSockfd() const (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40526A: ft_irc::Server::getClientPointerByFd(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40CB78: ft_irc::Server::user(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40C6D3: ft_irc::Server::nick(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x41205D: ft_irc::Message::parsePayload() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x411A57: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405D0C: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4df035c is 12 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 1
+==3136330==    at 0x484FF90: memcpy@GLIBC_2.2.5 (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x49C2AF3: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==3136330==    by 0x417266: ft_irc::Client::getNickname[abi:cxx11]() const (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405ED6: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4df0374 is 36 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 8
+==3136330==    at 0x406136: ft_irc::Server::stop() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B9B: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4df9c80 is 0 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid write of size 8
+==3136330==    at 0x416F74: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x4171B8: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40613B: ft_irc::Server::stop() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B9B: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4df9c80 is 0 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 8
+==3136330==    at 0x417E94: std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::~vector() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x416FB8: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x4171B8: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40613B: ft_irc::Server::stop() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B9B: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4df9d70 is 240 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 8
+==3136330==    at 0x417E9B: std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::~vector() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x416FB8: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x4171B8: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40613B: ft_irc::Server::stop() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B9B: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4df9d78 is 248 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 8
+==3136330==    at 0x4183C4: std::_Vector_base<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::~_Vector_base() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x417ED2: std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::~vector() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x416FB8: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x4171B8: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40613B: ft_irc::Server::stop() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B9B: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4df9d70 is 240 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 8
+==3136330==    at 0x4183C7: std::_Vector_base<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::~_Vector_base() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x417ED2: std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::~vector() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x416FB8: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x4171B8: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40613B: ft_irc::Server::stop() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B9B: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4df9d80 is 256 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 8
+==3136330==    at 0x49C01F4: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==3136330==    by 0x416FEF: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x4171B8: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40613B: ft_irc::Server::stop() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B9B: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4df9d50 is 208 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 8
+==3136330==    at 0x49C01F4: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==3136330==    by 0x41701A: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x4171B8: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40613B: ft_irc::Server::stop() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B9B: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4df9d30 is 176 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 8
+==3136330==    at 0x49C01F4: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==3136330==    by 0x41705A: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x4171B8: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40613B: ft_irc::Server::stop() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B9B: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4df9d10 is 144 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 8
+==3136330==    at 0x49C01F4: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==3136330==    by 0x417097: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x4171B8: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40613B: ft_irc::Server::stop() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B9B: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4df9cf0 is 112 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 8
+==3136330==    at 0x49C01F4: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==3136330==    by 0x4170D4: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x4171B8: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40613B: ft_irc::Server::stop() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B9B: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4df9cd0 is 80 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid free() / delete / delete[] / realloc()
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4170D4: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x4171B8: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40613B: ft_irc::Server::stop() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B9B: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4dfa490 is 0 bytes inside a block of size 31 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4170D4: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x4171B8: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x49BFE6E: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_assign(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==3136330==    by 0x49C022C: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::operator=(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==3136330==    by 0x4174B8: ft_irc::Client::setRealname(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40CCBB: ft_irc::Server::user(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x41205D: ft_irc::Message::parsePayload() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x411A57: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405D0C: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 8
+==3136330==    at 0x49C01F4: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==3136330==    by 0x41710E: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x4171B8: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40613B: ft_irc::Server::stop() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B9B: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4df9cb0 is 48 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid read of size 8
+==3136330==    at 0x49C01F4: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==3136330==    by 0x417148: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x4171B8: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40613B: ft_irc::Server::stop() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B9B: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4df9c90 is 16 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== Invalid free() / delete / delete[] / realloc()
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x40613B: ft_irc::Server::stop() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B9B: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Address 0x4df9c80 is 0 bytes inside a block of size 264 free'd
+==3136330==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x4171C6: ft_irc::Client::~Client() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405FB8: ft_irc::Server::closeClient(int) (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x405C2A: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==  Block was alloc'd at
+==3136330==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3136330==    by 0x405A86: ft_irc::Server::run() (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330==    by 0x403B85: main (in /mnt/nfs/homes/flcarval/Github/ft_irc/ircserv)
+==3136330== 
+==3136330== 
+==3136330== HEAP SUMMARY:
+==3136330==     in use at exit: 295 bytes in 2 blocks
+==3136330==   total heap usage: 664 allocs, 664 frees, 154,137 bytes allocated
+==3136330== 
+==3136330== LEAK SUMMARY:
+==3136330==    definitely lost: 264 bytes in 1 blocks
+==3136330==    indirectly lost: 31 bytes in 1 blocks
+==3136330==      possibly lost: 0 bytes in 0 blocks
+==3136330==    still reachable: 0 bytes in 0 blocks
+==3136330==         suppressed: 0 bytes in 0 blocks
+==3136330== Rerun with --leak-check=full to see details of leaked memory
+==3136330== 
+==3136330== For lists of detected and suppressed errors, rerun with: -s
+==3136330== ERROR SUMMARY: 105 errors from 35 contexts (suppressed: 0 from 0)
