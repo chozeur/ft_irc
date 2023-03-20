@@ -15,10 +15,7 @@ ft_irc::Message::Message(std::string payload,
 		):
 		_payload(payload),
 		_sender(sender),
-		_server(server),
-		_receiver(NULL),
-		_channel(NULL),
-		_callback(NULL) {
+		_server(server) {
 	this->parsePayload();
 	return ;
 }
@@ -35,90 +32,85 @@ ft_irc::Message&	ft_irc::Message::operator=(Message const &rhs){
 	if (this != &rhs){
 		this->_server = rhs._server;
 		this->_sender = rhs._sender;
-		this->_receiver = rhs._receiver;
-		this->_channel = rhs._channel;
 		this->_payload = rhs._payload;
-		this->_callback = rhs._callback;
 	}
 	return (*this);
 }
 
 /* GETTERS */
 
-ft_irc::Server*	ft_irc::Message::getServer(void) const {
+ft_irc::Server*		ft_irc::Message::getServer(void) const {
 	return (this->_server);
 }
 
-ft_irc::Client*	ft_irc::Message::getSender(void) const {
+ft_irc::Client*		ft_irc::Message::getSender(void) const {
 	return (this->_sender);
 }
 
-ft_irc::Client*	ft_irc::Message::getReceiver(void) const {
-	return (this->_receiver);
-}
+// ft_irc::Client*	ft_irc::Message::getReceiver(void) const {
+// 	return (this->_receiver);
+// }
 
-ft_irc::Channel*	ft_irc::Message::getChannel(void) const {
-	return (this->_channel);
-}
+// ft_irc::Channel*	ft_irc::Message::getChannel(void) const {
+// 	return (this->_channel);
+// }
 
-std::string	ft_irc::Message::getPayload(void) const {
+std::string			ft_irc::Message::getPayload(void) const {
 	return (this->_payload);
 }
 
-void	(*ft_irc::Message::getCallback(void))(ft_irc::Client&, ft_irc::Client&, std::string){
-	return (this->_callback);
-}
+// void	(*ft_irc::Message::getCallback(void))(ft_irc::Client&, ft_irc::Client&, std::string){
+// 	return (this->_callback);
+// }
 
 /* SETTERS */
 
-void	ft_irc::Message::setServer(ft_irc::Server* server){
+void				ft_irc::Message::setServer(ft_irc::Server* server){
 	this->_server = server;
 	return ;
 }
 
-void	ft_irc::Message::setSender(ft_irc::Client* sender){
+void				ft_irc::Message::setSender(ft_irc::Client* sender){
 	this->_sender = sender;
 	return ;
 }
 
-void	ft_irc::Message::setReceiver(ft_irc::Client* receiver){
-	this->_receiver = receiver;
-	return ;
-}
-
-void	ft_irc::Message::setChannel(ft_irc::Channel* channel){
-	this->_channel = channel;
-	return ;
-}
-
-void	ft_irc::Message::setPayload(std::string payload){
+void				ft_irc::Message::setPayload(std::string payload){
 	this->_payload = payload;
 	return ;
 }
 
-void	ft_irc::Message::setCallback(void (*callback)(ft_irc::Client&, ft_irc::Client&, std::string)){
-	this->_callback = callback;
-	return ;
-}
+// void	ft_irc::Message::setReceiver(ft_irc::Client* receiver){
+// 	this->_receiver = receiver;
+// 	return ;
+// }
 
-void	ft_irc::Message::parsePayload(void) {
-	cleanLine(_payload);
-	std::cerr << "\033[1m" << _server->getName() << " [\033[32m" << _sender->getNickname() << "\033[0m] => " << _payload << std::endl;
+// void	ft_irc::Message::setChannel(ft_irc::Channel* channel){
+// 	this->_channel = channel;
+// 	return ;
+// }
 
+// void	ft_irc::Message::setCallback(void (*callback)(ft_irc::Client&, ft_irc::Client&, std::string)){
+// 	this->_callback = callback;
+// 	return ;
+// }
+
+void				ft_irc::Message::parsePayload(void) {
+	if (!(_payload.substr(0, 6) == "CAP LS" || _payload.substr(0, 4) == "PASS" || _payload.substr(0, 4) == "NICK" || _payload.substr(0, 4) == "USER")){
+		cleanLine(_payload);
+		std::cerr << "\033[1m" << _server->getName() << " [\033[32m" << _sender->getNickname() << "\033[0m] => " << _payload << std::endl;
+	}
 	size_t pos = _payload.find(' ');
 	std::string cmd = _payload.substr(0, pos);
-	std::string param = _payload.substr(pos + 1);
 
 	std::map<std::string, CommandFunction>* commands = _server->getCommands();
 	if (commands->find(cmd) != commands->end()) {
 		CommandFunction func = (*commands)[cmd];
-		func(this, param);
+		func(this, _payload);
 	}
 }
 
-
-std::ostream& ft_irc::operator<<(std::ostream& os, const ft_irc::Message& message)
-{
-    os << "New Message instance created for " << message.getSender()->getNickname();
-    return os;
+std::ostream& 		ft_irc::operator<<(std::ostream& os, const ft_irc::Message& message) {
+	os << "New Message instance created for " << message.getSender()->getNickname();
+	return os;
 }

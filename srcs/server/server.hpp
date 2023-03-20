@@ -43,12 +43,14 @@ namespace ft_irc{
 			struct sockaddr_in								getServAddr(void)const;
 			int												getSockfd(void)const;
 			char											**getEnv(void)const;
-			std::vector<Client>								*getClients(void);
-			Client											*getClientPointer(int fd);
-			std::vector<Client>::iterator					getClientIterator(int fd);
-			std::vector<Channel>							*getChannels(void);
+			std::vector<Client *>							*getClients(void);
+			Client											*getClientPointerByFd(int fd);
+			Client											*getClientPointerByNick(std::string nick);
+			std::vector<Client *>::iterator					getClientIterator(int fd);
+			std::vector<Channel*>							*getChannels(void);
 			Channel											*getChannelPointer(std::string name);
 			std::map<std::string, CommandFunction> 			*getCommands(void);
+			struct pollfd									*getFds(void);
 
 			// SETTERS
 			void											setName(std::string name);
@@ -65,21 +67,25 @@ namespace ft_irc{
 			void											initChannels(void);
 			void											run(void);
 			void											stop(void);
-			int												clientInit(int fd, std::string message);
-			int 											parsingNickname(std::string nickname);
-			int 											parsingPassword(std::string password)const;
+			void											printClients(void);
+			bool 											parsingNickname(int fd, std::string nickname);
+			bool 											parsingPassword(std::string password)const;
 			void											sendIrcResponse(int sockfd, ft_irc::Client *client) const;
 			void											closeClient(int i);
+			void											sendToAllClients(std::string &msg);
 
 			//SERVER COMMANDS
+			static void										cap(ft_irc::Message* Message, const std::string& param);
+			static void										pass(ft_irc::Message* Message, const std::string& param);
+			static void										nick(ft_irc::Message* Message, const std::string& param);
+			static void										user(ft_irc::Message* Message, const std::string& param);
 			static void										invite(ft_irc::Message* Message, const std::string& param);
 			static void										join(ft_irc::Message* Message, const std::string& param);
 			static void										kick(ft_irc::Message* Message, const std::string& param);
 			static void										list(ft_irc::Message* Message, const std::string& param);
 			static void										names(ft_irc::Message* Message, const std::string& param);
 			static void										whois(ft_irc::Message* Message, const std::string& param);
-			static void										nick(ft_irc::Message* Message, const std::string& param);
-			static void										user(ft_irc::Message* Message, const std::string& param);
+			static void										privmsg(ft_irc::Message* message, const std::string& param);
 
 		private:
 			std::string 									_name;
@@ -91,8 +97,8 @@ namespace ft_irc{
 			struct sockaddr_in								_serv_addr;
 			int												_sockfd;
 			char											**_env;
-			std::vector<Client>								_clients;
-			std::vector<Channel>							_channels;
+			std::vector<Client *>							_clients;
+			std::vector<Channel *>							_channels;
 			std::map<std::string, CommandFunction>			_commands;
 	};
 }

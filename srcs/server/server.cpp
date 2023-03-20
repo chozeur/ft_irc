@@ -1,6 +1,7 @@
 #include "server.hpp"
 
 /* CONSTRUCTORS */
+
 ft_irc::Server::Server(void){return ;}
 
 ft_irc::Server::Server(Server const &rhs){
@@ -14,13 +15,15 @@ ft_irc::Server::Server(std::string password, long port, char **env){
 }
 
 /* DESTRUCTOR */
+
 ft_irc::Server::~Server(void){
 	close(this->_sockfd);
 	return ;
 }
 
 /* INIT */
-ft_irc::Server&	ft_irc::Server::operator=(Server const &rhs){
+
+ft_irc::Server&							ft_irc::Server::operator=(Server const &rhs){
 	if (this != &rhs){
 		this->_port = rhs._port;
 		this->_password = rhs._password;
@@ -32,74 +35,88 @@ ft_irc::Server&	ft_irc::Server::operator=(Server const &rhs){
 }
 
 /* GETTERS */
-std::string	ft_irc::Server::getName(void)const{
+
+std::string								ft_irc::Server::getName(void)const{
 	return (this->_name);
 }
 
-std::string	ft_irc::Server::getIp(void)const{
-	return (this->_name);
+std::string								ft_irc::Server::getIp(void)const{
+	return (this->_ip);
 }
 
-long	ft_irc::Server::getPort(void) const {
+long									ft_irc::Server::getPort(void) const {
 	return (this->_port);
 }
 
-std::string	ft_irc::Server::getPassword(void)const{
+std::string								ft_irc::Server::getPassword(void)const{
 	return (this->_password);
 }
 
-struct sockaddr_in	ft_irc::Server::getServAddr()const{
+struct sockaddr_in						ft_irc::Server::getServAddr()const{
 	return (this->_serv_addr);
 }
 
-int	ft_irc::Server::getSockfd(void)const{
+int										ft_irc::Server::getSockfd(void)const{
 	return (this->_sockfd);
 }
 
-char	**ft_irc::Server::getEnv(void)const{
+char**									ft_irc::Server::getEnv(void)const{
 	return (this->_env);
 }
 
-std::vector<ft_irc::Client>* ft_irc::Server::getClients() {
+std::vector<ft_irc::Client *>*			ft_irc::Server::getClients() {
 	return (&_clients);
 }
 
-ft_irc::Client* ft_irc::Server::getClientPointer(int fd) {
-	std::vector<Client>::iterator it;
-	for (it = this->_clients.begin(); it != this->_clients.end(); it++) {
-		if (it->getSockfd() == fd)
-			return &(*it);
-	}
-	return NULL;
+ft_irc::Client* 						ft_irc::Server::getClientPointerByFd(int fd) {
+    std::vector<Client *>::iterator it;
+    for (it = this->_clients.begin(); it != this->_clients.end(); it++) {
+        if ((*it)->getSockfd() == fd)
+            return (*it);
+    }
+    return NULL;
 }
 
-std::vector<ft_irc::Client>::iterator ft_irc::Server::getClientIterator(int fd) {
-	std::vector<Client>::iterator it;
+ft_irc::Client* 						ft_irc::Server::getClientPointerByNick(std::string nick) {
+    std::vector<Client *>::iterator it;
+    for (it = this->_clients.begin(); it != this->_clients.end(); it++) {
+        if ((*it)->getNickname() == nick)
+            return (*it);
+    }
+    return NULL;
+}
+
+std::vector<ft_irc::Client *>::iterator ft_irc::Server::getClientIterator(int fd) {
+	std::vector<Client *>::iterator it;
 	for (it = this->_clients.begin(); it != this->_clients.end(); it++) {
-		if (it->getSockfd() == fd)
+		if ((*it)->getSockfd() == fd)
 			return it;
 	}
 	return this->_clients.end();
 }
 
-std::vector<ft_irc::Channel>* ft_irc::Server::getChannels() {
-	return (&_channels);
+std::vector<ft_irc::Channel*>* 			ft_irc::Server::getChannels() {
+    return &_channels;
 }
 
-ft_irc::Channel* ft_irc::Server::getChannelPointer(std::string name) {
-	std::vector<Channel>::iterator it;
-	for (it = this->_channels.begin(); it != this->_channels.end(); it++) {
-		if (it->getName() == name)
-			return &(*it);
-	}
-	return NULL;
+ft_irc::Channel* 						ft_irc::Server::getChannelPointer(std::string name) {
+    for (std::vector<Channel*>::iterator it = _channels.begin(); it != _channels.end(); ++it) {
+        if ((*it)->getName() == name)
+            return (*it);
+    }
+    return NULL;
 }
 
 std::map<std::string, CommandFunction>* ft_irc::Server::getCommands(void) {
     return (&(_commands));
 }
 
+struct pollfd*							ft_irc::Server::getFds(void){
+	return (_fds);
+}
+
 /* SETTERS */
+
 void	ft_irc::Server::setName(std::string name){
 	this->_name = name;
 	return ;
@@ -136,6 +153,7 @@ void	ft_irc::Server::setEnv(char **env){
 }
 
 /* METHODS */
+
 void	ft_irc::Server::init(std::string password, long port, char **env){
 	initCommands();
 	initChannels();
@@ -161,6 +179,12 @@ void	ft_irc::Server::init(std::string password, long port, char **env){
 	}
 	this->_fds[0].fd = this->_sockfd;
 	this->_fds[0].events = POLLIN;
+
+	Client* bot = new Client(-1);
+	bot->setIsBot(true);
+	bot->setNickname("MasterBot");
+	_clients.push_back(bot);
+
 	for (int i = 1; i <= MAX_CLIENTS; ++i)
 	{
 		this->_fds[i].fd = -1;
@@ -170,11 +194,11 @@ void	ft_irc::Server::init(std::string password, long port, char **env){
 	return ;
 }
 
-void	ft_irc::Server::initChannels(void) {
-	ft_irc::Channel general("general");
-	ft_irc::Channel admin("admin");
-	_channels.push_back(general);
-	_channels.push_back(admin);
+void 	ft_irc::Server::initChannels() {
+    ft_irc::Channel* general = new Channel("general");
+    ft_irc::Channel* admin = new Channel("admin");
+    _channels.push_back(general);
+    _channels.push_back(admin);
 }
 
 void	ft_irc::Server::run(void) {
@@ -202,8 +226,9 @@ void	ft_irc::Server::run(void) {
 				{
 					this->_fds[i].fd = clientfd;
 
-					ft_irc::Client new_client;
-					new_client.setSockfd(clientfd);
+					ft_irc::Client* new_client = new Client;
+					new_client->setSockfd(clientfd);
+					new_client->setIsBot(false);
 					_clients.push_back(new_client);
 
 					break;
@@ -227,20 +252,8 @@ void	ft_irc::Server::run(void) {
 				} else {
 					std::string message(buffer, bytes_received);
 
-					if (message.substr(0, 6) == "CAP LS" || message.substr(0, 4) == "PASS" || message.substr(0, 4) == "NICK" || message.substr(0, 4) == "USER"){
-						switch (clientInit(this->_fds[i].fd, message)) {
-							case -1 :
-								closeClient(i);
-								break;
-							case 1 :
-								sendIrcResponse(this->_fds[i].fd, getClientPointer(this->_fds[i].fd));
-								break;
-						}
-					} 
-					else {
-						ft_irc::Message *command = new Message(message, getClientPointer(this->_fds[i].fd), this);
-						delete command;
-					}
+					ft_irc::Message *command = new Message(message, getClientPointerByFd(this->_fds[i].fd), this);
+					delete command;
 				}
 			}
 		}
@@ -250,79 +263,13 @@ void	ft_irc::Server::run(void) {
 }
 
 void	ft_irc::Server::stop(void) {
-	for (int i = 1; i < MAX_CLIENTS + 1; i++)
-		if (this->_fds[i].fd != -1)
-			closeClient(i);
+	for (std::vector<Channel *>::iterator it = _channels.begin(); it != _channels.end(); it++)
+		delete ((*it));
+	for (std::vector<Client *>::iterator it = _clients.begin(); it != _clients.end(); it++) {
+		delete (*it);
+	}
 	close(this->_sockfd);
 	std::cerr << "Turn off server here" << std::endl;
-}
-
-int 	ft_irc::Server::clientInit(int fd, std::string message){
-
-	std::string line;
-	std::string::size_type start_pos = 0;
-
-	while (start_pos != std::string::npos) {
-		std::string::size_type end_pos = message.find("\r\n", start_pos);
-		if (end_pos != std::string::npos) {
-			line = message.substr(start_pos, end_pos - start_pos);
-			start_pos = end_pos + 2;
-		} else {
-			line = message.substr(start_pos);
-			start_pos = end_pos;
-		}
-		if (line.find("CAP LS") != std::string::npos){
-			removeAllOccurrences(line, "\n");
-			std::cout << "\033[1m" << _name << "\033[0m" << " => " << line << std::endl;
-		}
-		if (line.find("PASS") != std::string::npos){
-			removeAllOccurrences(line, "\n");
-			std::cout << "\033[1m" << _name << "\033[0m" << " => " << line << std::endl;
-			std::string::size_type space_pos = line.find(' ');
-			(getClientPointer(fd))->setPassword(line.substr(space_pos + 1));
-		}
-		if (line.find("NICK") != std::string::npos){
-			removeAllOccurrences(line, "\n");
-			std::cout << "\033[1m" << _name << "\033[0m" << " => " << line << std::endl;
-			std::string::size_type space_pos = line.find(' ');
-			std::string nickname = line.substr(space_pos + 1);
-			if (!parsingNickname(nickname)){
-				std::cout << "\033[1m" << _name << "\033[0m" << " => Nickname "<< nickname << " is already in use" << std::endl;
-				std::string nick_res = "IRC_SERVER 433 * " + nickname + ":Nickname is already in use.";
-				send(fd, nick_res.c_str(), nick_res.length(), 0);
-				return (-1);
-			}
-			(getClientPointer(fd))->setNickname(nickname);
-		}
-		if (line.find("USER") != std::string::npos){
-			removeAllOccurrences(line, "\n");
-			std::cout << "\033[1m" << _name << "\033[0m" << " => " << line << std::endl;
-			std::string::size_type space_pos1 = line.find(' ');
-			std::string::size_type space_pos2 = line.find(' ', space_pos1 + 1);
-			std::string::size_type space_pos3 = line.find(' ', space_pos2 + 1);
-			std::string::size_type colon_pos = line.find(':');
-			std::string::size_type end_pos = line.find('\n');
-
-			std::string username = line.substr(space_pos1 + 1, space_pos2 - space_pos1 - 1);
-			std::string hostname = line.substr(space_pos2 + 1, space_pos3 - space_pos2 - 1);
-			std::string servername = line.substr(space_pos3 + 1, colon_pos - space_pos3 - 2);
-			std::string realname = line.substr(colon_pos + 1, end_pos - 1);
-
-			getClientPointer(fd)->setUsername(username);
-			getClientPointer(fd)->setHost(hostname);
-			getClientPointer(fd)->setServername(servername);
-			getClientPointer(fd)->setRealname(realname);
-
-			if (!parsingPassword(getClientPointer(fd)->getPassword())) {
-				std::cout << "\033[1m" << _name << "\033[0m" << " => Bad password, try again." << std::endl;
-				std::string pass_res = "NOTICE " + getClientPointer(fd)->getNickname() + ":Invalid password. Please try again.";
-				send(fd, pass_res.c_str(), pass_res.length(), 0);
-				return (-1);
-			}
-			return (1);
-		}
-	}
-	return 0;
 }
 
 void 	ft_irc::Server::sendIrcResponse(int sockfd, ft_irc::Client *client) const {
@@ -339,7 +286,7 @@ void 	ft_irc::Server::sendIrcResponse(int sockfd, ft_irc::Client *client) const 
 	std::string welcome_msg = ":" + _ip + " 001 " + client->getNickname() + " :\033[32mWelcome to the " + _name + " " + client->getNickname() + "!" + client->getUsername() + "@" + client->getHost() + "\033[0m\r\n";
 	std::string version_msg = ":" + _ip + " 002 " + client->getNickname() + " :\033[32mYour host is " + client->getServername() + ":" + port + ", running version 1.0.2\033[0m\r\n";
 	std::string created_msg = ":" + _ip + " 003 " + client->getNickname() + " :\033[32mThis server was created in 42 School\033[0m\r\n";
-	std::string ascii_msg = ":" + _ip + " 004 " + client->getNickname() + " :" + "_____________________________________\n" + "_____________________________________\n" + "                                    \n" + "                                   (_)\n" + " __      _____ _ __ ___ _ __   ___  _ \n" + " \\ \\ /\\ / / _ \\ '__/ _ \\ '_ \\ / _ \\| |\n" + "  \\ V  V /  __/ | |  __/ | | | (_) | |\n" + "   \\_/\\_/ \\___|_|  \\___|_| |_|\\___/|_| . RC\n" + "                                      \n" + "                                      \n" + " _____________________________________\n" + " _____________________________________\r\n\n";
+	std::string ascii_msg = ":" + _ip + " 004 " + client->getNickname() + " :" + "_____________________________________\n" + "_____________________________________\n" + "                                    \n" + "                                   (_)\n" + " __      _____ _ __ ___ _ __   ___  _ \n" + " \\ \\ /\\ / / _ \\ '__/ _ \\ '_ \\ / _ \\| |\n" + "  \\ V  V /  __/ | |  __/ | | | (_) | |\n" + "   \\_/\\_/ \\___|_|  \\___|_| |_|\\___/|_| . RC\n" + "                                      \n" + "                                      \n" + " _____________________________________\n" + " _____________________________________\n\r\n";
 	send(sockfd, cap_response.c_str(), cap_response.length(), 0);
 	send(sockfd, welcome_msg.c_str(), welcome_msg.length(), 0);
 	send(sockfd, version_msg.c_str(), version_msg.length(), 0);
@@ -347,26 +294,44 @@ void 	ft_irc::Server::sendIrcResponse(int sockfd, ft_irc::Client *client) const 
 	send(sockfd, ascii_msg.c_str(), ascii_msg.length(), 0);
 }
 
-
-int 	ft_irc::Server::parsingNickname(std::string nickname){
-	for (std::vector<Client>::iterator it = _clients.begin(); it != _clients.end(); ++it)
-		if ((*it).getNickname() == nickname)
-			return (0);
-	return (1);
+bool 	ft_irc::Server::parsingNickname(int fd, std::string nickname) {
+	if (nickname.empty())
+		return false;
+	for (std::vector<Client*>::iterator it = _clients.begin(); it != _clients.end(); ++it)
+        if ((*it)->getNickname() == nickname && (*it)->getSockfd() != fd)
+            return false;
+    return true;
 }
 
-int 	ft_irc::Server::parsingPassword(std::string password)const{
+bool	ft_irc::Server::parsingPassword(std::string password)const{
 	if (this->_password != password)
-		return (0);
-	return (1);
+		return (false);
+	return (true);
 }
 
 void 	ft_irc::Server::closeClient(int i) {
-	std::cerr << "\033[1m" << _name << "\033[0m => [" << getClientPointer(_fds[i].fd)->getNickname() << "] CONNECTION CLOSED" << std::endl;
-	std::vector<Client>::iterator client_it = getClientIterator(this->_fds[i].fd);
+	std::cerr << "\033[1m" << _name << "\033[0m => [" << getClientPointerByFd(_fds[i].fd)->getNickname() << "] CONNECTION CLOSED" << std::endl;
+	std::vector<Client *>::iterator client_it = getClientIterator(this->_fds[i].fd);
 	if (client_it != this->_clients.end()) {
 		this->_clients.erase(client_it);
+		delete (*(client_it));
 	}
 	close(this->_fds[i].fd);
 	this->_fds[i].fd = -1;
+}
+
+void 	ft_irc::Server::printClients(void) {
+	for (std::vector<Client*>::iterator it = _clients.begin(); it != _clients.end(); it++) {
+		std::cout << **it << std::endl;
+	}
+}
+
+void 	ft_irc::Server::sendToAllClients(std::string &msg) {
+    for (std::vector<ft_irc::Client *>::iterator it = this->_clients.begin(); it != this->_clients.end(); ++it) {
+        if (!(*it)->isBot()) {
+			if (send((*it)->getSockfd(), msg.c_str(), msg.size(), 0) == -1) {
+        	    std::cerr << "Error sending message to client" << std::endl;
+        	}
+		}
+    }
 }

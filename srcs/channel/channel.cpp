@@ -13,7 +13,9 @@ ft_irc::Channel::Channel(std::string name) : _name(name) {}
 
 /* DESTRUCTEUR */
 
-ft_irc::Channel::~Channel(void) {}
+ft_irc::Channel::~Channel(void) {
+	std::cerr << "Channel destructor called" << std::endl;
+}
 
 /* OPERATEURS */
 
@@ -31,69 +33,70 @@ ft_irc::Channel &ft_irc::Channel::operator=(Channel const &rhs)
 
 /* GETTERS */
 
-std::string ft_irc::Channel::getName(void) const
+std::string 							ft_irc::Channel::getName(void) const
 {
 	return (this->_name);
 }
 
-std::vector<ft_irc::Client> const &ft_irc::Channel::getClients(void) const
-{
-	return (this->_clients);
+std::vector<ft_irc::Client *> const &	ft_irc::Channel::getClients() const {
+    return this->_clients;
 }
 
-std::vector<ft_irc::Client> const &ft_irc::Channel::getOperators(void) const
+
+
+std::vector<ft_irc::Client> const &		ft_irc::Channel::getOperators(void) const
 {
 	return (this->_operators);
 }
 
-std::vector<ft_irc::Client> const &ft_irc::Channel::getBannedClients(void) const
+std::vector<ft_irc::Client> const &		ft_irc::Channel::getBannedClients(void) const
 {
 	return (this->_banned_clients);
 }
 
 /* SETTERS */
 
-void ft_irc::Channel::setName(std::string const &name)
+void 		ft_irc::Channel::setName(std::string const &name)
 {
 	this->_name = name;
 }
 
-void ft_irc::Channel::setClients(std::vector<ft_irc::Client> const &clients)
+void 		ft_irc::Channel::setClients(std::vector<ft_irc::Client *> const &clients)
 {
 	this->_clients = clients;
 }
 
-void ft_irc::Channel::setOperators(std::vector<ft_irc::Client> const &operators)
+void 		ft_irc::Channel::setOperators(std::vector<ft_irc::Client> const &operators)
 {
 	this->_operators = operators;
 }
 
-void ft_irc::Channel::setBannedClients(std::vector<ft_irc::Client> const &banned_clients)
+void 		ft_irc::Channel::setBannedClients(std::vector<ft_irc::Client> const &banned_clients)
 {
 	this->_banned_clients = banned_clients;
 }
 
 /* METHODES */
 
-void ft_irc::Channel::addClient(Client &client) {
+void 		ft_irc::Channel::addClient(Client *client) {
 	this->_clients.push_back(client);
 }
 
-void ft_irc::Channel::removeClient(Client const &client)
+void 		ft_irc::Channel::removeClient(Client const &client)
 {
-    std::vector<Client>::iterator it = std::find(this->_clients.begin(), this->_clients.end(), client);
+	std::vector<Client *>::iterator it = std::find(this->_clients.begin(), this->_clients.end(), &client);
     if (it != this->_clients.end())
     {
         this->_clients.erase(it);
     }
 }
 
-void ft_irc::Channel::addOperator(Client &client)
+void 		ft_irc::Channel::addOperator(Client &client)
 {
 	this->_operators.push_back(client);
 }
 
-void ft_irc::Channel::removeOperator(Client const &client)
+void 		ft_irc::Channel::removeOperator(Client const &client)
 {
     std::vector<Client>::iterator it = std::find(this->_operators.begin(), this->_operators.end(), client);
     if (it != this->_operators.end())
@@ -102,12 +105,12 @@ void ft_irc::Channel::removeOperator(Client const &client)
     }
 }
 
-void ft_irc::Channel::addBannedClient(Client &client)
+void 		ft_irc::Channel::addBannedClient(Client &client)
 {
 	this->_banned_clients.push_back(client);
 }
 
-void ft_irc::Channel::removeBannedClient(Client const &client)
+void 		ft_irc::Channel::removeBannedClient(Client const &client)
 {
     std::vector<Client>::iterator it = std::find(this->_banned_clients.begin(), this->_banned_clients.end(), client);
     if (it != this->_banned_clients.end())
@@ -116,7 +119,7 @@ void ft_irc::Channel::removeBannedClient(Client const &client)
     }
 }
 
-int ft_irc::Channel::isClientBanned(Client const &client) const
+int 		ft_irc::Channel::isClientBanned(Client const &client) const
 {
 	for (std::vector<Client>::const_iterator it = _banned_clients.begin(); it != _banned_clients.end(); ++it)
 	{
@@ -129,8 +132,28 @@ int ft_irc::Channel::isClientBanned(Client const &client) const
 }
 
 
-std::ostream& ft_irc::operator<<(std::ostream& os, const ft_irc::Channel& Channel)
+std::ostream& ft_irc::operator<<(std::ostream& os, ft_irc::Channel* channel)
 {
-    os << "Channel [name : " << Channel.getName() << ", clients size : " << Channel.getClients().size() << "]";
+	std::ostringstream 	oss;
+	std::string 		message;
+
+	if (!channel)
+		message = "NULL";
+	else {
+		oss << channel->getClients().size();
+		message = "Channel [name : " + channel->getName() + ", clients size : " + oss.str() + ", clients : ";
+
+		std::vector<Client *> clients = channel->getClients();
+
+		for (std::vector<Client *>::iterator it = clients.begin(); it != clients.end(); ++it) {
+			message += (*it)->getNickname();
+			if (it + 1!= clients.end())
+				message += ", ";
+		}
+
+		message += "]";
+	}
+
+    os << message;
     return os;
 }
