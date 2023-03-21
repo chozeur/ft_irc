@@ -105,7 +105,7 @@ std::string					ft_irc::Client::getUserLine(void) const {
 	return (this->_userLine);
 }
 
-std::vector<std::string>	ft_irc::Client::getChannels(void) const {
+std::vector<ft_irc::Channel*>	ft_irc::Client::getChannels(void) const {
 	return (this->_channels);
 }
 
@@ -151,7 +151,7 @@ void						ft_irc::Client::setUserLine(std::string userLine){
 	return ;
 }
 
-void						ft_irc::Client::setChannels(std::vector<std::string> channels){	//! deep copy
+void						ft_irc::Client::setChannels(std::vector<ft_irc::Channel*> channels){	//! deep copy
 	this->_channels = channels;
 	return ;
 }

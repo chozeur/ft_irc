@@ -13,6 +13,7 @@ void ft_irc::Server::initCommands(void) {
 	_commands.insert(std::make_pair("NAMES", &Server::names));
 	_commands.insert(std::make_pair("WHOIS", &Server::whois));
 	_commands.insert(std::make_pair("PRIVMSG", &Server::privmsg));
+	_commands.insert(std::make_pair("PART", &Server::part));
 
 }
 
@@ -386,4 +387,61 @@ void ft_irc::Server::whois(ft_irc::Message* message, const std::string& param) {
 	(void)message;
 	std::cerr << "WHOIS FUNCTION CALLED WITH PARAM = " << param << std::endl;
 	return ;
+}
+
+void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
+
+    // On récupère le serveur, le canal et la liste des canaux du serveur
+    ft_irc::Server *server = message->getServer();
+    ft_irc::Channel *channel;
+    // std::vector<Channel*> *channels = server->getChannels();
+
+    // On supprime le caractère '#' au début du paramètre pour récupérer le nom du canal
+    std::string param2 = param;
+    size_t pos = param2.find(" ");
+    param2 = param2.substr(pos + 1);
+    cleanLine(param2);
+    removeAllOccurrences(param2, "#");
+
+    channel = server->getChannelPointer(param2);
+    
+    std::vector<Client *> vec  = channel->getClients();
+    std::vector<Client *>::iterator it = vec.begin();
+    for ( ; it != vec.end(); ++it)
+        if ((*it)->getNickname() == message->getSender()->getNickname())
+            vec.erase(it);
+
+    std::string part_msg = message->getSender()->getNickname() + " PART #" + channel->getName() + "\r\n";
+    for (std::vector<Client *>::const_iterator it = channel->getClients().begin(); it != channel->getClients().end(); ++it) {
+        if (*it != message->getSender()) {
+            if (send((*it)->getSockfd(), part_msg.c_str(), part_msg.length(), 0) == -1) {
+                std::cerr << "Error SEND" << std::endl;
+            }
+        }
+    }
+
+    // Send a message to confirm the client's departure
+    std::string confirm_msg = ":" + message->getServer()->getIp() + " 301 " + message->getSender()->getNickname() + " #" + channel->getName() + " :Goodbye!\r\n";
+    if (send(message->getSender()->getSockfd(), confirm_msg.c_str(), confirm_msg.length(), 0) == -1) {
+        std::cerr << "Error SEND" << std::endl;
+    }
+
+
+    // ft_irc::Client  *sender = message->getSender();
+    
+    // std::vector<ft_irc::Channel *> Chann = sender->getChannels();
+    
+    // std::string msg = "PART <" + param + ">\n"/* sender->getNickname() + " has left the channel." */;
+
+    // for (std::vector<ft_irc::Channel *>::iterator it = Chann.begin(); it != Chann.end(); ++it) {
+    //     if ((*it)->getName() == param) {
+    //         for (std::vector<ft_irc::Client *>::const_iterator it2 = (*it)->getClients().begin(); it2 != (*it)->getClients().end(); ++it2){
+    //             send((*it2)->getSockfd(), msg.c_str(), msg.length(), 0);
+    //             // std::cerr << "WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEeee" << std::endl;
+    //         }
+    //         break ;
+    //     }
+    // }
+    
+    // return ;
 }

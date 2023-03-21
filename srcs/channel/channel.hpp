@@ -9,6 +9,8 @@
 
 namespace ft_irc {
 
+	class	Client;
+
 	class Channel {
 
 		public:
@@ -22,7 +24,7 @@ namespace ft_irc {
 			Channel						&operator=(Channel const &rhs);
 
 			std::string					getName(void) const;
-			std::vector<Client *> const &getClients(void) const;
+			std::vector<Client*> const	&getClients(void) const;
 			std::vector<Client>	const 	&getOperators(void) const;
 			std::vector<Client>	const 	&getBannedClients(void) const;
 

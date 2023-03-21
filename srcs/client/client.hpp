@@ -9,10 +9,13 @@
 # include <string.h>
 # include <unistd.h>
 # include <algorithm>
+# include "../channel/channel.hpp"
 
 
 namespace ft_irc
 {
+	class	Channel;
+	
 	class Client {
 
 		public:
@@ -34,7 +37,7 @@ namespace ft_irc
 			std::string					getHost(void) const;
 			std::string					getServername(void) const;
 			std::string					getUserLine(void) const;
-			std::vector<std::string>	getChannels(void) const;
+			std::vector<ft_irc::Channel*>	getChannels(void) const;
 
 			void						setSockfd(int sockfd);
 			char						*getBuffer(void);
@@ -46,7 +49,7 @@ namespace ft_irc
 			void						setHost(std::string host);
 			void						setServername(std::string servername);
 			void						setUserLine(std::string userLine);
-			void						setChannels(std::vector<std::string> channels);
+			void						setChannels(std::vector<ft_irc::Channel*> channels);
 		    void						setIsBot(bool isBot);
 		    void						setIsSet(bool isSet);
 
@@ -65,7 +68,7 @@ namespace ft_irc
 			std::string					_host;
 			std::string					_servername;
 			std::string					_userLine;
-			std::vector<std::string>	_channels;
+			std::vector<ft_irc::Channel*>	_channels;
 	};
 
 std::ostream& operator<<(std::ostream& os, const ft_irc::Client& client);
