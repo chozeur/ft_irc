@@ -62,3 +62,32 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
+
+
+
+
+// In your MessageHandler class:
+
+void MessageHandler::handlePartCommand(const Message *message) {
+    // Get the channel the client wants to leave
+    Channel *channel = getChannel(message->getArgs()[0]);
+
+    // Remove the client from the channel
+    channel->removeClient(message->getSender());
+
+    // Send a message to inform other clients that the client is leaving the channel
+    std::string part_msg = message->getSender()->getNickname() + " PART #" + channel->getName() + "\r\n";
+    for (std::vector<Client *>::const_iterator it = channel->getClients().begin(); it != channel->getClients().end(); ++it) {
+        if (*it != message->getSender()) {
+            if (send((*it)->getSockfd(), part_msg.c_str(), part_msg.length(), 0) == -1) {
+                std::cerr << "Error SEND" << std::endl;
+            }
+        }
+    }
+
+    // Send a message to confirm the client's departure
+    std::string confirm_msg = ":" + message->getServer()->getIp() + " 301 " + message->getSender()->getNickname() + " #" + channel->getName() + " :Goodbye!\r\n";
+    if (send(message->getSender()->getSockfd(), confirm_msg.c_str(), confirm_msg.length(), 0) == -1) {
+        std::cerr << "Error SEND" << std::endl;
+    }
+}
