@@ -411,12 +411,12 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
 
 
     std::vector<Client *> vec  = channel->getClients();
-    // std::vector<Client *>::iterator it = vec.begin();
-    for (std::vector<Client *>::iterator it = vec.begin() ; it != vec.end(); ++it)
+    for (std::vector<Client *>::iterator it = vec.begin() ; it != vec.end(); ++it) {
+        std::cerr << "Cli-> " << (*it)->getNickname() << std::endl;
         if ((*it)->getNickname() == message->getSender()->getNickname())
             vec.erase(it);
-
-    std::string part_msg = message->getSender()->getNickname() + " PART #" + channel->getName() + "\r\n";
+    }
+    std::string part_msg = message->getSender()->getNickname() + ":" + " PART #" + channel->getName() + "\r\n";
     for (std::vector<Client *>::const_iterator it = channel->getClients().begin(); it != channel->getClients().end(); ++it) {
         if (*it != message->getSender()) {
             if (send((*it)->getSockfd(), part_msg.c_str(), part_msg.length(), 0) == -1) {

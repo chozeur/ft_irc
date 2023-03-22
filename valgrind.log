@@ -1,66 +1,66 @@
-==3630708== Memcheck, a memory error detector
-==3630708== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==3630708== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==3630708== Command: ./ircserv 3456 pass
-==3630708== Parent PID: 3613434
-==3630708== 
-==3630708== Invalid read of size 8
-==3630708==    at 0x410FC4: ft_irc::Server::part(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (command.cpp:416)
-==3630708==    by 0x4130CD: ft_irc::Message::parsePayload() (message.cpp:109)
-==3630708==    by 0x412AC7: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:19)
-==3630708==    by 0x405E22: ft_irc::Server::run() (server.cpp:256)
-==3630708==    by 0x403B85: main (main.cpp:28)
-==3630708==  Address 0x4df0110 is 0 bytes after a block of size 16 alloc'd
-==3630708==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==3630708==    by 0x40961F: std::__new_allocator<ft_irc::Client*>::allocate(unsigned long, void const*) (new_allocator.h:137)
-==3630708==    by 0x4095B0: __gnu_cxx::__alloc_traits<std::allocator<ft_irc::Client*>, ft_irc::Client*>::allocate(std::allocator<ft_irc::Client*>&, unsigned long) (alloc_traits.h:133)
-==3630708==    by 0x40937F: std::_Vector_base<ft_irc::Client*, std::allocator<ft_irc::Client*> >::_M_allocate(unsigned long) (stl_vector.h:378)
-==3630708==    by 0x412720: std::_Vector_base<ft_irc::Client*, std::allocator<ft_irc::Client*> >::_M_create_storage(unsigned long) (stl_vector.h:395)
-==3630708==    by 0x412634: std::_Vector_base<ft_irc::Client*, std::allocator<ft_irc::Client*> >::_Vector_base(unsigned long, std::allocator<ft_irc::Client*> const&) (stl_vector.h:332)
-==3630708==    by 0x411C75: std::vector<ft_irc::Client*, std::allocator<ft_irc::Client*> >::vector(std::vector<ft_irc::Client*, std::allocator<ft_irc::Client*> > const&) (stl_vector.h:597)
-==3630708==    by 0x410F17: ft_irc::Server::part(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (command.cpp:413)
-==3630708==    by 0x4130CD: ft_irc::Message::parsePayload() (message.cpp:109)
-==3630708==    by 0x412AC7: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:19)
-==3630708==    by 0x405E22: ft_irc::Server::run() (server.cpp:256)
-==3630708==    by 0x403B85: main (main.cpp:28)
-==3630708== 
-==3630708== Invalid read of size 8
-==3630708==    at 0x49C2B18: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
-==3630708==    by 0x4182D6: ft_irc::Client::getNickname[abi:cxx11]() const (client.cpp:81)
-==3630708==    by 0x410FD2: ft_irc::Server::part(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (command.cpp:416)
-==3630708==    by 0x4130CD: ft_irc::Message::parsePayload() (message.cpp:109)
-==3630708==    by 0x412AC7: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:19)
-==3630708==    by 0x405E22: ft_irc::Server::run() (server.cpp:256)
-==3630708==    by 0x403B85: main (main.cpp:28)
-==3630708==  Address 0x18 is not stack'd, malloc'd or (recently) free'd
-==3630708== 
-==3630708== 
-==3630708== Process terminating with default action of signal 11 (SIGSEGV)
-==3630708==  Access not within mapped region at address 0x18
-==3630708==    at 0x49C2B18: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
-==3630708==    by 0x4182D6: ft_irc::Client::getNickname[abi:cxx11]() const (client.cpp:81)
-==3630708==    by 0x410FD2: ft_irc::Server::part(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (command.cpp:416)
-==3630708==    by 0x4130CD: ft_irc::Message::parsePayload() (message.cpp:109)
-==3630708==    by 0x412AC7: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:19)
-==3630708==    by 0x405E22: ft_irc::Server::run() (server.cpp:256)
-==3630708==    by 0x403B85: main (main.cpp:28)
-==3630708==  If you believe this happened as a result of a stack
-==3630708==  overflow in your program's main thread (unlikely but
-==3630708==  possible), you can try to increase the size of the
-==3630708==  main thread stack using the --main-stacksize= flag.
-==3630708==  The main thread stack size used in this run was 8388608.
-==3630708== 
-==3630708== HEAP SUMMARY:
-==3630708==     in use at exit: 75,914 bytes in 29 blocks
-==3630708==   total heap usage: 278 allocs, 249 frees, 103,260 bytes allocated
-==3630708== 
-==3630708== LEAK SUMMARY:
-==3630708==    definitely lost: 0 bytes in 0 blocks
-==3630708==    indirectly lost: 0 bytes in 0 blocks
-==3630708==      possibly lost: 0 bytes in 0 blocks
-==3630708==    still reachable: 75,914 bytes in 29 blocks
-==3630708==         suppressed: 0 bytes in 0 blocks
-==3630708== Rerun with --leak-check=full to see details of leaked memory
-==3630708== 
-==3630708== For lists of detected and suppressed errors, rerun with: -s
-==3630708== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+==3250697== Memcheck, a memory error detector
+==3250697== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==3250697== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==3250697== Command: ./ircserv 3456 pass
+==3250697== Parent PID: 3243607
+==3250697== 
+==3250697== Invalid read of size 8
+==3250697==    at 0x410FE2: ft_irc::Server::part(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (command.cpp:415)
+==3250697==    by 0x4131DD: ft_irc::Message::parsePayload() (message.cpp:109)
+==3250697==    by 0x412BD7: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:19)
+==3250697==    by 0x405E22: ft_irc::Server::run() (server.cpp:256)
+==3250697==    by 0x403B85: main (main.cpp:28)
+==3250697==  Address 0x4df1d60 is 0 bytes after a block of size 16 alloc'd
+==3250697==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3250697==    by 0x40961F: std::__new_allocator<ft_irc::Client*>::allocate(unsigned long, void const*) (new_allocator.h:137)
+==3250697==    by 0x4095B0: __gnu_cxx::__alloc_traits<std::allocator<ft_irc::Client*>, ft_irc::Client*>::allocate(std::allocator<ft_irc::Client*>&, unsigned long) (alloc_traits.h:133)
+==3250697==    by 0x40937F: std::_Vector_base<ft_irc::Client*, std::allocator<ft_irc::Client*> >::_M_allocate(unsigned long) (stl_vector.h:378)
+==3250697==    by 0x412830: std::_Vector_base<ft_irc::Client*, std::allocator<ft_irc::Client*> >::_M_create_storage(unsigned long) (stl_vector.h:395)
+==3250697==    by 0x412744: std::_Vector_base<ft_irc::Client*, std::allocator<ft_irc::Client*> >::_Vector_base(unsigned long, std::allocator<ft_irc::Client*> const&) (stl_vector.h:332)
+==3250697==    by 0x411D85: std::vector<ft_irc::Client*, std::allocator<ft_irc::Client*> >::vector(std::vector<ft_irc::Client*, std::allocator<ft_irc::Client*> > const&) (stl_vector.h:597)
+==3250697==    by 0x410F17: ft_irc::Server::part(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (command.cpp:413)
+==3250697==    by 0x4131DD: ft_irc::Message::parsePayload() (message.cpp:109)
+==3250697==    by 0x412BD7: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:19)
+==3250697==    by 0x405E22: ft_irc::Server::run() (server.cpp:256)
+==3250697==    by 0x403B85: main (main.cpp:28)
+==3250697== 
+==3250697== Invalid read of size 8
+==3250697==    at 0x49C2B18: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==3250697==    by 0x4183E6: ft_irc::Client::getNickname[abi:cxx11]() const (client.cpp:81)
+==3250697==    by 0x410FF0: ft_irc::Server::part(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (command.cpp:415)
+==3250697==    by 0x4131DD: ft_irc::Message::parsePayload() (message.cpp:109)
+==3250697==    by 0x412BD7: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:19)
+==3250697==    by 0x405E22: ft_irc::Server::run() (server.cpp:256)
+==3250697==    by 0x403B85: main (main.cpp:28)
+==3250697==  Address 0x18 is not stack'd, malloc'd or (recently) free'd
+==3250697== 
+==3250697== 
+==3250697== Process terminating with default action of signal 11 (SIGSEGV)
+==3250697==  Access not within mapped region at address 0x18
+==3250697==    at 0x49C2B18: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==3250697==    by 0x4183E6: ft_irc::Client::getNickname[abi:cxx11]() const (client.cpp:81)
+==3250697==    by 0x410FF0: ft_irc::Server::part(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (command.cpp:415)
+==3250697==    by 0x4131DD: ft_irc::Message::parsePayload() (message.cpp:109)
+==3250697==    by 0x412BD7: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:19)
+==3250697==    by 0x405E22: ft_irc::Server::run() (server.cpp:256)
+==3250697==    by 0x403B85: main (main.cpp:28)
+==3250697==  If you believe this happened as a result of a stack
+==3250697==  overflow in your program's main thread (unlikely but
+==3250697==  possible), you can try to increase the size of the
+==3250697==  main thread stack using the --main-stacksize= flag.
+==3250697==  The main thread stack size used in this run was 8388608.
+==3250697== 
+==3250697== HEAP SUMMARY:
+==3250697==     in use at exit: 75,914 bytes in 29 blocks
+==3250697==   total heap usage: 350 allocs, 321 frees, 105,336 bytes allocated
+==3250697== 
+==3250697== LEAK SUMMARY:
+==3250697==    definitely lost: 0 bytes in 0 blocks
+==3250697==    indirectly lost: 0 bytes in 0 blocks
+==3250697==      possibly lost: 0 bytes in 0 blocks
+==3250697==    still reachable: 75,914 bytes in 29 blocks
+==3250697==         suppressed: 0 bytes in 0 blocks
+==3250697== Rerun with --leak-check=full to see details of leaked memory
+==3250697== 
+==3250697== For lists of detected and suppressed errors, rerun with: -s
+==3250697== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
