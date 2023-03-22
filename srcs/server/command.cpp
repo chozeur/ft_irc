@@ -391,7 +391,6 @@ void ft_irc::Server::whois(ft_irc::Message* message, const std::string& param) {
 
 void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
 
-    // On récupère le serveur, le canal et la liste des canaux du serveur
     ft_irc::Server *server = message->getServer();
     ft_irc::Channel *channel;
     // std::vector<Channel*> *channels = server->getChannels();
@@ -402,12 +401,18 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
     param2 = param2.substr(pos + 1);
     cleanLine(param2);
     removeAllOccurrences(param2, "#");
+    size_t pos2 = param2.find(":");
+    param2 = param2.substr(pos2 + 1);
 
+    std::cerr << "param2 --> " << "[" << param2 << "]" << std::endl;
     channel = server->getChannelPointer(param2);
-    
+    std::cerr << "channelPointerName --> " << "[" << channel->getName() << "]" << std::endl;
+
+
+
     std::vector<Client *> vec  = channel->getClients();
-    std::vector<Client *>::iterator it = vec.begin();
-    for ( ; it != vec.end(); ++it)
+    // std::vector<Client *>::iterator it = vec.begin();
+    for (std::vector<Client *>::iterator it = vec.begin() ; it != vec.end(); ++it)
         if ((*it)->getNickname() == message->getSender()->getNickname())
             vec.erase(it);
 
@@ -427,6 +432,8 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
     }
 
 
+}
+
     // ft_irc::Client  *sender = message->getSender();
     
     // std::vector<ft_irc::Channel *> Chann = sender->getChannels();
@@ -444,4 +451,3 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
     // }
     
     // return ;
-}
