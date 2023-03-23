@@ -25,11 +25,17 @@ ft_irc::Server::~Server(void){
 
 ft_irc::Server&							ft_irc::Server::operator=(Server const &rhs){
 	if (this != &rhs){
+		this->_name = rhs._name;
+		this->_ip = rhs._ip;
 		this->_port = rhs._port;
 		this->_password = rhs._password;
+		// this->_fds = rhs._fds; //! deep copy
 		this->_serv_addr = rhs._serv_addr;
 		this->_sockfd = rhs._sockfd;
 		this->_env = rhs._env; //! deep copy
+		this->_clients = rhs._clients; //? deep copy
+		this->_channels = rhs._channels; //? deep copy
+		this->_commands = rhs._commands; //? deep copy
 	}
 	return (*this);
 }

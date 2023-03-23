@@ -61,6 +61,7 @@ ft_irc::Client&				ft_irc::Client::operator=(Client const &rhs){
 		this->_realname = rhs._realname;
 		this->_password = rhs._password;
 		this->_host = rhs._host;
+		this->_servername = rhs._servername;
 		this->_userLine = rhs._userLine;
 		this->_channels = rhs._channels;
 	}
