@@ -404,17 +404,27 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
     size_t pos2 = param2.find(":");
     param2 = param2.substr(pos2 + 1);
 
-    std::cerr << "param2 --> " << "[" << param2 << "]" << std::endl;
+    if (pos2 == std::string::npos) {
+        std::string chan_res = ":" + server->getIp() + " 461 * " + message->getSender()->getNickname() + " PART :Channel name missing. Usage: /part #channel\r\n";
+        send(message->getSender()->getSockfd(), chan_res.c_str(), chan_res.length(), 0);
+        return ;
+    }
+
+
+    // std::cerr << "param2 --> " << "[" << param2 << "]" << std::endl;
     channel = server->getChannelPointer(param2);
-    std::cerr << "channelPointerName --> " << "[" << channel->getName() << "]" << std::endl;
+    // std::cerr << "channelPointerName --> " << "[" << channel->getName() << "]" << std::endl;
 
 
 
     std::vector<Client *> vec  = channel->getClients();
-    for (std::vector<Client *>::iterator it = vec.begin() ; it != vec.end(); ++it) {
-        std::cerr << "Cli-> " << (*it)->getNickname() << std::endl;
-        if ((*it)->getNickname() == message->getSender()->getNickname())
+    for (std::vector<Client *>::iterator it = vec.begin() ; it != vec.end(); ++it) { // GO FURTHER THAN vec.end() DONT KNOW WHY
+                                                                                // SEGFAULT ON (*it)->getNickname() 
+        // std::cerr << "Cli-> " << (*it)->getNickname() << std::endl;
+        if ((*it)->getNickname() == message->getSender()->getNickname()){
+            std::cerr << "WEEEEEEEEEEEEEEEEEEEEEEEEEEEOOOOOOOOOOOOOOOOOOOOO" << std::endl;
             vec.erase(it);
+        }
     }
     std::string part_msg = message->getSender()->getNickname() + ":" + " PART #" + channel->getName() + "\r\n";
     for (std::vector<Client *>::const_iterator it = channel->getClients().begin(); it != channel->getClients().end(); ++it) {
