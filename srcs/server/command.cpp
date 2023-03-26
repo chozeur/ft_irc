@@ -418,14 +418,17 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
 
 
     std::vector<Client *> vec  = channel->getClients();
-    for (std::vector<Client *>::iterator it = vec.begin() ; it != vec.end(); ++it) { // GO FURTHER THAN vec.end() DONT KNOW WHY
-                                                                                // SEGFAULT ON (*it)->getNickname() 
-        // std::cerr << "Cli-> " << (*it)->getNickname() << std::endl;
+    // if (vec.size() <= 0)
+        // return ;
+    // SEGFAULT ON VEC IF THE CHAN DOES NOT EXIST
+    for (std::vector<Client *>::iterator it = vec.begin() ;  it != vec.end(); ++it) {
+        std::cerr << "Cli-> " << (*it)->getNickname() << std::endl;
         if ((*it)->getNickname() == message->getSender()->getNickname()){
-            std::cerr << "WEEEEEEEEEEEEEEEEEEEEEEEEEEEOOOOOOOOOOOOOOOOOOOOO" << std::endl;
             vec.erase(it);
+            break ;
         }
     }
+    // std::string part_msg = ":" + message->getSender()->getNickname() + "!"  + message->getSender()->getNickname() + "@localhost PART #" + channel->getName() + ": " + "\r\n";
     std::string part_msg = message->getSender()->getNickname() + ":" + " PART #" + channel->getName() + "\r\n";
     for (std::vector<Client *>::const_iterator it = channel->getClients().begin(); it != channel->getClients().end(); ++it) {
         if (*it != message->getSender()) {
