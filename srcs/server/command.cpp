@@ -429,10 +429,35 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
             }
         }
         // Send a message to confirm the client's departure
-        std::string confirm_msg = ":" + message->getServer()->getIp() + " 301 " + message->getSender()->getNickname() + " #" + channel->getName() + " :Goodbye!\r\n";
-        if (send(message->getSender()->getSockfd(), confirm_msg.c_str(), confirm_msg.length(), 0) == -1) {
-            std::cerr << "Error SEND" << std::endl;
+        // std::string confirm_msg = ":" + message->getServer()->getIp() + " 301 " + message->getSender()->getNickname() + " #" + channel->getName() + " :Goodbye!\r\n";
+        // if (send(message->getSender()->getSockfd(), confirm_msg.c_str(), confirm_msg.length(), 0) == -1) {
+        //     std::cerr << "Error SEND" << std::endl;
+        // }
+
+        ///////////////////////////////////////////////////////////
+
+        std::string names_msg = ":" + message->getServer()->getIp() + " 301 " + message->getSender()->getNickname() + " = #" + channel->getName() + " :";
+        const std::vector<Client *>& clients = channel->getClients();
+
+        // On parcourt la liste des clients dans le canal et on ajoute leur nom au message
+        for (std::vector<Client *>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
+            names_msg += " " + (*it)->getNickname();
         }
+
+        // On termine le message avec un espace et un retour à la ligne
+        names_msg += " \r\n";
+
+        // std::cerr << names_msg << std::endl;
+
+        // A tous les clients presents ds le canal
+        // ---------------------------------
+
+        // On envoie le message de la liste des noms des clients présents dans le canal à tous les clients du canal
+        for (std::vector<Client *>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
+            if (send((*it)->getSockfd(), names_msg.c_str(), names_msg.length(), 0) == -1) {
+                std::cerr << "2 ERROR SEND" << std::endl;
+            }
+        }        
     }
 
 }
