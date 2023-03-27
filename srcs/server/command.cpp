@@ -397,7 +397,6 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
 
     ft_irc::Server *server = message->getServer();
     ft_irc::Channel *channel;
-    // std::vector<Channel*> *channels = server->getChannels();
 
     // On supprime le caractère '#' au début du paramètre pour récupérer le nom du canal
     std::string param2 = param;
@@ -461,21 +460,3 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
     }
 
 }
-
-    // ft_irc::Client  *sender = message->getSender();
-    
-    // std::vector<ft_irc::Channel *> Chann = sender->getChannels();
-    
-    // std::string msg = "PART <" + param + ">\n"/* sender->getNickname() + " has left the channel." */;
-
-    // for (std::vector<ft_irc::Channel *>::iterator it = Chann.begin(); it != Chann.end(); ++it) {
-    //     if ((*it)->getName() == param) {
-    //         for (std::vector<ft_irc::Client *>::const_iterator it2 = (*it)->getClients().begin(); it2 != (*it)->getClients().end(); ++it2){
-    //             send((*it2)->getSockfd(), msg.c_str(), msg.length(), 0);
-    //             // std::cerr << "WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEeee" << std::endl;
-    //         }
-    //         break ;
-    //     }
-    // }
-    
-    // return ;
