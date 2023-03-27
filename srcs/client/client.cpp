@@ -209,13 +209,9 @@ ft_irc::Channel*			ft_irc::Client::getChanPointer(std::string name) {
 }
 
 void						ft_irc::Client::removeChannel(Channel const &channel){
-	std::cerr << "NOT YET ERASE CHAN FROM CLIENT" << std::endl;
 	std::vector<Channel *>::iterator it = std::find(this->_channels.begin(), this->_channels.end(), &channel);
     if (it != this->_channels.end())
-    {
-		std::cerr << "ERASE CHAN FROM CLIENT" << std::endl;
         this->_channels.erase(it);
-    }
 }
 
 /* OVERLOADS */
