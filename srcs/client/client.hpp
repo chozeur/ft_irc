@@ -50,8 +50,8 @@ namespace ft_irc
 			void						setServername(std::string servername);
 			void						setUserLine(std::string userLine);
 			void						setChannels(std::vector<ft_irc::Channel*> channels);
-		    void						setIsBot(bool isBot);
-		    void						setIsSet(bool isSet);
+			void						setIsBot(bool isBot);
+			void						setIsSet(bool isSet);
 			bool						isBot() const;
 			bool						isSet() const;
 			void						handleMessage(int serverSockFd, std::string text, Client *bot, Client *receiver);

@@ -247,10 +247,7 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
         names_msg += " " + (*it)->getNickname();
     }
 
-    // On termine le message avec un espace et un retour à la ligne
     names_msg += " \r\n";
-
-    // std::cerr << names_msg << std::endl;
 
     // A tous les clients presents ds le canal
     // ---------------------------------
@@ -261,7 +258,6 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
             std::cerr << "2 ERROR SEND" << std::endl;
         }
     }
-
 
     // send JOIN message to all clients in the channel
     std::string join_msg = message->getSender()->getNickname() + ": JOIN #" + channel->getName() + "\r\n";
@@ -300,7 +296,6 @@ void ft_irc::Server::privmsg(ft_irc::Message* message, const std::string& param)
     if (messagePos != std::string::npos) {
         messageText = param2.substr(messagePos + 2);
     }
-
 
     // Si le paramètre commence par un '#', c'est un message à envoyer à un canal
     if (param2[0] == '#') {
@@ -363,7 +358,34 @@ void ft_irc::Server::privmsg(ft_irc::Message* message, const std::string& param)
 }
 
 void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
-	(void)message;
+    //utilisation : /kick #channel <nom d'utilisateur> <raison>
+
+    // ft_irc::Server *server = message->getServer();
+    // ft_irc::Channel *channel;
+    (void)message;
+
+    std::string param2 = param;
+    size_t pos = param2.find(" ");
+    param2 = param2.substr(pos + 1);
+    cleanLine(param2);
+    removeAllOccurrences(param2, "#");
+    size_t pos2 = param2.find(" ");
+    param2 = param2.substr(pos2 + 1);
+    std::string param3 = param2.substr(0, param2.find(' ')); // equal to user to kick
+    size_t pos3 = param2.find(":");
+    std::string param4 = param2.substr(pos3 + 1); // equal to reason he is kick
+    size_t pos4 = param.find('#');
+    size_t pos5 = param.find(' ', pos4);
+    std::string param5 = param.substr(pos4+1, pos5-1);
+
+
+
+    std::cerr << "param--> " << "[" << param << "]" << std::endl;
+    std::cerr << "param2--> " << "[" << param2 << "]" << std::endl;
+    std::cerr << "param3--> " << "[" << param3 << "]" << std::endl;
+    std::cerr << "param4--> " << "[" << param4 << "]" << std::endl;
+    std::cerr << "param5--> " << "[" << param5 << "]" << std::endl;
+
 	std::cerr << "KICK FUNCTION CALLED WITH PARAM = " << param << std::endl;
 	return ;
 }
