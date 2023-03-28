@@ -371,22 +371,23 @@ void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
     removeAllOccurrences(param2, "#");
     size_t pos2 = param2.find(" ");
     param2 = param2.substr(pos2 + 1);
-    std::string param3 = param2.substr(0, param2.find(' ')); // equal to user to kick
+    std::string userToKick = param2.substr(0, param2.find(' ')); // equal to user to kick
     size_t pos3 = param2.find(":");
-    std::string param4 = param2.substr(pos3 + 1); // equal to reason he is kick
-    size_t pos4 = param.find('#');
-    size_t pos5 = param.find(' ', pos4);
-    std::string param5 = param.substr(pos4+1, pos5-1);
+    std::string reasonWhy = param2.substr(pos3 + 1); // equal to reason he is kick
+    std::string chann;
+    size_t hash_pos = param.find('#');
+    size_t space_pos = param.find(' ', hash_pos);
+    chann = param.substr(hash_pos+1, space_pos-hash_pos-1);
+    size_t colon_pos = chann.find(':');
+    chann = chann.substr(0, colon_pos); // equal to channel's name
 
 
-
-    std::cerr << "param--> " << "[" << param << "]" << std::endl;
-    std::cerr << "param2--> " << "[" << param2 << "]" << std::endl;
-    std::cerr << "param3--> " << "[" << param3 << "]" << std::endl;
-    std::cerr << "param4--> " << "[" << param4 << "]" << std::endl;
-    std::cerr << "param5--> " << "[" << param5 << "]" << std::endl;
+    std::cerr << "userToKick--> " << "[" << userToKick << "]" << std::endl;
+    std::cerr << "reasonWhy--> " << "[" << reasonWhy << "]" << std::endl;
+    std::cerr << "chann--> " << "[" << chann << "]" << std::endl;
 
 	std::cerr << "KICK FUNCTION CALLED WITH PARAM = " << param << std::endl;
+    
 	return ;
 }
 
