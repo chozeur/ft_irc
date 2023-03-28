@@ -386,7 +386,7 @@ void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
     std::cerr << "reasonWhy--> " << "[" << reasonWhy << "]" << std::endl;
     std::cerr << "chann--> " << "[" << chann << "]" << std::endl;
 
-	std::cerr << "KICK FUNCTION CALLED WITH PARAM = " << param << std::endl;
+	// std::cerr << "KICK FUNCTION CALLED WITH PARAM = " << param << std::endl;
     
 	return ;
 }
