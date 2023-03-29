@@ -6,20 +6,28 @@
 # include <sys/types.h>
 # include <sys/socket.h>
 # include <netinet/in.h>
-# include <string.h>
+// # include <string.h>
 # include <unistd.h>
 # include <algorithm>
 # include "../channel/channel.hpp"
+# include "../../includes/utils.hpp"
+
+
+// #include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <netdb.h>
+#include <arpa/inet.h>
 
 
 namespace ft_irc
 {
 	class	Channel;
-	
+
 	class Client {
 
 		public:
-		
+
 			Client(void);
 			Client(Client const &rhs);
 			Client(int sockfd);
@@ -55,6 +63,8 @@ namespace ft_irc
 			bool						isBot() const;
 			bool						isSet() const;
 			void						handleMessage(int serverSockFd, std::string text, Client *bot, Client *receiver);
+
+			std::string					unicorn(void);
 
 			void 						removeChannel(Channel const &channel);
 			void 						addChannel(Channel *channel);

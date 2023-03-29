@@ -187,11 +187,21 @@ void 						ft_irc::Client::handleMessage(int serverSockFd, std::string text, Cli
     } else if (text == "time") {
         time_t now = time(0);
         response = "Il est " + std::string(ctime(&now));
-    } else if (text == "help") {
+    } else if (text == "unicorn"){
+		response = unicorn();
+	} else if (text == "help") {
 		response = "Les commandes disponibles sont : ping, hello, time.";
 	} else {
         response = "Commande inconnue";
     }
+
+	if (response.find("\n") != std::string::npos){
+		std::vector<std::string> lines = split(response, "\n");
+		for (std::vector<std::string>::iterator it = lines.begin(); it != lines.end(); ++it) {
+			std::string messageToSend = ":" + bot->getNickname() + " PRIVMSG " + receiver->getNickname() + " :" + *it + "\r\n";
+			send(receiver->getSockfd(), messageToSend.c_str(), messageToSend.length(), 0);
+		}
+	}
 
     std::string messageToSend = ":" + bot->getNickname() + " PRIVMSG " + receiver->getNickname() + " :" + response + "\r\n";
     send(receiver->getSockfd(), messageToSend.c_str(), messageToSend.length(), 0);
@@ -221,4 +231,71 @@ std::ostream& ft_irc::operator<<(std::ostream& os, const ft_irc::Client& client)
 {
     os << "Client [sockfd : " << client.getSockfd() << ", nickname : " << client.getNickname() << ", realname :" << client.getRealname() << ", servername : " << client.getServername() << ", hostname : " << client.getHost() << "]";
     return os;
+}
+
+/* OTHER */
+
+std::string	ft_irc::Client::unicorn(void) {
+	const char *host = "wttr.in";
+	const char *path = "/Paris";
+	const char *method = "GET";
+
+	// Get the server's address
+	struct hostent *server = gethostbyname(host);
+	if (server == NULL) {
+		std::cerr << "Error: Could not resolve host" << std::endl;
+		return ("ERROR IN UNICORN");
+	}
+
+	// Create a socket
+	int portno = 80;
+	int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+	if (sockfd < 0) {
+		std::cerr << "Error: Could not create socket" << std::endl;
+		return ("ERROR IN UNICORN");
+	}
+
+	// Set up the server address structure
+	struct sockaddr_in serv_addr;
+	std::memset(&serv_addr, 0, sizeof(serv_addr));
+	serv_addr.sin_family = AF_INET;
+	std::memcpy(&serv_addr.sin_addr.s_addr, server->h_addr_list[0], server->h_length);
+	serv_addr.sin_port = htons(portno);
+
+	// Connect to the server
+	if (connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
+		std::cerr << "Error: Could not connect to server" << std::endl;
+		return ("ERROR IN UNICORN");
+	}
+
+	// Construct the HTTP request
+	std::string request = std::string(method) + " " + std::string(path) + " HTTP/1.1\r\n";
+	request += "Host: " + std::string(host) + "\r\n\r\n";
+
+	// Send the request
+	if (send(sockfd, request.c_str(), request.length(), 0) < 0) {
+		std::cerr << "Error: Could not send request" << std::endl;
+		return ("ERROR IN UNICORN");
+	}
+
+	// Receive the response
+	const int buffer_len = 1024;
+	char buffer[buffer_len];
+	std::string response = "";
+	int bytes_received;
+	do {
+		bytes_received = recv(sockfd, buffer, buffer_len-1, 0);
+		if (bytes_received < 0) {
+			std::cerr << "Error: There was an error receiving the response" << std::endl;
+			return ("ERROR IN UNICORN");
+		}
+		buffer[bytes_received] = '\0';
+		response += std::string(buffer);
+		response = remove_html_header(response);
+	} while (bytes_received > 0);
+
+	// Close the socket
+	close(sockfd);
+
+	return (response);
 }

@@ -12,13 +12,14 @@ SOURCES		+=                            		\
 		srcs/utils/removeOccurences.cpp      	\
 		srcs/utils/sig_handler.cpp           	\
 		srcs/utils/parsing_args.cpp          	\
+		srcs/utils/split.cpp                 	\
 
 
 ## SRCS/SERVER ##
 
 SOURCES		+=                            		\
 		srcs/server/server.cpp               	\
-		srcs/server/command.cpp					\
+		srcs/server/command.cpp              	\
 
 
 ## SRCS/MESSAGE ##

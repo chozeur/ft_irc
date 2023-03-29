@@ -14,3 +14,15 @@ void cleanLine(std::string& str) {
 	removeAllOccurrences(str, "\n");
 	removeAllOccurrences(str, "\r");
 }
+
+std::string remove_html_header(const std::string& html_string) {
+    // Find the end of the header by searching for the "\r\n\r\n" sequence
+    std::size_t header_end = html_string.find("\r\n\r\n");
+    if (header_end == std::string::npos) {
+        // If the header end is not found, return the original string
+        return html_string;
+    } else {
+        // Return the substring after the header end
+        return html_string.substr(header_end + 4);
+    }
+}
