@@ -429,15 +429,34 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
     // RECHECK FORMAT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     
     // On supprime le caractère '#' au début du paramètre pour récupérer le nom du canal
+    // std::string param2 = param;
+    // size_t pos = param2.find(" ");
+    // param2 = param2.substr(pos + 1);
+    // cleanLine(param2);
+    // removeAllOccurrences(param2, "#");
+    // size_t pos2 = param2.find(":");
+    // param2 = param2.substr(pos2 + 1);
+
+
+
     std::string param2 = param;
     size_t pos = param2.find(" ");
     param2 = param2.substr(pos + 1);
     cleanLine(param2);
     removeAllOccurrences(param2, "#");
-    size_t pos2 = param2.find(":");
-    param2 = param2.substr(pos2 + 1);
 
-    if (pos2 == std::string::npos) {
+    param2 = param2.substr(0, param2.find(' '));
+
+    // size_t pos2 = param2.find(" ");
+    // param2 = param2.substr(pos2 + 1);   // find the reasonWhy
+
+    // case 1 (out chann) /part <chan> <reasonWhy>
+    // case 2 (in chann) /part <reasonWhy>
+
+    std::cerr << "param2" << "[" << param2 << "]" << std::endl;
+    std::cerr << "param" << "[" << param << "]" << std::endl;
+
+    if (/* pos2 == std::string::npos */param2 == "") {
         std::string chan_res = ":" + server->getIp() + " 461 * " + message->getSender()->getNickname() + " PART :Channel name missing. Usage: /part #channel\r\n";
         send(message->getSender()->getSockfd(), chan_res.c_str(), chan_res.length(), 0);
         return ;
