@@ -363,7 +363,6 @@ void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
     ft_irc::Server *server = message->getServer();
     ft_irc::Channel *channel;
     ft_irc::Client *client;
-    // (void)message;
 
     std::string param2 = param;
     size_t pos = param2.find(" ");
@@ -382,17 +381,18 @@ void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
     size_t colon_pos = chann.find(':');
     chann = chann.substr(0, colon_pos); // equal to channel's name
 
+    std::cerr << "param--> " << param << std::endl;
     std::cerr << "userToKick--> " << "[" << userToKick << "]" << std::endl;
     std::cerr << "reasonWhy--> " << "[" << reasonWhy << "]" << std::endl;
     std::cerr << "chann--> " << "[" << chann << "]" << std::endl;
 
     channel = message->getSender()->getChanPointer(chann);
     client = server->getClientPointerByNick(userToKick);
-    channel->removeClient(*client);
-    client->removeChannel(*channel);
+    if (channel && client){
+        channel->removeClient(*client);
+        client->removeChannel(*channel);
+    }
 
-	// std::cerr << "KICK FUNCTION CALLED WITH PARAM = " << param << std::endl;
-    
 	return ;
 }
 
