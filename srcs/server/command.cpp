@@ -423,40 +423,30 @@ void ft_irc::Server::whois(ft_irc::Message* message, const std::string& param) {
 
 void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
 
+    // case 1 (out chann) /part <chan> <reasonWhy>
+    // case 2 (in chann) /part <reasonWhy>
     ft_irc::Server *server = message->getServer();
     ft_irc::Channel *channel;
-
-    // RECHECK FORMAT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    
-    // On supprime le caractère '#' au début du paramètre pour récupérer le nom du canal
-    // std::string param2 = param;
-    // size_t pos = param2.find(" ");
-    // param2 = param2.substr(pos + 1);
-    // cleanLine(param2);
-    // removeAllOccurrences(param2, "#");
-    // size_t pos2 = param2.find(":");
-    // param2 = param2.substr(pos2 + 1);
-
-
 
     std::string param2 = param;
     size_t pos = param2.find(" ");
     param2 = param2.substr(pos + 1);
     cleanLine(param2);
     removeAllOccurrences(param2, "#");
+    param2 = param2.substr(0, param2.find(' ')); // param2 = channel
+    size_t pos2 = param.find(" ");
+    std::string param3 = param.substr(pos2 + 1);
+    pos2 = param3.find(" ");
+    param3 = param3.substr(pos2 + 1);
+    removeAllOccurrences(param3, ":"); // param3 = reasonWhy he leave
+    if (param3 == param2 || param3 == "#" + param2)
+        param3 = "";
 
-    param2 = param2.substr(0, param2.find(' '));
-
-    // size_t pos2 = param2.find(" ");
-    // param2 = param2.substr(pos2 + 1);   // find the reasonWhy
-
-    // case 1 (out chann) /part <chan> <reasonWhy>
-    // case 2 (in chann) /part <reasonWhy>
-
-    std::cerr << "param2" << "[" << param2 << "]" << std::endl;
     std::cerr << "param" << "[" << param << "]" << std::endl;
+    std::cerr << "param2" << "[" << param2 << "]" << std::endl;
+    std::cerr << "param3" << "[" << param3 << "]" << std::endl;
 
-    if (/* pos2 == std::string::npos */param2 == "") {
+    if (param2 == "") {
         std::string chan_res = ":" + server->getIp() + " 461 * " + message->getSender()->getNickname() + " PART :Channel name missing. Usage: /part #channel\r\n";
         send(message->getSender()->getSockfd(), chan_res.c_str(), chan_res.length(), 0);
         return ;
@@ -467,22 +457,19 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
         channel->removeClient(*(message->getSender()));
         message->getSender()->removeChannel(*channel);
 
-        // std::string part_msg = message->getSender()->getNickname() + ":" + " PART #" + channel->getName() + "\r\n";
-        std::string part_msg = ":" + message->getSender()->getNickname() + "!"  + message->getSender()->getNickname() + "@localhost PART #" + channel->getName() + ": " + "\r\n";
+        std::string part_msg = ":" + message->getSender()->getNickname() + "!"  + message->getSender()->getNickname() + "@localhost PART #" + channel->getName() + ": " + param3 + "\r\n";
         for (std::vector<Client *>::const_iterator it = channel->getClients().begin(); it != channel->getClients().end(); ++it) {
-            // if (*it != message->getSender()) {
+            if (*it != message->getSender()) {
                 if (send((*it)->getSockfd(), part_msg.c_str(), part_msg.length(), 0) == -1) {
                     std::cerr << "Error SEND" << std::endl;
                 }
-            // }
+            }
         }
         // Send a message to confirm the client's departure
         std::string confirm_msg = ":" + message->getServer()->getIp() + " 301 " + message->getSender()->getNickname() + " #" + channel->getName() + " :Goodbye!\r\n";
         if (send(message->getSender()->getSockfd(), confirm_msg.c_str(), confirm_msg.length(), 0) == -1) {
             std::cerr << "Error SEND" << std::endl;
         }
-
-        ///////////////////////////////////////////////////////////
 
         std::string names_msg = ":" + message->getServer()->getIp() + " 301 " + message->getSender()->getNickname() + " = #" + channel->getName() + " :";
         const std::vector<Client *>& clients = channel->getClients();
