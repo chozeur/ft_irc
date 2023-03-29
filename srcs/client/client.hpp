@@ -52,10 +52,13 @@ namespace ft_irc
 			void						setChannels(std::vector<ft_irc::Channel*> channels);
 		    void						setIsBot(bool isBot);
 		    void						setIsSet(bool isSet);
-
 			bool						isBot() const;
 			bool						isSet() const;
 			void						handleMessage(int serverSockFd, std::string text, Client *bot, Client *receiver);
+
+			void 						removeChannel(Channel const &channel);
+			void 						addChannel(Channel *channel);
+			ft_irc::Channel*			getChanPointer(std::string name);
 
 		private:
 			bool						_isSet;

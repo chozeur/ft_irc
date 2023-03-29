@@ -197,6 +197,23 @@ void 						ft_irc::Client::handleMessage(int serverSockFd, std::string text, Cli
     send(receiver->getSockfd(), messageToSend.c_str(), messageToSend.length(), 0);
 }
 
+void 		ft_irc::Client::addChannel(Channel *channel) {
+	this->_channels.push_back(channel);
+}
+
+ft_irc::Channel*			ft_irc::Client::getChanPointer(std::string name) {
+    for (std::vector<Channel*>::iterator it = _channels.begin(); it != _channels.end(); ++it) {
+        if ((*it)->getName() == name)
+            return (*it);
+    }
+    return NULL;
+}
+
+void						ft_irc::Client::removeChannel(Channel const &channel){
+	std::vector<Channel *>::iterator it = std::find(this->_channels.begin(), this->_channels.end(), &channel);
+    if (it != this->_channels.end())
+        this->_channels.erase(it);
+}
 
 /* OVERLOADS */
 
