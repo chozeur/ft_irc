@@ -465,13 +465,19 @@ void ft_irc::Server::whois(ft_irc::Message* message, const std::string& param) {
     param2 = param2.substr(pos + 1);
     ft_irc::Client  *client = server->getClientPointerByNick(param2);
     if (client){
-        time_t now = client->getTime();
+        struct timeval	t;
+        gettimeofday(&t, NULL);
+        long long signon = ((t.tv_sec * 1000) + (t.tv_usec / 1000)) - client->getIdle();
+        std::ostringstream idle;
+        idle << client->getIdle();
+        std::ostringstream sig;
+        sig << signon;
         std::string whois_msg = ":" + server->getIp() + " 311 " + message->getSender()->getNickname() + " " + client->getNickname() + " ~" + client->getNickname() + "@localhost" + " * " + client->getNickname() + " " + client->getRealname() + "\r\n";
-        std::string whois_time_msg = ":" + server->getIp() + " 317 " + message->getSender()->getNickname() + " " + client->getNickname() + " " + std::string(ctime(&now)) + "\r\n";   
+        std::string whois_time_msg = ":" + server->getIp() + " 317 " + message->getSender()->getNickname() + " " + client->getNickname() + " " + sig.str() + " " + idle.str() + " :seconds idle, signon time" + "\r\n";   
         std::string whois_end_msg = ":" + server->getIp() + " 318 " + message->getSender()->getNickname() + " " + client->getNickname() + " :End of /WHOIS list\r\n";
-        std::cerr << whois_msg << std::endl;
+        // std::cerr << whois_msg << std::endl;
         std::cerr << whois_time_msg << std::endl;
-        std::cerr << whois_end_msg << std::endl;
+        // std::cerr << whois_end_msg << std::endl;
         if (send(message->getSender()->getSockfd(), whois_msg.c_str(), whois_msg.length(), 0) == -1) {
             std::cerr << "Error SEND" << std::endl;
         }
