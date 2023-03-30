@@ -37,6 +37,7 @@ namespace ft_irc
 			std::string					getHost(void) const;
 			std::string					getServername(void) const;
 			std::string					getUserLine(void) const;
+			time_t						getTime(void) const;
 			std::vector<ft_irc::Channel*>	getChannels(void) const;
 
 			void						setSockfd(int sockfd);
@@ -71,6 +72,7 @@ namespace ft_irc
 			std::string					_host;
 			std::string					_servername;
 			std::string					_userLine;
+			time_t						_time;
 			std::vector<ft_irc::Channel*>	_channels;
 	};
 
