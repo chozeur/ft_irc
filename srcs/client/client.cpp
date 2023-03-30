@@ -11,8 +11,8 @@ ft_irc::Client::Client(void):
 	_realname(""),
 	_password(""),
 	_host(""),
-	_userLine(""),
-	_time(time(0)){
+	_userLine(""){
+		setIdleAndSignon();
 	return ;
 }
 
@@ -25,8 +25,7 @@ ft_irc::Client::Client(Client const & rhs):
 	_realname(""),
 	_password(""),
 	_host(""),
-	_userLine(""),
-	_time(time(0)){
+	_userLine(""){
 	*this = rhs;
 	return ;
 }
@@ -40,8 +39,8 @@ ft_irc::Client::Client(int sockfd):
 	_realname(""),
 	_password(""),
 	_host(""),
-	_userLine(""),
-	_time(time(0)){
+	_userLine(""){
+		setIdleAndSignon();
 	return ;
 }
 
@@ -66,7 +65,7 @@ ft_irc::Client&				ft_irc::Client::operator=(Client const &rhs){
 		this->_host = rhs._host;
 		this->_userLine = rhs._userLine;
 		this->_channels = rhs._channels;
-		this->_time = rhs._time;
+		this->_idle = rhs._idle;
 	}
 	return (*this);
 }
@@ -109,8 +108,8 @@ std::string					ft_irc::Client::getUserLine(void) const {
 	return (this->_userLine);
 }
 
-time_t						ft_irc::Client::getTime(void) const {
-	return (this->_time);
+long long					ft_irc::Client::getIdle(void) const {
+	return (this->_idle);
 }
 
 std::vector<ft_irc::Channel*>	ft_irc::Client::getChannels(void) const {
@@ -158,6 +157,15 @@ void						ft_irc::Client::setUserLine(std::string userLine){
 	this->_userLine = userLine;
 	return ;
 }
+
+void						ft_irc::Client::setIdleAndSignon(void){
+
+	struct timeval	t;
+
+	gettimeofday(&t, NULL);
+	this->_idle = (t.tv_sec * 1000) + (t.tv_usec / 1000);
+}
+
 
 void						ft_irc::Client::setChannels(std::vector<ft_irc::Channel*> channels){	//! deep copy
 	this->_channels = channels;
