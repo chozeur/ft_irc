@@ -387,7 +387,7 @@ void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
 
     channel = message->getSender()->getChanPointer(chann);
     client = server->getClientPointerByNick(userToKick);
-    if (channel && client){
+    if (channel && client && client->getNickname() != message->getSender()->getNickname()){
         std::string kick_message = ":" + message->getSender()->getNickname() + " " + "KICK" + " #" + chann + " " + userToKick + " :" + reasonWhy + "\r\n";
         channel->removeClient(*client);
         client->removeChannel(*channel);
@@ -414,7 +414,7 @@ void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
         ++it;
         // On parcourt la liste des clients dans le canal et on ajoute leur nom au message
         for ( ; it != clients.end(); ++it) {
-            names_msg += "," + (*it)->getNickname();
+            names_msg += " " + (*it)->getNickname();
         }
 
         // On termine le message avec un espace et un retour à la ligne
