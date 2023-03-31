@@ -501,8 +501,12 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
     pos2 = param3.find(" ");
     param3 = param3.substr(pos2 + 1);
     removeAllOccurrences(param3, ":"); // param3 = reasonWhy he leave
-    if (param3 == param2 || param3 == "#" + param2)
+    if (param.size() <= (5 + param2.size() + 1))
         param3 = "";
+
+    std::cerr << "param--> " << "[" << param << "]" << " size: " << param.size() << std::endl;
+    std::cerr << "param2--> " << "[" << param2 << "]" << " size: " << param2.size() << std::endl;
+    std::cerr << "param3--> " << "[" << param3 << "]" << " size: " << param3.size() << std::endl;
 
     if (param2 == "") {
         std::string chan_res = ":" + server->getIp() + " 461 * " + message->getSender()->getNickname() + " PART :Channel name missing. Usage: /part #channel\r\n";
