@@ -495,7 +495,16 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
     param2 = param2.substr(pos + 1);
     cleanLine(param2);
     removeAllOccurrences(param2, "#");
-    param2 = param2.substr(0, param2.find(' ')); // param2 = channel
+    param2 = param2.substr(0, param2.find(' ')); // param2 = channel or the list of many channels
+
+
+    std::vector<std::string> channels;
+    std::stringstream ss(param2);
+    std::string channel_name;
+    while (std::getline(ss, channel_name, ',')) {
+    channels.push_back(channel_name);
+    }
+    
     size_t pos2 = param.find(" ");
     std::string param3 = param.substr(pos2 + 1);
     pos2 = param3.find(" ");
@@ -514,19 +523,22 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
         return ;
     }
 
-    channel = message->getSender()->getChanPointer(param2);
-    if (channel){
-        channel->removeClient(*(message->getSender()));
-        message->getSender()->removeChannel(*channel);
 
+
+    for(std::vector<std::string>::iterator it = channels.begin(); it != channels.end(); ++it){
+
+        channel = message->getSender()->getChanPointer(*it);
+        if (!channel)
+            it++;
+        
         std::string part_msg = ":" + message->getSender()->getNickname() + "!"  + message->getSender()->getNickname() + "@localhost PART #" + channel->getName() + " :" + param3 + "\r\n";
         for (std::vector<Client *>::const_iterator it = channel->getClients().begin(); it != channel->getClients().end(); ++it) {
-            if (*it != message->getSender()) {
-                if (send((*it)->getSockfd(), part_msg.c_str(), part_msg.length(), 0) == -1) {
-                    std::cerr << "Error SEND" << std::endl;
-                }
+            if (send((*it)->getSockfd(), part_msg.c_str(), part_msg.length(), 0) == -1) {
+                std::cerr << "Error SEND" << std::endl;
             }
         }
+        channel->removeClient(*(message->getSender()));
+        message->getSender()->removeChannel(*channel);
 
         //////////////////////////////////////
         

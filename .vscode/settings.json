@@ -57,6 +57,9 @@
 		"sstream": "cpp",
 		"cinttypes": "cpp",
 		"typeindex": "cpp",
-		"variant": "cpp"
+		"variant": "cpp",
+		"chrono": "cpp",
+		"ctime": "cpp",
+		"ratio": "cpp"
 	}
 }
