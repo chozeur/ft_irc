@@ -402,28 +402,16 @@ void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
             std::cerr << "Error SEND" << std::endl;
         }
 
-////////////////////////////////////////////
-
         std::string names_msg = ":" + message->getServer()->getName() + " 353 " + client->getNickname() + " @ #" + channel->getName() + " :";
         const std::vector<Client *>& clients = channel->getClients();
-
         std::vector<Client *>::const_iterator it = clients.begin();
-
         names_msg += (*it)->getNickname();
-
         ++it;
-        // On parcourt la liste des clients dans le canal et on ajoute leur nom au message
         for ( ; it != clients.end(); ++it) {
             names_msg += " " + (*it)->getNickname();
         }
-
-        // On termine le message avec un espace et un retour à la ligne
         names_msg += "\r\n";
-
         std::cerr << names_msg << std::endl;
-
-        // A tous les clients presents ds le canal
-        // ---------------------------------
 
         // On envoie le message de la liste des noms des clients présents dans le canal à tous les clients du canal
         for (std::vector<Client *>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
