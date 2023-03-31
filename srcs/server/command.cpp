@@ -402,28 +402,16 @@ void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
             std::cerr << "Error SEND" << std::endl;
         }
 
-////////////////////////////////////////////
-
         std::string names_msg = ":" + message->getServer()->getName() + " 353 " + client->getNickname() + " @ #" + channel->getName() + " :";
         const std::vector<Client *>& clients = channel->getClients();
-
         std::vector<Client *>::const_iterator it = clients.begin();
-
         names_msg += (*it)->getNickname();
-
         ++it;
-        // On parcourt la liste des clients dans le canal et on ajoute leur nom au message
         for ( ; it != clients.end(); ++it) {
             names_msg += " " + (*it)->getNickname();
         }
-
-        // On termine le message avec un espace et un retour à la ligne
         names_msg += "\r\n";
-
         std::cerr << names_msg << std::endl;
-
-        // A tous les clients presents ds le canal
-        // ---------------------------------
 
         // On envoie le message de la liste des noms des clients présents dans le canal à tous les clients du canal
         for (std::vector<Client *>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
@@ -507,14 +495,27 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
     param2 = param2.substr(pos + 1);
     cleanLine(param2);
     removeAllOccurrences(param2, "#");
-    param2 = param2.substr(0, param2.find(' ')); // param2 = channel
+    param2 = param2.substr(0, param2.find(' ')); // param2 = channel or the list of many channels
+
+
+    std::vector<std::string> channels;
+    std::stringstream ss(param2);
+    std::string channel_name;
+    while (std::getline(ss, channel_name, ',')) {
+    channels.push_back(channel_name);
+    }
+    
     size_t pos2 = param.find(" ");
     std::string param3 = param.substr(pos2 + 1);
     pos2 = param3.find(" ");
     param3 = param3.substr(pos2 + 1);
     removeAllOccurrences(param3, ":"); // param3 = reasonWhy he leave
-    if (param3 == param2 || param3 == "#" + param2)
+    if (param.size() <= (5 + param2.size() + 1))
         param3 = "";
+
+    std::cerr << "param--> " << "[" << param << "]" << " size: " << param.size() << std::endl;
+    std::cerr << "param2--> " << "[" << param2 << "]" << " size: " << param2.size() << std::endl;
+    std::cerr << "param3--> " << "[" << param3 << "]" << " size: " << param3.size() << std::endl;
 
     if (param2 == "") {
         std::string chan_res = ":" + server->getIp() + " 461 * " + message->getSender()->getNickname() + " PART :Channel name missing. Usage: /part #channel\r\n";
@@ -522,19 +523,22 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
         return ;
     }
 
-    channel = message->getSender()->getChanPointer(param2);
-    if (channel){
-        channel->removeClient(*(message->getSender()));
-        message->getSender()->removeChannel(*channel);
 
+
+    for(std::vector<std::string>::iterator it = channels.begin(); it != channels.end(); ++it){
+
+        channel = message->getSender()->getChanPointer(*it);
+        if (!channel)
+            it++;
+        
         std::string part_msg = ":" + message->getSender()->getNickname() + "!"  + message->getSender()->getNickname() + "@localhost PART #" + channel->getName() + " :" + param3 + "\r\n";
         for (std::vector<Client *>::const_iterator it = channel->getClients().begin(); it != channel->getClients().end(); ++it) {
-            if (*it != message->getSender()) {
-                if (send((*it)->getSockfd(), part_msg.c_str(), part_msg.length(), 0) == -1) {
-                    std::cerr << "Error SEND" << std::endl;
-                }
+            if (send((*it)->getSockfd(), part_msg.c_str(), part_msg.length(), 0) == -1) {
+                std::cerr << "Error SEND" << std::endl;
             }
         }
+        channel->removeClient(*(message->getSender()));
+        message->getSender()->removeChannel(*channel);
 
         //////////////////////////////////////
         
