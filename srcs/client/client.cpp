@@ -236,8 +236,8 @@ std::ostream& ft_irc::operator<<(std::ostream& os, const ft_irc::Client& client)
 /* OTHER */
 
 std::string	ft_irc::Client::unicorn(void) {
-	const char *host = "wttr.in";
-	const char *path = "/Paris";
+	const char *host = "artscene.textfiles.com";
+	const char *path = "/asciiart/unicorn";
 	const char *method = "GET";
 
 	// Get the server's address

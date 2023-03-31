@@ -14,6 +14,7 @@
 #include "../channel/channel.hpp"
 #include "../message/message.hpp"
 #include "../../includes/utils.hpp"
+#include "../../includes/colors.hpp"
 
 # define MAX_CLIENTS 4
 

@@ -289,11 +289,68 @@ void 	ft_irc::Server::sendIrcResponse(int sockfd, ft_irc::Client *client) const 
 	ss << _port;
 	std::string port = ss.str();
 
-	std::string cap_response = "CAP * LS :\r\n";
-	std::string welcome_msg = ":" + _ip + " 001 " + client->getNickname() + " :\033[32mWelcome to the " + _name + " " + client->getNickname() + "!" + client->getUsername() + "@" + client->getHost() + "\033[0m\r\n";
-	std::string version_msg = ":" + _ip + " 002 " + client->getNickname() + " :\033[32mYour host is " + client->getServername() + ":" + port + ", running version 1.0.2\033[0m\r\n";
-	std::string created_msg = ":" + _ip + " 003 " + client->getNickname() + " :\033[32mThis server was created in 42 School\033[0m\r\n";
-	std::string ascii_msg = ":" + _ip + " 004 " + client->getNickname() + " :" + "_____________________________________\n" + "_____________________________________\n" + "                                    \n" + "                                   (_)\n" + " __      _____ _ __ ___ _ __   ___  _ \n" + " \\ \\ /\\ / / _ \\ '__/ _ \\ '_ \\ / _ \\| |\n" + "  \\ V  V /  __/ | |  __/ | | | (_) | |\n" + "   \\_/\\_/ \\___|_|  \\___|_| |_|\\___/|_| . RC\n" + "                                      \n" + "                                      \n" + " _____________________________________\n" + " _____________________________________\n\r\n";
+	std::ostringstream stream;
+
+	stream << "CAP * LS :\r\n";
+	std::string cap_response = stream.str();
+	stream.str("");
+
+	stream << ":" << _ip << " 001 " << client->getNickname() << " :";
+	colors::green(stream);
+	stream << "Welcome to the " << _name << " " << client->getNickname() << "!" << client->getUsername() << "@" << client->getHost();
+	colors::reset(stream);
+	stream << "\r\n";
+	std::string welcome_msg = stream.str();
+	stream.str("");
+
+	stream << ":" << _ip << " 002 " << client->getNickname() << " :";
+	colors::green(stream);
+	stream << "Your host is " << client->getServername() << ":" << port << ", running version 1.0.2";
+	colors::reset(stream);
+	stream << "\r\n";
+	std::string version_msg = stream.str();
+	stream.str("");
+
+	stream << ":" << _ip << " 003 " << client->getNickname() << " :";
+	colors::green(stream);
+	stream << "This server was created in 42 School";
+	colors::reset(stream);
+	stream << "\r\n";
+	std::string created_msg = stream.str();
+	stream.str("");
+
+	stream << ":" << _ip << " 004 " << client->getNickname() << " :";
+	colors::blue(stream);
+	stream 	<< "_____________________________________\n";
+	colors::blue(stream);
+	stream 	<< "_____________________________________\n";
+	colors::blue(stream);
+	stream 	<< "                                    \n";
+	colors::blue(stream);
+	stream 	<< "                                   (_)\n";
+	colors::blue(stream);
+	stream 	<< " __      _____ _ __ ___ _ __   ___  _ \n";
+	colors::blue(stream);
+	stream 	<< " \\ \\ /\\ / / _ \\ '__/ _ \\ '_ \\ / _ \\| |\n";
+	colors::blue(stream);
+	stream 	<< "  \\ V  V /  __/ | |  __/ | | | (_) | |\n";
+	colors::blue(stream);
+	stream 	<< "   \\_/\\_/ \\___|_|  \\___|_| |_|\\___/|_| . RC\n";
+	colors::blue(stream);
+	stream 	<< "                                      \n";
+	colors::blue(stream);
+	stream 	<< "                                      \n";
+	colors::blue(stream);
+	stream 	<< " _____________________________________\n";
+	colors::blue(stream);
+	stream 	<< " _____________________________________\n";
+	colors::reset(stream);
+	stream << "\r\n";
+	std::string ascii_msg = stream.str();
+	stream.str("");
+
+	
+
 	send(sockfd, cap_response.c_str(), cap_response.length(), 0);
 	send(sockfd, welcome_msg.c_str(), welcome_msg.length(), 0);
 	send(sockfd, version_msg.c_str(), version_msg.length(), 0);
