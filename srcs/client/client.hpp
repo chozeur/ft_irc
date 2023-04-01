@@ -64,7 +64,8 @@ namespace ft_irc
 			bool						isSet() const;
 			void						handleMessage(int serverSockFd, std::string text, Client *bot, Client *receiver);
 
-			std::string					unicorn(void);
+			std::string					unicorn(void) const;
+			std::string					gpt(std::string prompt) const;
 
 			void 						removeChannel(Channel const &channel);
 			void 						addChannel(Channel *channel);

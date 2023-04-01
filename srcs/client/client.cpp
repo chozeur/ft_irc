@@ -178,33 +178,21 @@ bool 						ft_irc::Client::isSet() const {
 void 						ft_irc::Client::handleMessage(int serverSockFd, std::string text, Client *bot, Client *receiver) {
     (void)text;
 	(void)serverSockFd;
-	std::string response;
-
-	if (text == "ping") {
-        response = "Pong!";
-    } else if (text == "hello") {
-        response = "Bonjour!";
-    } else if (text == "time") {
-        time_t now = time(0);
-        response = "Il est " + std::string(ctime(&now));
-    } else if (text == "unicorn"){
-		response = unicorn();
-	} else if (text == "help") {
-		response = "Les commandes disponibles sont : ping, hello, time.";
-	} else {
-        response = "Commande inconnue";
-    }
+	std::string	response = this->gpt(text);
 
 	if (response.find("\n") != std::string::npos){
 		std::vector<std::string> lines = split(response, "\n");
 		for (std::vector<std::string>::iterator it = lines.begin(); it != lines.end(); ++it) {
-			std::string messageToSend = ":" + bot->getNickname() + " PRIVMSG " + receiver->getNickname() + " :" + *it + "\r\n";
-			send(receiver->getSockfd(), messageToSend.c_str(), messageToSend.length(), 0);
+			std::cerr << "Spliting response --> line = [" << *it << ']' << std::endl;
+			if (*it != ""){
+				std::string messageToSend = ":" + bot->getNickname() + " PRIVMSG " + receiver->getNickname() + " :" + *it + "\r\n";
+				send(receiver->getSockfd(), messageToSend.c_str(), messageToSend.length(), 0);
+			}
 		}
+	} else {
+		std::string messageToSend = ":" + bot->getNickname() + " PRIVMSG " + receiver->getNickname() + " :" + response + "\r\n";
+		send(receiver->getSockfd(), messageToSend.c_str(), messageToSend.length(), 0);
 	}
-
-    std::string messageToSend = ":" + bot->getNickname() + " PRIVMSG " + receiver->getNickname() + " :" + response + "\r\n";
-    send(receiver->getSockfd(), messageToSend.c_str(), messageToSend.length(), 0);
 }
 
 void 		ft_irc::Client::addChannel(Channel *channel) {
@@ -235,7 +223,7 @@ std::ostream& ft_irc::operator<<(std::ostream& os, const ft_irc::Client& client)
 
 /* OTHER */
 
-std::string	ft_irc::Client::unicorn(void) {
+std::string	ft_irc::Client::unicorn(void) const {
 	const char *host = "artscene.textfiles.com";
 	const char *path = "/asciiart/unicorn";
 	const char *method = "GET";
@@ -298,4 +286,103 @@ std::string	ft_irc::Client::unicorn(void) {
 	close(sockfd);
 
 	return (response);
+}
+
+std::string	ft_irc::Client::gpt(std::string prompt) const {
+	// Initialize the post data
+	std::string post_data = std::string("prompt=") + prompt;
+
+	// Create a TCP socket
+	int sock = socket(AF_INET, SOCK_STREAM, 0);
+
+	if (sock == -1) {
+		std::cerr << "socket() failed" << std::endl;
+		throw (std::exception());
+	}
+
+	// Resolve the IP address of the Flask web server
+	struct addrinfo hints, *result;
+	std::memset(&hints, 0, sizeof(struct addrinfo));
+	hints.ai_family = AF_INET;
+	hints.ai_socktype = SOCK_STREAM;
+
+	int res = getaddrinfo("localhost", "2697", &hints, &result);
+
+	if (res != 0) {
+		std::cerr << "getaddrinfo() failed: " << gai_strerror(res) << std::endl;
+		close(sock);
+		throw (std::exception());
+	}
+
+	// Connect to the Flask web server
+	res = connect(sock, result->ai_addr, result->ai_addrlen);
+
+	if (res == -1) {
+		std::cerr << "connect() failed" << std::endl;
+		freeaddrinfo(result);
+		close(sock);
+		throw (std::exception());
+	}
+
+	std::cout << "Connected to Flask web server" << std::endl;
+
+	// Send the POST request
+	std::string post_request =
+			"POST / HTTP/1.1\r\n"
+			"Host: localhost:2697\r\n"
+			"Content-Type: application/x-www-form-urlencoded\r\n"
+			"Content-Length: " + std::to_string(post_data.size()) + "\r\n"
+			"\r\n" + post_data;
+
+	res = send(sock, post_request.c_str(), post_request.size(), 0);
+
+	if (res == -1) {
+		std::cerr << "send() failed" << std::endl;
+		freeaddrinfo(result);
+		close(sock);
+		throw (std::exception());
+	}
+
+	std::cout << "POST request sent" << std::endl;
+
+	// Receive the HTTP response
+	char buf[1024];
+	std::string http_response;
+
+	do {
+		res = recv(sock, buf, sizeof(buf), 0);
+
+		if (res > 0) {
+			http_response.append(buf, res);
+		} else if (res == 0) {
+			std::cerr << "Connection closed by server" << std::endl;
+		} else {
+			std::cerr << "recv() failed" << std::endl;
+			freeaddrinfo(result);
+			close(sock);
+			throw (std::exception());
+		}
+	} while (res > 0);
+
+	// Extract the response body from the HTTP response
+	std::string response_body;
+
+	std::string::size_type pos = http_response.find("\r\n\r\n");
+
+	if (pos != std::string::npos) {
+		response_body = http_response.substr(pos + 4);
+	} else {
+		std::cerr << "Invalid HTTP response" << std::endl;
+		freeaddrinfo(result);
+		close(sock);
+		throw (std::exception());
+	}
+
+	// Print the response body
+	std::cout << "Response: " << response_body << std::endl;
+
+	// Cleanup
+	freeaddrinfo(result);
+	close(sock);
+	return response_body;
 }

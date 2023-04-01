@@ -1,15 +1,112 @@
-==71750== Memcheck, a memory error detector
-==71750== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==71750== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==71750== Command: ./ircserv 2345 pass
-==71750== Parent PID: 67545
-==71750==
-==71750==
-==71750== HEAP SUMMARY:
-==71750==     in use at exit: 0 bytes in 0 blocks
-==71750==   total heap usage: 313 allocs, 313 frees, 104,720 bytes allocated
-==71750==
-==71750== All heap blocks were freed -- no leaks are possible
-==71750==
-==71750== For lists of detected and suppressed errors, rerun with: -s
-==71750== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==97030== Memcheck, a memory error detector
+==97030== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==97030== Using Valgrind-3.21.0.GIT-lbmacos and LibVEX; rerun with -h for copyright info
+==97030== Command: ./ircserv 2122 pass
+==97030== Parent PID: 76816
+==97030== 
+==97030== 
+==97030== Support for macOS 11 and later is currently experimental
+==97030== Some reports (especially memory leaks) might be missing or incorrect
+==97030== 
+==97030== Warning: set address range perms: large range [0x7ff81a8d1000, 0x7ff91a6d1000) (defined)
+==97030== Warning: set address range perms: large range [0x7ff81a8d1000, 0x7ff83a321000) (defined)
+==97030== Warning: set address range perms: large range [0x7ff83a321000, 0x7ff85a8d1000) (noaccess)
+==97030== Warning: set address range perms: large range [0x7ff85df6d000, 0x7ff89a8d1000) (noaccess)
+==97030== Warning: set address range perms: large range [0x7ff8a6a19000, 0x7ff91a6d1000) (noaccess)
+==97030== Warning: set address range perms: large range [0x600000000000, 0x600020000000) (defined)
+==97030== Conditional jump or move depends on uninitialised value(s)
+==97030==    at 0x7FF81AC05A3F: ??? (in /dev/ttys002)
+==97030==    by 0x7FF81AAC240D: ??? (in /dev/ttys002)
+==97030==    by 0x7FF81AAE3D0B: ??? (in /dev/ttys002)
+==97030==    by 0x7FF81AB70217: ??? (in /dev/ttys002)
+==97030==    by 0x7FF81AB6FD3F: ??? (in /dev/ttys002)
+==97030==    by 0x7FF81AB5F824: ??? (in /dev/ttys002)
+==97030==    by 0x100005BF8: ft_irc::Server::init(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, long, char**) (server.cpp:199)
+==97030==    by 0x1000015D2: main (main.cpp:18)
+==97030== 
+==97030== Conditional jump or move depends on uninitialised value(s)
+==97030==    at 0x7FF81AC05A3F: ??? (in /dev/ttys002)
+==97030==    by 0x7FF81AAC240D: ??? (in /dev/ttys002)
+==97030==    by 0x7FF81AAE3D0B: ??? (in /dev/ttys002)
+==97030==    by 0x100001F75: std::__1::basic_streambuf<char, std::__1::char_traits<char> >::sputn(char const*, long) (streambuf:229)
+==97030==    by 0x100001D14: std::__1::ostreambuf_iterator<char, std::__1::char_traits<char> > std::__1::__pad_and_output<char, std::__1::char_traits<char> >(std::__1::ostreambuf_iterator<char, std::__1::char_traits<char> >, char const*, char const*, char const*, std::__1::ios_base&, char) (locale:1428)
+==97030==    by 0x100001999: std::__1::basic_ostream<char, std::__1::char_traits<char> >& std::__1::__put_character_sequence<char, std::__1::char_traits<char> >(std::__1::basic_ostream<char, std::__1::char_traits<char> >&, char const*, unsigned long) (ostream:718)
+==97030==    by 0x100008C8D: std::__1::basic_ostream<char, std::__1::char_traits<char> >& std::__1::operator<< <char, std::__1::char_traits<char>, std::__1::allocator<char> >(std::__1::basic_ostream<char, std::__1::char_traits<char> >&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&) (ostream:1041)
+==97030==    by 0x1000116A0: ft_irc::Server::cap(ft_irc::Message*, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&) (command.cpp:39)
+==97030==    by 0x10001D1D7: ft_irc::Message::parsePayload() (message.cpp:109)
+==97030==    by 0x10001CCA9: ft_irc::Message::Message(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:19)
+==97030==    by 0x10001D254: ft_irc::Message::Message(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:18)
+==97030==    by 0x1000070B0: ft_irc::Server::run() (server.cpp:262)
+==97030== 
+==97030== Conditional jump or move depends on uninitialised value(s)
+==97030==    at 0x7FF81AC05A3F: ??? (in /dev/ttys002)
+==97030==    by 0x100002D82: __libcpp_memchr(void const*, int, unsigned long) (string.h:94)
+==97030==    by 0x100002D42: _ZL6memchrUa9enable_ifIXLb1EEEPKvim (string.h:96)
+==97030==    by 0x100002C4B: std::__1::char_traits<char>::find(char const*, unsigned long, char const&) (__string:411)
+==97030==    by 0x100002B0C: char const* std::__1::__search_substring<char, std::__1::char_traits<char> >(char const*, char const*, char const*, char const*) (__string:946)
+==97030==    by 0x10000298F: unsigned long std::__1::__str_find<char, unsigned long, std::__1::char_traits<char>, 18446744073709551615ul>(char const*, unsigned long, char const*, unsigned long, unsigned long) (__string:973)
+==97030==    by 0x100002607: std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >::find(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&, unsigned long) const (string:3569)
+==97030==    by 0x100002558: removeAllOccurrences(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&) (removeOccurences.cpp:5)
+==97030==    by 0x1000026C4: cleanLine(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&) (removeOccurences.cpp:14)
+==97030==    by 0x100011A35: ft_irc::Server::pass(ft_irc::Message*, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&) (command.cpp:60)
+==97030==    by 0x100011780: ft_irc::Server::cap(ft_irc::Message*, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&) (command.cpp:42)
+==97030==    by 0x10001D1D7: ft_irc::Message::parsePayload() (message.cpp:109)
+==97030== 
+==97030== Conditional jump or move depends on uninitialised value(s)
+==97030==    at 0x7FF81AC05A3F: ??? (in /dev/ttys002)
+==97030==    by 0x7FF81AB54B5D: ??? (in /dev/ttys002)
+==97030==    by 0x100011438: ft_irc::Server::cap(ft_irc::Message*, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&) (command.cpp:25)
+==97030==    by 0x10001D1D7: ft_irc::Message::parsePayload() (message.cpp:109)
+==97030==    by 0x10001CCA9: ft_irc::Message::Message(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:19)
+==97030==    by 0x10001D254: ft_irc::Message::Message(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:18)
+==97030==    by 0x1000070B0: ft_irc::Server::run() (server.cpp:262)
+==97030==    by 0x10000170E: main (main.cpp:28)
+==97030== 
+--97030-- UNKNOWN mach_msg unhandled MACH_SEND_TRAILER option
+--97030-- UNKNOWN mach_msg unhandled MACH_SEND_TRAILER option (repeated 2 times)
+--97030-- UNKNOWN mach_msg unhandled MACH_SEND_TRAILER option (repeated 4 times)
+==97030== Invalid read of size 16
+==97030==    at 0x7FF81AC056B2: ??? (in /dev/ttys002)
+==97030==    by 0x100001AA4: std::__1::char_traits<char>::length(char const*) (__string:342)
+==97030==    by 0x100029125: std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >::basic_string<std::__1::nullptr_t>(char const*) (string:842)
+==97030==    by 0x10002590C: std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >::basic_string<std::__1::nullptr_t>(char const*) (string:840)
+==97030==    by 0x1000284DA: ft_irc::Client::gpt(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >) const (client.cpp:399)
+==97030==    by 0x100026AB3: ft_irc::Client::handleMessage(int, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, ft_irc::Client*, ft_irc::Client*) (client.cpp:195)
+==97030==    by 0x100016344: ft_irc::Server::privmsg(ft_irc::Message*, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&) (command.cpp:355)
+==97030==    by 0x10001D1D7: ft_irc::Message::parsePayload() (message.cpp:109)
+==97030==    by 0x10001CCA9: ft_irc::Message::Message(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:19)
+==97030==    by 0x10001D254: ft_irc::Message::Message(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:18)
+==97030==    by 0x1000070B0: ft_irc::Server::run() (server.cpp:262)
+==97030==    by 0x10000170E: main (main.cpp:28)
+==97030==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
+==97030== 
+==97030== 
+==97030== Process terminating with default action of signal 11 (SIGSEGV)
+==97030==  Access not within mapped region at address 0x0
+==97030==    at 0x7FF81AC056B2: ??? (in /dev/ttys002)
+==97030==    by 0x100001AA4: std::__1::char_traits<char>::length(char const*) (__string:342)
+==97030==    by 0x100029125: std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >::basic_string<std::__1::nullptr_t>(char const*) (string:842)
+==97030==    by 0x10002590C: std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >::basic_string<std::__1::nullptr_t>(char const*) (string:840)
+==97030==    by 0x1000284DA: ft_irc::Client::gpt(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >) const (client.cpp:399)
+==97030==    by 0x100026AB3: ft_irc::Client::handleMessage(int, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, ft_irc::Client*, ft_irc::Client*) (client.cpp:195)
+==97030==    by 0x100016344: ft_irc::Server::privmsg(ft_irc::Message*, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&) (command.cpp:355)
+==97030==    by 0x10001D1D7: ft_irc::Message::parsePayload() (message.cpp:109)
+==97030==    by 0x10001CCA9: ft_irc::Message::Message(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:19)
+==97030==    by 0x10001D254: ft_irc::Message::Message(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:18)
+==97030==    by 0x1000070B0: ft_irc::Server::run() (server.cpp:262)
+==97030==    by 0x10000170E: main (main.cpp:28)
+==97030==  If you believe this happened as a result of a stack
+==97030==  overflow in your program's main thread (unlikely but
+==97030==  possible), you can try to increase the size of the
+==97030==  main thread stack using the --main-stacksize= flag.
+==97030==  The main thread stack size used in this run was 8388608.
+==97030== 
+==97030== HEAP SUMMARY:
+==97030==     in use at exit: 0 bytes in 0 blocks
+==97030==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated
+==97030== 
+==97030== All heap blocks were freed -- no leaks are possible
+==97030== 
+==97030== Use --track-origins=yes to see where uninitialised values come from
+==97030== For lists of detected and suppressed errors, rerun with: -s
+==97030== ERROR SUMMARY: 12 errors from 5 contexts (suppressed: 1503 from 32)
