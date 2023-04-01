@@ -20,6 +20,7 @@ void ft_irc::Server::initCommands(void) {
 // INITIALISATION CLIENT
 
 void ft_irc::Server::cap(ft_irc::Message* message, const std::string& param) {
+    message->getSender()->setIdle();
 	ft_irc::Server *server = message->getServer();
     std::string param2  = param;
     std::string::size_type pos = param2.find('\n');
@@ -45,7 +46,8 @@ void ft_irc::Server::cap(ft_irc::Message* message, const std::string& param) {
 	return ;
 }
 
-void ft_irc::Server::pass(ft_irc::Message* message, const std::string& param) {
+void ft_irc::Server::pass(ft_irc::Message* message, const std::string& param) {   
+    message->getSender()->setIdle();
     ft_irc::Server *server = message->getServer();
     std::string param2  = param;
     std::string::size_type pos = param2.find('\n');
@@ -70,6 +72,7 @@ void ft_irc::Server::pass(ft_irc::Message* message, const std::string& param) {
 }
 
 void ft_irc::Server::nick(ft_irc::Message* message, const std::string& param) {
+    message->getSender()->setIdle();
     ft_irc::Server *server = message->getServer();
     ft_irc::Client *client = server->getClientPointerByFd(message->getSender()->getSockfd());
 
@@ -127,6 +130,7 @@ void ft_irc::Server::nick(ft_irc::Message* message, const std::string& param) {
 }
 
 void ft_irc::Server::user(ft_irc::Message* message, const std::string& param) {
+    message->getSender()->setIdle();
     ft_irc::Server *server = message->getServer();
     std::string line  = param;
 
@@ -191,13 +195,14 @@ void ft_irc::Server::user(ft_irc::Message* message, const std::string& param) {
 // METHODS
 
 void ft_irc::Server::invite(ft_irc::Message* message, const std::string& param) {
-	(void)message;
+    message->getSender()->setIdle();
 	std::cerr << "INVITE FUNCTION CALLED WITH PARAM = " << param << std::endl;
 	return ;
 }
 
 void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
     // On récupère le serveur, le canal et la liste des canaux du serveur
+    message->getSender()->setIdle();
     ft_irc::Server *server = message->getServer();
     ft_irc::Channel *channel;
     std::vector<Channel*> *channels = server->getChannels();
@@ -285,6 +290,7 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
 
 void ft_irc::Server::privmsg(ft_irc::Message* message, const std::string& param) {
     // On récupère le serveur, le canal et la liste des canaux du serveur
+    message->getSender()->setIdle();
     ft_irc::Server *server = message->getServer();
     ft_irc::Channel *channel;
     std::string channelName;
@@ -372,6 +378,7 @@ void ft_irc::Server::privmsg(ft_irc::Message* message, const std::string& param)
 void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
     //utilisation (in chann only) : /kick <nom d'utilisateur> <raison>
 
+    message->getSender()->setIdle();
     ft_irc::Server *server = message->getServer();
     ft_irc::Channel *channel;
     ft_irc::Client *client;
@@ -430,15 +437,14 @@ void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
             if (send((*it)->getSockfd(), names_msg.c_str(), names_msg.length(), 0) == -1) {
                 std::cerr << "2 ERROR SEND" << std::endl;
             }
-        }        
-
+        }
     }
-
 	return ;
 }
 
 void ft_irc::Server::list(ft_irc::Message* message, const std::string& param) {
     (void)param;
+    message->getSender()->setIdle();
     std::string list = message->getServer()->getName() + " => List of channels :\n";
     int fd = message->getSender()->getSockfd();
     std::vector<Channel*> *channels = message->getServer()->getChannels();
@@ -451,13 +457,13 @@ void ft_irc::Server::list(ft_irc::Message* message, const std::string& param) {
 }
 
 void ft_irc::Server::names(ft_irc::Message* message, const std::string& param) {
-	(void)message;
+    message->getSender()->setIdle();
 	std::cerr << "NAMES FUNCTION CALLED WITH PARAM = " << param << std::endl;
 	return ;
 }
 
 void ft_irc::Server::whois(ft_irc::Message* message, const std::string& param) {
-	std::cerr << "WHOIS FUNCTION CALLED WITH PARAM = " << param << std::endl;
+    message->getSender()->setIdle();
     ft_irc::Server *server = message->getServer();
 
     std::string param2 = param;
@@ -465,15 +471,14 @@ void ft_irc::Server::whois(ft_irc::Message* message, const std::string& param) {
     param2 = param2.substr(pos + 1);
     ft_irc::Client  *client = server->getClientPointerByNick(param2);
     if (client){
-        struct timeval	t;
-        gettimeofday(&t, NULL);
-        long long signon = ((t.tv_sec * 1000) + (t.tv_usec / 1000)) - client->getIdle();
-        std::ostringstream idle;
-        idle << client->getIdle();
-        std::ostringstream sig;
-        sig << signon;
+        time_t now = time(0);
+        time_t idle = now - client->getIdle();
+        std::stringstream ss;
+        ss << idle;
+        std::stringstream ss2;
+        ss2 << client->getSignon();
         std::string whois_msg = ":" + server->getIp() + " 311 " + message->getSender()->getNickname() + " " + client->getNickname() + " ~" + client->getNickname() + "@localhost" + " * " + client->getNickname() + " " + client->getRealname() + "\r\n";
-        std::string whois_time_msg = ":" + server->getIp() + " 317 " + message->getSender()->getNickname() + " " + client->getNickname() + " " + sig.str() + " " + idle.str() + " :seconds idle, signon time" + "\r\n";   
+        std::string whois_time_msg = ":" + server->getIp() + " 317 " + message->getSender()->getNickname() + " " + client->getNickname() + " " +  ss.str() + " " + ss2.str() + " :seconds idle, signon time" + "\r\n";   
         std::string whois_end_msg = ":" + server->getIp() + " 318 " + message->getSender()->getNickname() + " " + client->getNickname() + " :End of /WHOIS list\r\n";
         // std::cerr << whois_msg << std::endl;
         std::cerr << whois_time_msg << std::endl;
@@ -499,6 +504,7 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
 
     // case 1 (out chann) /part <chan> <reasonWhy>
     // case 2 (in chann) /part <reasonWhy>
+    message->getSender()->setIdle();
     ft_irc::Server *server = message->getServer();
     ft_irc::Channel *channel;
 
@@ -508,15 +514,11 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
     cleanLine(param2);
     removeAllOccurrences(param2, "#");
     param2 = param2.substr(0, param2.find(' ')); // param2 = channel or the list of many channels
-
-
     std::vector<std::string> channels;
     std::stringstream ss(param2);
     std::string channel_name;
-    while (std::getline(ss, channel_name, ',')) {
-    channels.push_back(channel_name);
-    }
-    
+    while (std::getline(ss, channel_name, ','))
+        channels.push_back(channel_name);
     size_t pos2 = param.find(" ");
     std::string param3 = param.substr(pos2 + 1);
     pos2 = param3.find(" ");
@@ -533,8 +535,6 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
 
     for(std::vector<std::string>::iterator it = channels.begin(); it != channels.end(); ++it){
 
-        std::cerr << "##" << *it << "##" << std::endl;
-
         channel = message->getSender()->getChanPointer(*it);
         if (!channel)
             continue ;
@@ -545,10 +545,6 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
                 std::cerr << "Error SEND" << std::endl;
             }
         }
-        channel->removeClient(*(message->getSender()));
-        message->getSender()->removeChannel(*channel);
-
-        //////////////////////////////////////
         
         // Send a message to confirm the client's departure
         // std::string confirm_msg = ":" + message->getServer()->getIp() + " 301 " + message->getSender()->getNickname() + " #" + channel->getName() + " :Goodbye!\r\n";
@@ -557,7 +553,8 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
             std::cerr << "Error SEND" << std::endl;
         }
 
-        ////////////////////////////////////////
+        channel->removeClient(*(message->getSender()));
+        message->getSender()->removeChannel(*channel);
 
         std::string names_msg = ":" + message->getServer()->getIp() + " 301 " + message->getSender()->getNickname() + " = #" + channel->getName() + " :";
         const std::vector<Client *>& clients = channel->getClients();
