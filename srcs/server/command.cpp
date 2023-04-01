@@ -231,7 +231,7 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
         // Si le canal n'existe pas, on le crée et on l'ajoute à la liste des canaux du serveur    
         channel = server->getChannelPointer(*itb);
         if (!channel) {
-            channel = new Channel(param2);
+            channel = new Channel(*itb);
             channels->push_back(channel);
         }
 
