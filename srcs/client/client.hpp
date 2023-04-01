@@ -9,6 +9,8 @@
 // # include <string.h>
 # include <unistd.h>
 # include <algorithm>
+# include <sys/time.h>
+// # include <chrono>
 # include "../channel/channel.hpp"
 # include "../../includes/utils.hpp"
 
@@ -45,6 +47,8 @@ namespace ft_irc
 			std::string					getHost(void) const;
 			std::string					getServername(void) const;
 			std::string					getUserLine(void) const;
+			time_t						getIdle(void) const;
+			time_t						getSignon(void) const;
 			std::vector<ft_irc::Channel*>	getChannels(void) const;
 
 			void						setSockfd(int sockfd);
@@ -57,9 +61,10 @@ namespace ft_irc
 			void						setHost(std::string host);
 			void						setServername(std::string servername);
 			void						setUserLine(std::string userLine);
+			void						setIdle(void);
 			void						setChannels(std::vector<ft_irc::Channel*> channels);
-		    void						setIsBot(bool isBot);
-		    void						setIsSet(bool isSet);
+			void						setIsBot(bool isBot);
+			void						setIsSet(bool isSet);
 			bool						isBot() const;
 			bool						isSet() const;
 			void						handleMessage(int serverSockFd, std::string text, Client *bot, Client *receiver);
@@ -82,6 +87,8 @@ namespace ft_irc
 			std::string					_host;
 			std::string					_servername;
 			std::string					_userLine;
+			time_t						_idle;
+			time_t						_signon;
 			std::vector<ft_irc::Channel*>	_channels;
 	};
 

@@ -11,7 +11,9 @@ ft_irc::Client::Client(void):
 	_realname(""),
 	_password(""),
 	_host(""),
-	_userLine(""){
+	_userLine(""),
+	_idle(time(0)),
+	_signon(time(0)) {
 	return ;
 }
 
@@ -24,7 +26,9 @@ ft_irc::Client::Client(Client const & rhs):
 	_realname(""),
 	_password(""),
 	_host(""),
-	_userLine(""){
+	_userLine(""),
+	_idle(time(0)),
+	_signon(time(0)) {
 	*this = rhs;
 	return ;
 }
@@ -38,7 +42,9 @@ ft_irc::Client::Client(int sockfd):
 	_realname(""),
 	_password(""),
 	_host(""),
-	_userLine("") {
+	_userLine(""),
+	_idle(time(0)),
+	_signon(time(0)) {
 	return ;
 }
 
@@ -64,6 +70,7 @@ ft_irc::Client&				ft_irc::Client::operator=(Client const &rhs){
 		this->_servername = rhs._servername;
 		this->_userLine = rhs._userLine;
 		this->_channels = rhs._channels;
+		this->_idle = rhs._idle;
 	}
 	return (*this);
 }
@@ -104,6 +111,14 @@ std::string					ft_irc::Client::getServername(void) const {
 
 std::string					ft_irc::Client::getUserLine(void) const {
 	return (this->_userLine);
+}
+
+time_t						ft_irc::Client::getIdle(void) const {
+	return (this->_idle);
+}
+
+time_t						ft_irc::Client::getSignon(void) const {
+	return (this->_signon);
 }
 
 std::vector<ft_irc::Channel*>	ft_irc::Client::getChannels(void) const {
@@ -151,6 +166,12 @@ void						ft_irc::Client::setUserLine(std::string userLine){
 	this->_userLine = userLine;
 	return ;
 }
+
+void						ft_irc::Client::setIdle(void){
+	this->_idle = time(0);
+	return ;
+}
+
 
 void						ft_irc::Client::setChannels(std::vector<ft_irc::Channel*> channels){	//! deep copy
 	this->_channels = channels;
