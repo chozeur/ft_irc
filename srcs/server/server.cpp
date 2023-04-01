@@ -203,7 +203,7 @@ void 	ft_irc::Server::initChannels() {
 
 void	ft_irc::Server::run(void) {
 	while (server) {
-		std::string pong = "PONG\n";
+		std::string pong = "PONG\r\n";
 		sendToAllClients(pong);
 		int num_ready_fds = poll(this->_fds, MAX_CLIENTS + 1, -1);
 		if (num_ready_fds == -1) {
