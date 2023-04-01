@@ -209,7 +209,7 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
     cleanLine(param2);
     removeAllOccurrences(param2, "#");
 
-    std::cerr << "JOIN param = " << param2 << std::endl;
+    std::cerr << "param2--> " << "[" << param2 << "]" << std::endl;
 
     if (pos == std::string::npos) {
         std::string chan_res = ":" + server->getIp() + " 461 * " + message->getSender()->getNickname() + " JOIN :Channel name missing. Usage: /join #channel\r\n";
@@ -217,55 +217,67 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
         return ;
     }
 
-    // Si le canal n'existe pas, on le crée et on l'ajoute à la liste des canaux du serveur    
-    channel = server->getChannelPointer(param2);
-    if (!channel) {
-        channel = new Channel(param2);
-        channels->push_back(channel);
+    std::vector<std::string> vec_channels;
+    std::stringstream ss(param2);
+    std::string channel_name;
+    while (std::getline(ss, channel_name, ',')) {
+        vec_channels.push_back(channel_name);
     }
 
-    // On ajoute l'utilisateur qui a envoyé le message au canal
-    channel->addClient(message->getSender());
 
-    message->getSender()->addChannel(channel);
+    for(std::vector<std::string>::const_iterator itb = vec_channels.begin(); itb != vec_channels.end(); ++itb){
 
-    // On envoie un message de bienvenue à l'utilisateur qui a rejoint le canal
-    std::string msg = message->getSender()->getNickname() + ":" + " JOIN #" + channel->getName() + "\r\n";
-    if (send(message->getSender()->getSockfd(), msg.c_str(), msg.length(), 0) == -1) {
-        std::cerr << "Error SEND" << std::endl;
-    }
 
-    // AU client qui rejoint
-    // ------------------------------
-
-    // On envoie la liste des noms des clients présents dans le canal à l'utilisateur qui vient de rejoindre le canal
-    std::string names_msg = ":" + message->getServer()->getIp() + " 353 " + message->getSender()->getNickname() + " = #" + channel->getName() + " :";
-    const std::vector<Client *>& clients = channel->getClients();
-
-    // On parcourt la liste des clients dans le canal et on ajoute leur nom au message
-    for (std::vector<Client *>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
-        names_msg += " " + (*it)->getNickname();
-    }
-
-    names_msg += " \r\n";
-
-    // A tous les clients presents ds le canal
-    // ---------------------------------
-
-    // On envoie le message de la liste des noms des clients présents dans le canal à tous les clients du canal
-    for (std::vector<Client *>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
-        if (send((*it)->getSockfd(), names_msg.c_str(), names_msg.length(), 0) == -1) {
-            std::cerr << "2 ERROR SEND" << std::endl;
+        // Si le canal n'existe pas, on le crée et on l'ajoute à la liste des canaux du serveur    
+        channel = server->getChannelPointer(*itb);
+        if (!channel) {
+            channel = new Channel(*itb);
+            channels->push_back(channel);
         }
-    }
 
-    // send JOIN message to all clients in the channel
-    std::string join_msg = message->getSender()->getNickname() + ": JOIN #" + channel->getName() + "\r\n";
-    std::vector<Client *> channel_clients = channel->getClients();
-    for (std::vector<Client *>::iterator it = channel_clients.begin(); it != channel_clients.end(); ++it) {
-        if ((*it)->getSockfd() != message->getSender()->getSockfd()) {
-            if (send((*it)->getSockfd(), join_msg.c_str(), join_msg.length(), 0) == -1) {
-                std::cerr << "3 ERROR SEND" << std::endl;
+        // On ajoute l'utilisateur qui a envoyé le message au canal
+        channel->addClient(message->getSender());
+
+        message->getSender()->addChannel(channel);
+
+        // On envoie un message de bienvenue à l'utilisateur qui a rejoint le canal
+        std::string msg = message->getSender()->getNickname() + ":" + " JOIN #" + channel->getName() + "\r\n";
+        if (send(message->getSender()->getSockfd(), msg.c_str(), msg.length(), 0) == -1) {
+            std::cerr << "Error SEND" << std::endl;
+        }
+
+        // AU client qui rejoint
+        // ------------------------------
+
+        // On envoie la liste des noms des clients présents dans le canal à l'utilisateur qui vient de rejoindre le canal
+        std::string names_msg = ":" + message->getServer()->getIp() + " 353 " + message->getSender()->getNickname() + " = #" + channel->getName() + " :";
+        const std::vector<Client *>& clients = channel->getClients();
+
+        // On parcourt la liste des clients dans le canal et on ajoute leur nom au message
+        for (std::vector<Client *>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
+            names_msg += " " + (*it)->getNickname();
+        }
+
+        names_msg += " \r\n";
+
+        // A tous les clients presents ds le canal
+        // ---------------------------------
+
+        // On envoie le message de la liste des noms des clients présents dans le canal à tous les clients du canal
+        for (std::vector<Client *>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
+            if (send((*it)->getSockfd(), names_msg.c_str(), names_msg.length(), 0) == -1) {
+                std::cerr << "2 ERROR SEND" << std::endl;
+            }
+        }
+
+        // send JOIN message to all clients in the channel
+        std::string join_msg = message->getSender()->getNickname() + ": JOIN #" + channel->getName() + "\r\n";
+        std::vector<Client *> channel_clients = channel->getClients();
+        for (std::vector<Client *>::iterator it = channel_clients.begin(); it != channel_clients.end(); ++it) {
+            if ((*it)->getSockfd() != message->getSender()->getSockfd()) {
+                if (send((*it)->getSockfd(), join_msg.c_str(), join_msg.length(), 0) == -1) {
+                    std::cerr << "3 ERROR SEND" << std::endl;
+                }
             }
         }
     }
@@ -527,9 +539,13 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
 
     for(std::vector<std::string>::iterator it = channels.begin(); it != channels.end(); ++it){
 
+        std::cerr << "##" << *it << "##" << std::endl;
+
         channel = message->getSender()->getChanPointer(*it);
-        if (!channel)
+        if (!channel){
             it++;
+            continue ;
+        }
         
         std::string part_msg = ":" + message->getSender()->getNickname() + "!"  + message->getSender()->getNickname() + "@localhost PART #" + channel->getName() + " :" + param3 + "\r\n";
         for (std::vector<Client *>::const_iterator it = channel->getClients().begin(); it != channel->getClients().end(); ++it) {
