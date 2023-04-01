@@ -468,7 +468,7 @@ void 	ft_irc::Server::printClients(void) {
 void 	ft_irc::Server::sendToAllClients(std::string &msg) {
     for (std::vector<ft_irc::Client *>::iterator it = this->_clients.begin(); it != this->_clients.end(); ++it) {
         if (!(*it)->isBot()) {
-			if (send((*it)->getSockfd(), msg.c_str(), msg.size(), MSG_WAITSTREAM) == -1) {
+			if (send((*it)->getSockfd(), msg.c_str(), msg.size(), 0) == -1) {
         	    std::cerr << "Error sending message to client" << std::endl;
         	}
 		}
