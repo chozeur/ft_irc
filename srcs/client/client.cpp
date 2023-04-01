@@ -306,7 +306,7 @@ std::string	ft_irc::Client::gpt(std::string prompt) const {
 	hints.ai_family = AF_INET;
 	hints.ai_socktype = SOCK_STREAM;
 
-	int res = getaddrinfo("localhost", "2697", &hints, &result);
+	int res = getaddrinfo("gpt.chzr.net", "4242", &hints, &result);
 
 	if (res != 0) {
 		std::cerr << "getaddrinfo() failed: " << gai_strerror(res) << std::endl;
@@ -329,7 +329,7 @@ std::string	ft_irc::Client::gpt(std::string prompt) const {
 	// Send the POST request
 	std::string post_request =
 			"POST / HTTP/1.1\r\n"
-			"Host: localhost:2697\r\n"
+			"Host: gpt.chzr.net:4242\r\n"
 			"Content-Type: application/x-www-form-urlencoded\r\n"
 			"Content-Length: " + std::to_string(post_data.size()) + "\r\n"
 			"\r\n" + post_data;
