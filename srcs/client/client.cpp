@@ -183,7 +183,6 @@ void 						ft_irc::Client::handleMessage(int serverSockFd, std::string text, Cli
 	if (response.find("\n") != std::string::npos){
 		std::vector<std::string> lines = split(response, "\n");
 		for (std::vector<std::string>::iterator it = lines.begin(); it != lines.end(); ++it) {
-			std::cerr << "Spliting response --> line = [" << *it << ']' << std::endl;
 			if (*it != ""){
 				std::string messageToSend = ":" + bot->getNickname() + " PRIVMSG " + receiver->getNickname() + " :" + *it + "\r\n";
 				send(receiver->getSockfd(), messageToSend.c_str(), messageToSend.length(), 0);

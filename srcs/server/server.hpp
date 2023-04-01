@@ -8,6 +8,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <sstream>
+#include <chrono>
 #include <unistd.h>
 #include <poll.h>
 #include "../client/client.hpp"
@@ -41,6 +42,7 @@ namespace ft_irc{
 			std::string										getIp(void)const;
 			long											getPort(void)const;
 			std::string										getPassword(void)const;
+			int												getTstart(void)const;
 			struct sockaddr_in								getServAddr(void)const;
 			int												getSockfd(void)const;
 			char											**getEnv(void)const;
@@ -74,6 +76,8 @@ namespace ft_irc{
 			void											sendIrcResponse(int sockfd, ft_irc::Client *client) const;
 			void											closeClient(int i);
 			void											sendToAllClients(std::string &msg);
+			int 											uptime(void) const;
+			std::string										HRuptime(void) const;
 
 			//SERVER COMMANDS
 			static void										cap(ft_irc::Message* Message, const std::string& param);
@@ -94,6 +98,7 @@ namespace ft_irc{
 			std::string										_ip;
 			long											_port;
 			std::string										_password;
+			int												_tstart;
 
 			struct pollfd									_fds[MAX_CLIENTS + 1];
 			struct sockaddr_in								_serv_addr;

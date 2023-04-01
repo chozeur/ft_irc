@@ -29,6 +29,7 @@ ft_irc::Server&							ft_irc::Server::operator=(Server const &rhs){
 		this->_ip = rhs._ip;
 		this->_port = rhs._port;
 		this->_password = rhs._password;
+		this->_tstart = rhs._tstart;
 		// this->_fds = rhs._fds; //! deep copy
 		this->_serv_addr = rhs._serv_addr;
 		this->_sockfd = rhs._sockfd;
@@ -56,6 +57,10 @@ long									ft_irc::Server::getPort(void) const {
 
 std::string								ft_irc::Server::getPassword(void)const{
 	return (this->_password);
+}
+
+int										ft_irc::Server::getTstart(void)const{
+	return (this->_tstart);
 }
 
 struct sockaddr_in						ft_irc::Server::getServAddr()const{
@@ -197,6 +202,7 @@ void	ft_irc::Server::init(std::string password, long port, char **env){
 		this->_fds[i].events = POLLIN;
 	}
 	std::cout << "Server listening on 127.0.0.1:" << _port << std::endl;
+	this->_tstart = time(NULL);
 	return ;
 }
 
@@ -381,13 +387,50 @@ void 	ft_irc::Server::sendIrcResponse(int sockfd, ft_irc::Client *client) const 
 	std::string ascii_msg = stream.str();
 	stream.str("");
 
+	stream << ":" << _ip << " 005 " << client->getNickname() << " :";
+	colors::red(stream);colors::on_grey(stream);colors::bold(stream);
+	stream << "CHANNELS(" << _channels.size() << "):";
+	colors::reset(stream);
+	colors::yellow(stream);colors::italic(stream);colors::bold(stream);
+	for (std::vector<Channel *>::const_iterator it = _channels.begin(); it != _channels.end(); it++) {
+		stream << " #" << (*it)->getName();
+	}
+	colors::reset(stream);
+	stream << "\r\n";
+	std::string channels_msg = stream.str();
+	stream.str("");
 
+	stream << ":" << _ip << " 006 " << client->getNickname() << " :";
+	colors::green(stream);colors::on_grey(stream);colors::bold(stream);
+	stream << "   USERS(" << _clients.size() << "):";
+	colors::reset(stream);
+	colors::white(stream);colors::italic(stream);colors::bold(stream);
+	for (std::vector<Client *>::const_iterator it = _clients.begin(); it != _clients.end(); it++) {
+		stream << " @" << (*it)->getNickname();
+	}
+	colors::reset(stream);
+	stream << "\r\n";
+	std::string users_msg = stream.str();
+	stream.str("");
+
+	stream << ":" << _ip << " 007 " << client->getNickname() << " :";
+	colors::blue(stream);colors::on_grey(stream);colors::italic(stream);
+	stream << "     uptime:";
+	colors::reset(stream);
+	stream << ' ' << this->HRuptime();
+	colors::reset(stream);
+	stream << "\r\n";
+	std::string uptime_msg = stream.str();
+	stream.str("");
 
 	send(sockfd, cap_response.c_str(), cap_response.length(), 0);
 	send(sockfd, welcome_msg.c_str(), welcome_msg.length(), 0);
 	send(sockfd, version_msg.c_str(), version_msg.length(), 0);
 	send(sockfd, created_msg.c_str(), created_msg.length(), 0);
 	send(sockfd, ascii_msg.c_str(), ascii_msg.length(), 0);
+	send(sockfd, channels_msg.c_str(), channels_msg.length(), 0);
+	send(sockfd, users_msg.c_str(), users_msg.length(), 0);
+	send(sockfd, uptime_msg.c_str(), uptime_msg.length(), 0);
 }
 
 bool 	ft_irc::Server::parsingNickname(int fd, std::string nickname) {
@@ -430,4 +473,19 @@ void 	ft_irc::Server::sendToAllClients(std::string &msg) {
         	}
 		}
     }
+}
+
+int ft_irc::Server::uptime() const {return (time(NULL) - this->_tstart);}
+
+std::string	ft_irc::Server::HRuptime() const {
+	std::stringstream stream;
+	int uptime = time(NULL) - this->_tstart;
+	int days = uptime / 86400;
+	int hours = (uptime % 86400) / 3600;
+	int minutes = (uptime % 3600) / 60;
+	int seconds = uptime % 60;
+	(void)days;
+	(void)hours;
+	stream << minutes << " minutes, " << seconds << " seconds";
+	return (stream.str());
 }
