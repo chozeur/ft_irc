@@ -199,7 +199,13 @@ bool 						ft_irc::Client::isSet() const {
 void 						ft_irc::Client::handleMessage(int serverSockFd, std::string text, Client *bot, Client *receiver) {
     (void)text;
 	(void)serverSockFd;
-	std::string	response = this->gpt(text);
+	std::string	response;
+
+	if (text == "help"){
+		response = "MasterBot is a bot that generate text from gpt3. He's briefed to act as a shell expert.";
+	} else {
+		response = this->gpt(text);
+	}
 
 	if (response.find("\n") != std::string::npos){
 		std::vector<std::string> lines = split(response, "\n");
