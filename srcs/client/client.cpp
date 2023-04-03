@@ -311,11 +311,13 @@ std::string	ft_irc::Client::gpt(std::string prompt) const {
 	std::cout << "Connected to Flask web server" << std::endl;
 
 	// Send the POST request
+	std::stringstream ss;
+	ss << post_data.size();
 	std::string post_request =
 			"POST / HTTP/1.1\r\n"
 			"Host: 92.151.62.116:4242\r\n"
 			"Content-Type: application/x-www-form-urlencoded\r\n"
-			"Content-Length: " + std::to_string(post_data.size()) + "\r\n"
+			"Content-Length: " + ss.str() + "\r\n"
 			"\r\n" + post_data;
 
 	res = send(sock, post_request.c_str(), post_request.size(), 0);

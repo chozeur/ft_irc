@@ -2,7 +2,9 @@
 # define CLIENT_HPP
 
 # include <iostream>
+# include <sstream>
 # include <vector>
+# include <string>
 # include <sys/types.h>
 # include <sys/socket.h>
 # include <netinet/in.h>
