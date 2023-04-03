@@ -219,6 +219,7 @@ void	ft_irc::Server::run(void) {
 		// sendToAllClients(pong);
 
 		this->purgeChannels();
+		std::cout << "Waiting for connections..." << std::endl;
 
 		int num_ready_fds = poll(this->_fds, MAX_CLIENTS + 1, -1);
 		if (num_ready_fds == -1) {
@@ -507,11 +508,16 @@ std::string	ft_irc::Server::info(void) const {
 }
 
 void	ft_irc::Server::purgeChannels(void) {
+	std::cout << "Purging channels" << std::endl;
+	std::cout << "Channels size: " << this->_channels.size() << std::endl;
 	for (std::vector<Channel *>::iterator it = this->_channels.begin(); it != this->_channels.end(); ++it) {
 		if ((*it)->getClients().size() == 0 && (*it)->getName() != "general" && (*it)->getName() != "admin") {
 			std::cout << "Deleting channel " << (*it)->getName() << std::endl;
+			std::cout << (*it) << std::endl;
 			delete (*it);
 			this->_channels.erase(it);
+			if (it == this->_channels.end())
+				break;
 		}
 	}
 }

@@ -1,65 +1,21 @@
-==34735== Memcheck, a memory error detector
-==34735== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
-==34735== Using Valgrind-3.21.0.GIT-lbmacos and LibVEX; rerun with -h for copyright info
-==34735== Command: ./ircserv 4444 pass
-==34735== Parent PID: 32635
-==34735== 
-==34735== 
-==34735== Support for macOS 11 and later is currently experimental
-==34735== Some reports (especially memory leaks) might be missing or incorrect
-==34735== 
---34735-- run: /usr/bin/dsymutil "./ircserv"
-==34735== Warning: set address range perms: large range [0x7ff81a8d1000, 0x7ff91a6d1000) (defined)
-==34735== Warning: set address range perms: large range [0x7ff81a8d1000, 0x7ff83a321000) (defined)
-==34735== Warning: set address range perms: large range [0x7ff83a321000, 0x7ff85a8d1000) (noaccess)
-==34735== Warning: set address range perms: large range [0x7ff85df6d000, 0x7ff89a8d1000) (noaccess)
-==34735== Warning: set address range perms: large range [0x7ff8a6a19000, 0x7ff91a6d1000) (noaccess)
-==34735== Warning: set address range perms: large range [0x600000000000, 0x600020000000) (defined)
-==34735== Conditional jump or move depends on uninitialised value(s)
-==34735==    at 0x7FF81AC05A3F: ??? (in /dev/ttys002)
-==34735==    by 0x7FF81AAC240D: ??? (in /dev/ttys002)
-==34735==    by 0x7FF81AAE3D0B: ??? (in /dev/ttys002)
-==34735==    by 0x7FF81AB70217: ??? (in /dev/ttys002)
-==34735==    by 0x7FF81AB6FD3F: ??? (in /dev/ttys002)
-==34735==    by 0x7FF81AB5F824: ??? (in /dev/ttys002)
-==34735==    by 0x10001859F: ft_irc::Server::init(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, long, char**) (server.cpp:204)
-==34735==    by 0x100001652: main (main.cpp:18)
-==34735== 
-==34735== Conditional jump or move depends on uninitialised value(s)
-==34735==    at 0x7FF81AC05A3F: ??? (in /dev/ttys002)
-==34735==    by 0x7FF81AAC240D: ??? (in /dev/ttys002)
-==34735==    by 0x7FF81AAE3D0B: ??? (in /dev/ttys002)
-==34735==    by 0x100001FF5: std::__1::basic_streambuf<char, std::__1::char_traits<char> >::sputn(char const*, long) (streambuf:229)
-==34735==    by 0x100001D94: std::__1::ostreambuf_iterator<char, std::__1::char_traits<char> > std::__1::__pad_and_output<char, std::__1::char_traits<char> >(std::__1::ostreambuf_iterator<char, std::__1::char_traits<char> >, char const*, char const*, char const*, std::__1::ios_base&, char) (locale:1428)
-==34735==    by 0x100001A19: std::__1::basic_ostream<char, std::__1::char_traits<char> >& std::__1::__put_character_sequence<char, std::__1::char_traits<char> >(std::__1::basic_ostream<char, std::__1::char_traits<char> >&, char const*, unsigned long) (ostream:718)
-==34735==    by 0x100002F6D: std::__1::basic_ostream<char, std::__1::char_traits<char> >& std::__1::operator<< <char, std::__1::char_traits<char>, std::__1::allocator<char> >(std::__1::basic_ostream<char, std::__1::char_traits<char> >&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&) (ostream:1041)
-==34735==    by 0x1000065B1: ft_irc::Server::cap(ft_irc::Message*, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&) (command.cpp:43)
-==34735==    by 0x100002C77: ft_irc::Message::parsePayload() (message.cpp:109)
-==34735==    by 0x100002749: ft_irc::Message::Message(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:19)
-==34735==    by 0x100002CF4: ft_irc::Message::Message(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:18)
-==34735==    by 0x100019972: ft_irc::Server::run() (server.cpp:271)
-==34735== 
-==34735== Conditional jump or move depends on uninitialised value(s)
-==34735==    at 0x7FF81AC05A3F: ??? (in /dev/ttys002)
-==34735==    by 0x1000146D2: __libcpp_memchr(void const*, int, unsigned long) (string.h:94)
-==34735==    by 0x1000146A2: _ZL6memchrUa9enable_ifIXLb1EEEPKvim (string.h:96)
-==34735==    by 0x10001464B: std::__1::char_traits<char>::find(char const*, unsigned long, char const&) (__string:411)
-==34735==    by 0x10001450C: char const* std::__1::__search_substring<char, std::__1::char_traits<char> >(char const*, char const*, char const*, char const*) (__string:946)
-==34735==    by 0x1000261EF: unsigned long std::__1::__str_find<char, unsigned long, std::__1::char_traits<char>, 18446744073709551615ul>(char const*, unsigned long, char const*, unsigned long, unsigned long) (__string:973)
-==34735==    by 0x100025E67: std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >::find(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&, unsigned long) const (string:3569)
-==34735==    by 0x100025DB8: removeAllOccurrences(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&) (removeOccurences.cpp:5)
-==34735==    by 0x100025F24: cleanLine(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&) (removeOccurences.cpp:14)
-==34735==    by 0x100006976: ft_irc::Server::pass(ft_irc::Message*, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&) (command.cpp:65)
-==34735==    by 0x100006691: ft_irc::Server::cap(ft_irc::Message*, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&) (command.cpp:46)
-==34735==    by 0x100002C77: ft_irc::Message::parsePayload() (message.cpp:109)
-==34735== 
-==34735== Conditional jump or move depends on uninitialised value(s)
-==34735==    at 0x7FF81AC05A3F: ??? (in /dev/ttys002)
-==34735==    by 0x7FF81AB54B5D: ??? (in /dev/ttys002)
-==34735==    by 0x100006349: ft_irc::Server::cap(ft_irc::Message*, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&) (command.cpp:29)
-==34735==    by 0x100002C77: ft_irc::Message::parsePayload() (message.cpp:109)
-==34735==    by 0x100002749: ft_irc::Message::Message(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:19)
-==34735==    by 0x100002CF4: ft_irc::Message::Message(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:18)
-==34735==    by 0x100019972: ft_irc::Server::run() (server.cpp:271)
-==34735==    by 0x10000178E: main (main.cpp:28)
-==34735== 
+==50352== Memcheck, a memory error detector
+==50352== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==50352== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==50352== Command: ./ircserv 4567 pass
+==50352== Parent PID: 3654
+==50352== 
+==50352== 
+==50352== HEAP SUMMARY:
+==50352==     in use at exit: 296 bytes in 2 blocks
+==50352==   total heap usage: 126 allocs, 124 frees, 82,839 bytes allocated
+==50352== 
+==50352== LEAK SUMMARY:
+==50352==    definitely lost: 288 bytes in 1 blocks
+==50352==    indirectly lost: 8 bytes in 1 blocks
+==50352==      possibly lost: 0 bytes in 0 blocks
+==50352==    still reachable: 0 bytes in 0 blocks
+==50352==         suppressed: 0 bytes in 0 blocks
+==50352== Rerun with --leak-check=full to see details of leaked memory
+==50352== 
+==50352== For lists of detected and suppressed errors, rerun with: -s
+==50352== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
