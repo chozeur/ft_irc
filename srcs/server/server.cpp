@@ -510,8 +510,6 @@ std::string	ft_irc::Server::HRuptime() const {
 
 
 void	ft_irc::Server::purgeChannels(void) {
-	std::cout << "Purging channels" << std::endl;
-	std::cout << "Channels size: " << this->_channels.size() << std::endl;
 	for (std::vector<Channel *>::iterator it = this->_channels.begin(); it != this->_channels.end(); ++it) {
 		if ((*it)->getClients().size() == 0 && (*it)->getName() != "general" && (*it)->getName() != "admin") {
 			std::cout << "Deleting channel " << (*it)->getName() << std::endl;
@@ -525,8 +523,6 @@ void	ft_irc::Server::purgeChannels(void) {
 }
 
 void	ft_irc::Server::purgeClients(void) {
-	std::cout << "Purging clients" << std::endl;
-	std::cout << "Clients size: " << this->_clients.size() << std::endl;
 	for (std::vector<Client *>::iterator it = this->_clients.begin(); it != this->_clients.end(); ++it) {
 		if ((*it)->getSockfd() == -1 && (*it)->getNickname() != "MasterBot") {
 			std::cout << "Deleting client " << (*it)->getNickname() << std::endl;
