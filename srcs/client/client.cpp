@@ -69,8 +69,9 @@ ft_irc::Client&				ft_irc::Client::operator=(Client const &rhs){
 		this->_host = rhs._host;
 		this->_servername = rhs._servername;
 		this->_userLine = rhs._userLine;
-		this->_channels = rhs._channels;
 		this->_idle = rhs._idle;
+		this->_signon = rhs._signon;
+		this->_channels = rhs._channels;
 	}
 	return (*this);
 }
