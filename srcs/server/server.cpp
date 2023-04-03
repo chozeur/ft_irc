@@ -587,6 +587,13 @@ void	ft_irc::Server::logLoop(void) const {
 	std::vector<Channel *>::const_iterator it = this->_channels.begin();
 	while (it != this->_channels.end()) {
 		stream << '#' << (*it)->getName() << ':' << (*it)->getClients().size() << std::endl;
+		if ((*it)->getClients().size() > 0){
+			std::vector<Client *>::const_iterator it2 = (*it)->getClients().begin();
+			while (it2 != (*it)->getClients().end()) {
+				stream << '\t' << '@' << (*it2)->getNickname() << std::endl;
+				++it2;
+			}
+		}
 		++it;
 	}
 	colors::reset(stream);
