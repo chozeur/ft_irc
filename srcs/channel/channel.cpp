@@ -84,11 +84,12 @@ void 		ft_irc::Channel::addClient(Client *client) {
 
 void 		ft_irc::Channel::removeClient(Client const &client)
 {
-	std::vector<Client *>::iterator it = std::find(this->_clients.begin(), this->_clients.end(), &client);
-    if (it != this->_clients.end())
-    {
+	std::vector<Client *>::iterator it;
+	for (it = this->_clients.begin(); it != this->_clients.end(); ++it){
+		if ((*it)->getNickname() == client.getNickname())
+			break;
+	}
         this->_clients.erase(it);
-    }
 }
 
 void 		ft_irc::Channel::addOperator(Client &client)

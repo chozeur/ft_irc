@@ -1,15 +1,80 @@
-==57517== Memcheck, a memory error detector
-==57517== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==57517== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==57517== Command: ./ircserv 4567 pass
-==57517== Parent PID: 3654
-==57517== 
-==57517== 
-==57517== HEAP SUMMARY:
-==57517==     in use at exit: 0 bytes in 0 blocks
-==57517==   total heap usage: 36 allocs, 36 frees, 83,895 bytes allocated
-==57517== 
-==57517== All heap blocks were freed -- no leaks are possible
-==57517== 
-==57517== For lists of detected and suppressed errors, rerun with: -s
-==57517== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==65250== Memcheck, a memory error detector
+==65250== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==65250== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==65250== Command: ./ircserv 4567 pass
+==65250== Parent PID: 3654
+==65250== 
+==65250== Invalid read of size 8
+==65250==    at 0x117B77: ft_irc::Server::quit(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (command.cpp:607)
+==65250==    by 0x10C551: ft_irc::Message::parsePayload() (message.cpp:109)
+==65250==    by 0x10C031: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:19)
+==65250==    by 0x11CCA0: ft_irc::Server::run() (server.cpp:275)
+==65250==    by 0x10BDC2: main (main.cpp:28)
+==65250==  Address 0x4dec510 is 0 bytes inside a block of size 8 free'd
+==65250==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==65250==    by 0x11AE03: __gnu_cxx::new_allocator<ft_irc::Channel*>::deallocate(ft_irc::Channel**, unsigned long) (new_allocator.h:145)
+==65250==    by 0x11A98B: __gnu_cxx::__alloc_traits<std::allocator<ft_irc::Channel*>, ft_irc::Channel*>::deallocate(std::allocator<ft_irc::Channel*>&, ft_irc::Channel**, unsigned long) (alloc_traits.h:141)
+==65250==    by 0x11A4E9: std::_Vector_base<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::_M_deallocate(ft_irc::Channel**, unsigned long) (stl_vector.h:354)
+==65250==    by 0x119E0E: std::_Vector_base<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::~_Vector_base() (stl_vector.h:335)
+==65250==    by 0x1191C1: std::vector<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::~vector() (stl_vector.h:683)
+==65250==    by 0x117B65: ft_irc::Server::quit(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (command.cpp:606)
+==65250==    by 0x10C551: ft_irc::Message::parsePayload() (message.cpp:109)
+==65250==    by 0x10C031: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:19)
+==65250==    by 0x11CCA0: ft_irc::Server::run() (server.cpp:275)
+==65250==    by 0x10BDC2: main (main.cpp:28)
+==65250==  Block was alloc'd at
+==65250==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==65250==    by 0x11ADA7: __gnu_cxx::new_allocator<ft_irc::Channel*>::allocate(unsigned long, void const*) (new_allocator.h:127)
+==65250==    by 0x11A911: __gnu_cxx::__alloc_traits<std::allocator<ft_irc::Channel*>, ft_irc::Channel*>::allocate(std::allocator<ft_irc::Channel*>&, unsigned long) (alloc_traits.h:133)
+==65250==    by 0x11A449: std::_Vector_base<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::_M_allocate(unsigned long) (stl_vector.h:346)
+==65250==    by 0x128E06: std::_Vector_base<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::_M_create_storage(unsigned long) (stl_vector.h:361)
+==65250==    by 0x128CFA: std::_Vector_base<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::_Vector_base(unsigned long, std::allocator<ft_irc::Channel*> const&) (stl_vector.h:305)
+==65250==    by 0x128BF7: std::vector<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::vector(std::vector<ft_irc::Channel*, std::allocator<ft_irc::Channel*> > const&) (stl_vector.h:555)
+==65250==    by 0x127256: ft_irc::Client::getChannels() const (client.cpp:131)
+==65250==    by 0x117B40: ft_irc::Server::quit(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (command.cpp:606)
+==65250==    by 0x10C551: ft_irc::Message::parsePayload() (message.cpp:109)
+==65250==    by 0x10C031: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:19)
+==65250==    by 0x11CCA0: ft_irc::Server::run() (server.cpp:275)
+==65250== 
+==65250== Invalid read of size 8
+==65250==    at 0x1193BE: __gnu_cxx::__normal_iterator<ft_irc::Client**, std::vector<ft_irc::Client*, std::allocator<ft_irc::Client*> > >::__normal_iterator(ft_irc::Client** const&) (stl_iterator.h:1011)
+==65250==    by 0x11899D: std::vector<ft_irc::Client*, std::allocator<ft_irc::Client*> >::begin() (stl_vector.h:812)
+==65250==    by 0x123AA1: ft_irc::Channel::removeClient(ft_irc::Client const&) (channel.cpp:88)
+==65250==    by 0x117B93: ft_irc::Server::quit(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (command.cpp:607)
+==65250==    by 0x10C551: ft_irc::Message::parsePayload() (message.cpp:109)
+==65250==    by 0x10C031: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:19)
+==65250==    by 0x11CCA0: ft_irc::Server::run() (server.cpp:275)
+==65250==    by 0x10BDC2: main (main.cpp:28)
+==65250==  Address 0x20 is not stack'd, malloc'd or (recently) free'd
+==65250== 
+==65250== 
+==65250== Process terminating with default action of signal 11 (SIGSEGV)
+==65250==  Access not within mapped region at address 0x20
+==65250==    at 0x1193BE: __gnu_cxx::__normal_iterator<ft_irc::Client**, std::vector<ft_irc::Client*, std::allocator<ft_irc::Client*> > >::__normal_iterator(ft_irc::Client** const&) (stl_iterator.h:1011)
+==65250==    by 0x11899D: std::vector<ft_irc::Client*, std::allocator<ft_irc::Client*> >::begin() (stl_vector.h:812)
+==65250==    by 0x123AA1: ft_irc::Channel::removeClient(ft_irc::Client const&) (channel.cpp:88)
+==65250==    by 0x117B93: ft_irc::Server::quit(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (command.cpp:607)
+==65250==    by 0x10C551: ft_irc::Message::parsePayload() (message.cpp:109)
+==65250==    by 0x10C031: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:19)
+==65250==    by 0x11CCA0: ft_irc::Server::run() (server.cpp:275)
+==65250==    by 0x10BDC2: main (main.cpp:28)
+==65250==  If you believe this happened as a result of a stack
+==65250==  overflow in your program's main thread (unlikely but
+==65250==  possible), you can try to increase the size of the
+==65250==  main thread stack using the --main-stacksize= flag.
+==65250==  The main thread stack size used in this run was 8388608.
+==65250== 
+==65250== HEAP SUMMARY:
+==65250==     in use at exit: 77,749 bytes in 36 blocks
+==65250==   total heap usage: 191 allocs, 155 frees, 110,662 bytes allocated
+==65250== 
+==65250== LEAK SUMMARY:
+==65250==    definitely lost: 0 bytes in 0 blocks
+==65250==    indirectly lost: 0 bytes in 0 blocks
+==65250==      possibly lost: 0 bytes in 0 blocks
+==65250==    still reachable: 77,749 bytes in 36 blocks
+==65250==         suppressed: 0 bytes in 0 blocks
+==65250== Rerun with --leak-check=full to see details of leaked memory
+==65250== 
+==65250== For lists of detected and suppressed errors, rerun with: -s
+==65250== ERROR SUMMARY: 3 errors from 2 contexts (suppressed: 0 from 0)

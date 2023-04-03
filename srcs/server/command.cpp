@@ -603,6 +603,9 @@ void	ft_irc::Server::quit(ft_irc::Message* message, const std::string& param) {
 	ft_irc::Server *server = message->getServer();
 	std::string quit_msg = ":" + message->getSender()->getNickname() + "!" + message->getSender()->getNickname() + "@localhost QUIT :" + param + "\r\n";
 	server->sendToAllClients(quit_msg);
+	for (std::vector<ft_irc::Channel *>::iterator it = message->getSender()->getChannels().begin(); it != message->getSender()->getChannels().end(); ++it) {
+		(*it)->removeClient(*(message->getSender()));
+	}
 }
 
 
