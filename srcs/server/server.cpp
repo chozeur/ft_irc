@@ -191,7 +191,7 @@ void	ft_irc::Server::init(std::string password, long port, char **env){
 	this->_fds[0].fd = this->_sockfd;
 	this->_fds[0].events = POLLIN;
 
-	Client* bot = new Client(-1);
+	Client* bot = new Client(-1, this);
 	bot->setIsBot(true);
 	bot->setNickname("MasterBot");
 	_clients.push_back(bot);
@@ -487,5 +487,18 @@ std::string	ft_irc::Server::HRuptime() const {
 	(void)days;
 	(void)hours;
 	stream << minutes << " minutes, " << seconds << " seconds";
+	return (stream.str());
+}
+
+std::string	ft_irc::Server::info(void) const {
+	std::stringstream stream;
+	stream << "Server name: " << this->_name << std::endl;
+	stream << "Server IP: " << this->_ip << std::endl;
+	stream << "Server port: " << this->_port << std::endl;
+	stream << "Server password: " << this->_password << std::endl;
+	stream << "Server max clients: " << MAX_CLIENTS << std::endl;
+	stream << "Server uptime: " << this->HRuptime() << std::endl;
+	stream << "Server channels: " << this->_channels.size() << std::endl;
+	stream << "Server clients: " << this->_clients.size() << std::endl;
 	return (stream.str());
 }

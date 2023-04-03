@@ -1,8 +1,10 @@
 #include "client.hpp"
+#include "../server/server.hpp"
 
 /* CONSTRUCTORS */
 
 ft_irc::Client::Client(void):
+	_server(NULL),
 	_isSet(false),
 	_isBot(false),
 	_sockfd(-1),
@@ -18,6 +20,7 @@ ft_irc::Client::Client(void):
 }
 
 ft_irc::Client::Client(Client const & rhs):
+	_server(NULL),
 	_isSet(false),
 	_isBot(false),
 	_sockfd(-1),
@@ -33,7 +36,8 @@ ft_irc::Client::Client(Client const & rhs):
 	return ;
 }
 
-ft_irc::Client::Client(int sockfd):
+ft_irc::Client::Client(int sockfd, ft_irc::Server *server):
+	_server(server),
 	_isSet(false),
 	_isBot(false),
 	_sockfd(sockfd),
@@ -59,6 +63,7 @@ ft_irc::Client::~Client(void){
 
 ft_irc::Client&				ft_irc::Client::operator=(Client const &rhs){
 	if (this != &rhs){
+		this->_server = rhs._server;
 		this->_isSet = rhs._isSet;
 		this->_isBot = rhs._isBot;
 		this->_sockfd = rhs._sockfd;
@@ -204,6 +209,9 @@ void 						ft_irc::Client::handleMessage(int serverSockFd, std::string text, Cli
 
 	if (text == "help"){
 		response = "MasterBot is a bot that generate text from gpt3. He's briefed to act as a shell expert.";
+	} else if (text == "stats"){
+		response = this->_server->info();
+		std::cout << "response: " << response << std::endl;
 	} else {
 		response = this->gpt(text);
 	}

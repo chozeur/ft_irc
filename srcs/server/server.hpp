@@ -25,6 +25,8 @@ typedef void (*CommandFunction)(ft_irc::Message*, const std::string&);
 
 namespace ft_irc{
 
+	class Client;
+
 	class Server{
 
 		public:
@@ -78,6 +80,7 @@ namespace ft_irc{
 			void											sendToAllClients(std::string &msg);
 			int 											uptime(void) const;
 			std::string										HRuptime(void) const;
+			std::string										info(void) const;
 
 			//SERVER COMMANDS
 			static void										cap(ft_irc::Message* Message, const std::string& param);

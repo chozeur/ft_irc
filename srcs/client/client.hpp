@@ -25,6 +25,7 @@
 namespace ft_irc
 {
 	class	Channel;
+	class	Server;
 
 	class Client {
 
@@ -32,7 +33,7 @@ namespace ft_irc
 
 			Client(void);
 			Client(Client const &rhs);
-			Client(int sockfd);
+			Client(int sockfd, ft_irc::Server *server);
 
 			virtual ~Client(void);
 
@@ -77,6 +78,8 @@ namespace ft_irc
 			ft_irc::Channel*			getChanPointer(std::string name);
 
 		private:
+
+			ft_irc::Server*				_server;
 			bool						_isSet;
 			bool						_isBot;
 			int							_sockfd;
