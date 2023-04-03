@@ -220,7 +220,7 @@ void	ft_irc::Server::run(void) {
 
 		this->purgeChannels();
 		this->purgeClients();
-		std::cout << "Waiting for connections..." << std::endl;
+		this->logLoop();
 
 		int num_ready_fds = poll(this->_fds, MAX_CLIENTS + 1, -1);
 		if (num_ready_fds == -1) {
@@ -537,4 +537,80 @@ void	ft_irc::Server::purgeClients(void) {
 				break;
 		}
 	}
+}
+
+void	ft_irc::Server::logLoop(void) const {
+	std::stringstream stream;
+	std::time_t now = std::time(NULL);
+    std::tm* local_time = std::localtime(&now);
+    int hour = local_time->tm_hour;
+	int min = local_time->tm_min;
+
+	stream << std::endl << std::endl;
+
+	colors::red(stream);colors::bold(stream);
+	stream << "------------------------------------------------------------" << std::endl;
+	colors::green(stream);colors::bold(stream);
+	stream << "----------------------SERVER LOGS---------------------------" << std::endl;
+	colors::reset(stream);
+
+	stream << std::endl;
+
+	colors::yellow(stream);colors::bold(stream);
+	stream << "\t  Server " << this->_name << " started at " << hour << ':' << min << std::endl;
+	colors::reset(stream);
+
+	stream << std::endl;
+
+	colors::blue(stream);colors::bold(stream);
+	stream << "\t  IP: " << this->_ip;
+	colors::reset(stream);
+	colors::bright_grey(stream);colors::bold(stream);
+	stream << "\t\tPort: " << this->_port << std::endl;
+	colors::reset(stream);
+
+	stream << std::endl;
+
+	colors::red(stream);colors::bold(stream);
+	stream << "\t  Password: " << this->_password;
+	colors::reset(stream);
+	colors::bright_grey(stream);colors::bold(stream);
+	stream << "\tMax clients: " << MAX_CLIENTS << std::endl;
+	colors::reset(stream);
+
+	stream << std::endl;
+
+	colors::cyan(stream);colors::bold(stream);
+	stream << "Channels:Clients" << std::endl;
+	colors::reset(stream);
+	colors::bright_grey(stream);colors::bold(stream);
+	std::vector<Channel *>::const_iterator it = this->_channels.begin();
+	while (it != this->_channels.end()) {
+		stream << '#' << (*it)->getName() << ':' << (*it)->getClients().size() << std::endl;
+		++it;
+	}
+	colors::reset(stream);
+
+	stream << std::endl;
+
+	colors::yellow(stream);colors::bold(stream);
+	stream << std::endl << "Clients:" << std::endl;
+	colors::reset(stream);
+	colors::bright_grey(stream);colors::bold(stream);
+	std::vector<Client *>::const_iterator it2 = this->_clients.begin();
+	while (it2 != this->_clients.end()) {
+		stream << '@' << (*it2)->getNickname() << std::endl;
+		++it2;
+	}
+	colors::reset(stream);
+
+	stream << std::endl;
+
+	colors::green(stream);colors::bold(stream);
+	stream << "------------------------------------------------------------" << std::endl;
+	colors::red(stream);colors::bold(stream);
+	stream << "------------------------------------------------------------" << std::endl;
+	colors::reset(stream);
+	std::cout << stream.str();
+	return ;
 }

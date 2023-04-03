@@ -11,6 +11,8 @@
 // #include <chrono>
 #include <unistd.h>
 #include <poll.h>
+#include <vector>
+#include <ctime>
 #include "../client/client.hpp"
 #include "../channel/channel.hpp"
 #include "../message/message.hpp"
@@ -83,6 +85,7 @@ namespace ft_irc{
 			// std::string										info(void) const;
 			void											purgeChannels(void);
 			void											purgeClients(void);
+			void											logLoop(void) const;
 
 			//SERVER COMMANDS
 			static void										cap(ft_irc::Message* Message, const std::string& param);
