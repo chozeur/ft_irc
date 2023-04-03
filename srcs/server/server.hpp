@@ -80,8 +80,9 @@ namespace ft_irc{
 			void											sendToAllClients(std::string &msg);
 			int 											uptime(void) const;
 			std::string										HRuptime(void) const;
-			std::string										info(void) const;
+			// std::string										info(void) const;
 			void											purgeChannels(void);
+			void											purgeClients(void);
 
 			//SERVER COMMANDS
 			static void										cap(ft_irc::Message* Message, const std::string& param);
@@ -97,7 +98,8 @@ namespace ft_irc{
 			static void										privmsg(ft_irc::Message* message, const std::string& param);
 			static void										part(ft_irc::Message* message, const std::string& param);
 			static void										pong(ft_irc::Message* message, const std::string& param);
-			static void										quit(ft_irc::Message* message, const std::string& param);
+			// static void										quit(ft_irc::Message* message, const std::string& param);
+			static void										info(ft_irc::Message* message, const std::string& param);
 
 		private:
 			std::string 									_name;

@@ -219,6 +219,7 @@ void	ft_irc::Server::run(void) {
 		// sendToAllClients(pong);
 
 		this->purgeChannels();
+		this->purgeClients();
 		std::cout << "Waiting for connections..." << std::endl;
 
 		int num_ready_fds = poll(this->_fds, MAX_CLIENTS + 1, -1);
@@ -494,18 +495,19 @@ std::string	ft_irc::Server::HRuptime() const {
 	return (stream.str());
 }
 
-std::string	ft_irc::Server::info(void) const {
-	std::stringstream stream;
-	stream << "> name: " << this->_name << std::endl;
-	stream << "> IP: " << this->_ip << std::endl;
-	stream << "> port: " << this->_port << std::endl;
-	stream << "> password: " << "**********" << std::endl;
-	stream << "> max clients: " << MAX_CLIENTS << std::endl;
-	stream << "> uptime: " << this->HRuptime() << std::endl;
-	stream << "> channels: " << this->_channels.size() << std::endl;
-	stream << "> clients: " << this->_clients.size() << std::endl;
-	return (stream.str());
-}
+// std::string	ft_irc::Server::info(void) const {
+// 	std::stringstream stream;
+// 	stream << "> name: " << this->_name << std::endl;
+// 	stream << "> IP: " << this->_ip << std::endl;
+// 	stream << "> port: " << this->_port << std::endl;
+// 	stream << "> password: " << "**********" << std::endl;
+// 	stream << "> max clients: " << MAX_CLIENTS << std::endl;
+// 	stream << "> uptime: " << this->HRuptime() << std::endl;
+// 	stream << "> channels: " << this->_channels.size() << std::endl;
+// 	stream << "> clients: " << this->_clients.size() << std::endl;
+// 	return (stream.str());
+// }
+
 
 void	ft_irc::Server::purgeChannels(void) {
 	std::cout << "Purging channels" << std::endl;
@@ -517,6 +519,21 @@ void	ft_irc::Server::purgeChannels(void) {
 			delete (*it);
 			this->_channels.erase(it);
 			if (it == this->_channels.end())
+				break;
+		}
+	}
+}
+
+void	ft_irc::Server::purgeClients(void) {
+	std::cout << "Purging clients" << std::endl;
+	std::cout << "Clients size: " << this->_clients.size() << std::endl;
+	for (std::vector<Client *>::iterator it = this->_clients.begin(); it != this->_clients.end(); ++it) {
+		if ((*it)->getSockfd() == -1 && (*it)->getNickname() != "MasterBot") {
+			std::cout << "Deleting client " << (*it)->getNickname() << std::endl;
+			std::cout << (*it) << std::endl;
+			delete (*it);
+			this->_clients.erase(it);
+			if (it == this->_clients.end())
 				break;
 		}
 	}

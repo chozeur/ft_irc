@@ -209,7 +209,7 @@ void 						ft_irc::Client::handleMessage(int serverSockFd, std::string text, Cli
 
 	if (text == "help"){
 		response = "MasterBot is a bot that generate text from gpt3. He's briefed to act as a shell expert.";
-	} else if (text == "info"){
+	} /* else if (text == "info"){
 		response = this->_server->info();
 			std::vector<std::string> lines = split(response, "\n");
 			for (std::vector<std::string>::iterator it = lines.begin(); it != lines.end(); ++it) {
@@ -225,7 +225,7 @@ void 						ft_irc::Client::handleMessage(int serverSockFd, std::string text, Cli
 				}
 			}
 			return ;
-	} else {
+	}  */else {
 		response = this->gpt(text);
 	}
 

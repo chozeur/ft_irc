@@ -18,6 +18,10 @@ void ft_irc::Server::initCommands(void) {
 	_commands.insert(std::make_pair("PING", &Server::pong));
 	// _commands.insert(std::make_pair("QUIT", &Server::quit));
 
+	_commands.insert(std::make_pair("info", &Server::info));
+
+	return ;
+
 }
 
 // INITIALISATION CLIENT
@@ -604,3 +608,31 @@ void	ft_irc::Server::pong(ft_irc::Message* message, const std::string& param) {
 // 		}
 // 	}
 // }
+
+
+void	ft_irc::Server::info(ft_irc::Message* message, const std::string& param){
+	(void)param;
+	ft_irc::Server *server = message->getServer();
+	std::stringstream stream;
+	stream << "> name: " << server->_name << std::endl;
+	stream << "> IP: " << server->_ip << std::endl;
+	stream << "> port: " << server->_port << std::endl;
+	stream << "> password: " << "**********" << std::endl;
+	stream << "> max clients: " << MAX_CLIENTS << std::endl;
+	stream << "> uptime: " << server->HRuptime() << std::endl;
+	stream << "> channels: " << server->_channels.size() << std::endl;
+	stream << "> clients: " << server->_clients.size() << std::endl;
+	std::vector<std::string> lines = split(stream.str(), "\n");
+	for (std::vector<std::string>::iterator it = lines.begin(); it != lines.end(); ++it) {
+		if (*it != ""){
+			std::stringstream ss;
+			colors::bold(ss);colors::white(ss);colors::on_blue(ss);
+			ss << "    " << format(*it,42);
+			colors::reset(ss);
+			ss << "\r\n";
+			std::string messageToSend = ss.str();
+			server->sendToAllClients(messageToSend);
+		}
+	}
+
+}
