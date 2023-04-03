@@ -6,26 +6,27 @@ SOURCES		+=                            		\
 		srcs/main.cpp                        	\
 
 
-## SRCS/UTILS ##
+## SRCS/MESSAGE ##
 
 SOURCES		+=                            		\
-		srcs/utils/removeOccurences.cpp      	\
-		srcs/utils/sig_handler.cpp           	\
-		srcs/utils/parsing_args.cpp          	\
-		srcs/utils/split.cpp                 	\
+		srcs/message/message.cpp             	\
 
 
 ## SRCS/SERVER ##
 
 SOURCES		+=                            		\
-		srcs/server/server.cpp               	\
 		srcs/server/command.cpp              	\
+		srcs/server/server.cpp               	\
 
 
-## SRCS/MESSAGE ##
+## SRCS/UTILS ##
 
 SOURCES		+=                            		\
-		srcs/message/message.cpp             	\
+		srcs/utils/format.cpp                	\
+		srcs/utils/split.cpp                 	\
+		srcs/utils/parsing_args.cpp          	\
+		srcs/utils/removeOccurences.cpp      	\
+		srcs/utils/sig_handler.cpp           	\
 
 
 ## SRCS/CHANNEL ##

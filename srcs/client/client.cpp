@@ -209,9 +209,23 @@ void 						ft_irc::Client::handleMessage(int serverSockFd, std::string text, Cli
 
 	if (text == "help"){
 		response = "MasterBot is a bot that generate text from gpt3. He's briefed to act as a shell expert.";
-	} else if (text == "stats"){
+	} else if (text == "info"){
 		response = this->_server->info();
-		std::cout << "response: " << response << std::endl;
+			std::vector<std::string> lines = split(response, "\n");
+			for (std::vector<std::string>::iterator it = lines.begin(); it != lines.end(); ++it) {
+				if (*it != ""){
+					std::stringstream stream;
+					stream << ":" << bot->getNickname() << " PRIVMSG " << receiver->getNickname() << " :";
+					colors::bold(stream);colors::white(stream);colors::on_blue(stream);
+					stream << "    " << format(*it,42);
+					colors::reset(stream);
+					stream << "\r\n";
+					std::string messageToSend = stream.str();
+					std::cout << "messageToSend = " << messageToSend;
+					send(receiver->getSockfd(), messageToSend.c_str(), messageToSend.length(), 0);
+				}
+			}
+			return ;
 	} else {
 		response = this->gpt(text);
 	}
@@ -228,6 +242,7 @@ void 						ft_irc::Client::handleMessage(int serverSockFd, std::string text, Cli
 		std::string messageToSend = ":" + bot->getNickname() + " PRIVMSG " + receiver->getNickname() + " :" + response + "\r\n";
 		send(receiver->getSockfd(), messageToSend.c_str(), messageToSend.length(), 0);
 	}
+	return ;
 }
 
 void 		ft_irc::Client::addChannel(Channel *channel) {
@@ -257,71 +272,6 @@ std::ostream& ft_irc::operator<<(std::ostream& os, const ft_irc::Client& client)
 }
 
 /* OTHER */
-
-std::string	ft_irc::Client::unicorn(void) const {
-	const char *host = "artscene.textfiles.com";
-	const char *path = "/asciiart/unicorn";
-	const char *method = "GET";
-
-	// Get the server's address
-	struct hostent *server = gethostbyname(host);
-	if (server == NULL) {
-		std::cerr << "Error: Could not resolve host" << std::endl;
-		return ("ERROR IN UNICORN");
-	}
-
-	// Create a socket
-	int portno = 80;
-	int sockfd = socket(AF_INET, SOCK_STREAM, 0);
-	if (sockfd < 0) {
-		std::cerr << "Error: Could not create socket" << std::endl;
-		return ("ERROR IN UNICORN");
-	}
-
-	// Set up the server address structure
-	struct sockaddr_in serv_addr;
-	std::memset(&serv_addr, 0, sizeof(serv_addr));
-	serv_addr.sin_family = AF_INET;
-	std::memcpy(&serv_addr.sin_addr.s_addr, server->h_addr_list[0], server->h_length);
-	serv_addr.sin_port = htons(portno);
-
-	// Connect to the server
-	if (connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
-		std::cerr << "Error: Could not connect to server" << std::endl;
-		return ("ERROR IN UNICORN");
-	}
-
-	// Construct the HTTP request
-	std::string request = std::string(method) + " " + std::string(path) + " HTTP/1.1\r\n";
-	request += "Host: " + std::string(host) + "\r\n\r\n";
-
-	// Send the request
-	if (send(sockfd, request.c_str(), request.length(), 0) < 0) {
-		std::cerr << "Error: Could not send request" << std::endl;
-		return ("ERROR IN UNICORN");
-	}
-
-	// Receive the response
-	const int buffer_len = 1024;
-	char buffer[buffer_len];
-	std::string response = "";
-	int bytes_received;
-	do {
-		bytes_received = recv(sockfd, buffer, buffer_len-1, 0);
-		if (bytes_received < 0) {
-			std::cerr << "Error: There was an error receiving the response" << std::endl;
-			return ("ERROR IN UNICORN");
-		}
-		buffer[bytes_received] = '\0';
-		response += std::string(buffer);
-		response = remove_html_header(response);
-	} while (bytes_received > 0);
-
-	// Close the socket
-	close(sockfd);
-
-	return (response);
-}
 
 std::string	ft_irc::Client::gpt(std::string prompt) const {
 	// Initialize the post data

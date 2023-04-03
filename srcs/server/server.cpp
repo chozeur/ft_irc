@@ -492,13 +492,13 @@ std::string	ft_irc::Server::HRuptime() const {
 
 std::string	ft_irc::Server::info(void) const {
 	std::stringstream stream;
-	stream << "Server name: " << this->_name << std::endl;
-	stream << "Server IP: " << this->_ip << std::endl;
-	stream << "Server port: " << this->_port << std::endl;
-	stream << "Server password: " << this->_password << std::endl;
-	stream << "Server max clients: " << MAX_CLIENTS << std::endl;
-	stream << "Server uptime: " << this->HRuptime() << std::endl;
-	stream << "Server channels: " << this->_channels.size() << std::endl;
-	stream << "Server clients: " << this->_clients.size() << std::endl;
+	stream << "> name: " << this->_name << std::endl;
+	stream << "> IP: " << this->_ip << std::endl;
+	stream << "> port: " << this->_port << std::endl;
+	stream << "> password: " << "**********" << std::endl;
+	stream << "> max clients: " << MAX_CLIENTS << std::endl;
+	stream << "> uptime: " << this->HRuptime() << std::endl;
+	stream << "> channels: " << this->_channels.size() << std::endl;
+	stream << "> clients: " << this->_clients.size() << std::endl;
 	return (stream.str());
 }
