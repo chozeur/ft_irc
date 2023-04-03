@@ -87,6 +87,7 @@ namespace ft_irc{
 			static void										whois(ft_irc::Message* Message, const std::string& param);
 			static void										privmsg(ft_irc::Message* message, const std::string& param);
 			static void										part(ft_irc::Message* message, const std::string& param);
+			static void										topic(ft_irc::Message* message, const std::string& param);
 
 		private:
 			std::string 									_name;

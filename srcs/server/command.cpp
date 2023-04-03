@@ -14,6 +14,7 @@ void ft_irc::Server::initCommands(void) {
 	_commands.insert(std::make_pair("WHOIS", &Server::whois));
 	_commands.insert(std::make_pair("PRIVMSG", &Server::privmsg));
 	_commands.insert(std::make_pair("PART", &Server::part));
+	_commands.insert(std::make_pair("TOPIC", &Server::topic));
 
 }
 
@@ -580,4 +581,69 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
         }        
     }
 
+}
+
+void ft_irc::Server::topic(ft_irc::Message* message, const std::string& param) {
+
+    std::cerr << "param--> [" << param << "]" << std::endl;
+    message->getSender()->setIdle();
+    ft_irc::Server *server = message->getServer();
+    ft_irc::Channel *channel;
+
+	std::cerr << "TOPIC FUNCTION CALLED WITH PARAM = " << param << std::endl;
+    std::string param2 = param;
+    size_t pos = param2.find(" ");
+    param2 = param2.substr(pos + 1);    
+    cleanLine(param2);
+    removeAllOccurrences(param2, "#");
+    param2 = param2.substr(0, param2.find(' ')); // param2 = channel
+    size_t pos2 = param.find(" ");
+    std::string param3 = param.substr(pos2 + 1);
+    pos2 = param3.find(" ");
+    param3 = param3.substr(pos2 + 1);
+    removeAllOccurrences(param3, ":"); // param3 = topic
+
+    std::cerr << "step0--> [" << param3 << "]" << std::endl;
+    channel = message->getSender()->getChanPointer(param2);
+    if (!channel)
+        return ;
+
+    const std::vector<Client *>& clients = channel->getClients();    
+
+    if (param.size() <= (6 + param2.size() + 1))
+        param3 = "";
+
+    if (param3 == ""){
+        std::string topic_noparam;
+        if (channel->getTopic() == ""){
+            topic_noparam = ":" + server->getName() + " 331 " + message->getSender()->getNickname() + "" + channel->getName() + " :No topic is set\r\n";
+            std::cerr << "Topic : " << topic_noparam << std::endl;
+        }    
+        else{
+            topic_noparam = ":" + server->getName() + " 332 " + message->getSender()->getNickname() + "" + channel->getName() + " :" + channel->getTopic() + "\r\n";
+            std::cerr << "Topic : " << topic_noparam << std::endl;
+        }
+        for (std::vector<Client *>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
+            if (send((*it)->getSockfd(), topic_noparam.c_str(), topic_noparam.length(), 0) == -1) {
+                std::cerr << "ERROR SEND" << std::endl;
+            }
+        }        
+        return ;
+    }
+
+    //change topic
+
+    channel->setTopic(param3);
+
+    std::string topic_msg = ":" + message->getSender()->getNickname() + " TOPIC #" + channel->getName() + " :" + param3 + "\r\n";
+
+    std::cerr << topic_msg << std::endl;
+
+    for (std::vector<Client *>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
+        if (send((*it)->getSockfd(), topic_msg.c_str(), topic_msg.length(), 0) == -1) {
+            std::cerr << "ERROR SEND" << std::endl;
+        }
+    }        
+    
+	return ;
 }
