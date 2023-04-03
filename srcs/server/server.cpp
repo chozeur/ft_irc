@@ -544,9 +544,8 @@ void	ft_irc::Server::logLoop(void) const {
 
 	stream << std::endl << std::endl;
 
-	colors::red(stream);colors::bold(stream);
-	stream << "------------------------------------------------------------" << std::endl;
 	colors::green(stream);colors::bold(stream);
+	stream << "____________________________________________________________" << std::endl;
 	stream << "----------------------SERVER LOGS---------------------------" << std::endl;
 	colors::reset(stream);
 
@@ -576,19 +575,33 @@ void	ft_irc::Server::logLoop(void) const {
 
 	stream << std::endl;
 
-	colors::cyan(stream);colors::bold(stream);
-	stream << "Channels:Clients" << std::endl;
+	colors::cyan(stream);colors::bold(stream);colors::underline(stream);
+	stream << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
+	stream << "\t\t\tChannels" << std::endl;
 	colors::reset(stream);
 	colors::bright_grey(stream);colors::bold(stream);
 	std::vector<Channel *>::const_iterator it = this->_channels.begin();
+	colors::reset(stream);
 	while (it != this->_channels.end()) {
-		stream << '#' << (*it)->getName() << ':' << (*it)->getClients().size() << std::endl;
+		colors::on_bright_grey(stream);colors::bold(stream);
+		if ((*it)->getClients().size() > 0){
+			colors::bright_white(stream);
+		}
+		else {
+			colors::white(stream);
+		}
+		stream << '#' << (*it)->getName() << ':' << (*it)->getClients().size();
+		colors::reset(stream);
+		stream << std::endl;
+		colors::bright_grey(stream);colors::bold(stream);
 		if ((*it)->getClients().size() > 0){
 			std::vector<Client *>::const_iterator it2 = (*it)->getClients().begin();
 			while (it2 != (*it)->getClients().end()) {
 				stream << '\t' << '@' << (*it2)->getNickname() << std::endl;
 				++it2;
 			}
+		} else {
+			stream << std::endl;
 		}
 		++it;
 	}
@@ -596,8 +609,9 @@ void	ft_irc::Server::logLoop(void) const {
 
 	stream << std::endl;
 
-	colors::yellow(stream);colors::bold(stream);
-	stream << std::endl << "Clients:" << std::endl;
+	colors::yellow(stream);colors::bold(stream);colors::underline(stream);
+	stream << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
+	stream << "\t\t\tClients" << std::endl;
 	colors::reset(stream);
 	colors::bright_grey(stream);colors::bold(stream);
 	std::vector<Client *>::const_iterator it2 = this->_clients.begin();
@@ -611,8 +625,7 @@ void	ft_irc::Server::logLoop(void) const {
 
 	colors::green(stream);colors::bold(stream);
 	stream << "------------------------------------------------------------" << std::endl;
-	colors::red(stream);colors::bold(stream);
-	stream << "------------------------------------------------------------" << std::endl;
+	stream << "____________________________________________________________" << std::endl;
 	colors::reset(stream);
 	std::cout << stream.str();
 	return ;
