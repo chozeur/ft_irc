@@ -15,6 +15,8 @@ void ft_irc::Server::initCommands(void) {
 	_commands.insert(std::make_pair("PRIVMSG", &Server::privmsg));
 	_commands.insert(std::make_pair("PART", &Server::part));
 
+	_commands.insert(std::make_pair("PING", &Server::pong));
+
 }
 
 // INITIALISATION CLIENT
@@ -46,7 +48,7 @@ void ft_irc::Server::cap(ft_irc::Message* message, const std::string& param) {
 	return ;
 }
 
-void ft_irc::Server::pass(ft_irc::Message* message, const std::string& param) {   
+void ft_irc::Server::pass(ft_irc::Message* message, const std::string& param) {
     message->getSender()->setIdle();
     ft_irc::Server *server = message->getServer();
     std::string param2  = param;
@@ -124,7 +126,7 @@ void ft_irc::Server::nick(ft_irc::Message* message, const std::string& param) {
     }
 
     if (!rest.empty() && rest.size() > 1)
-        user(message, rest); 
+        user(message, rest);
     else if (!client->isSet() && !client->getUserLine().empty())
         user(message, client->getUserLine());
 }
@@ -233,7 +235,7 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
     for(std::vector<std::string>::const_iterator itb = vec_channels.begin(); itb != vec_channels.end(); ++itb){
 
 
-        // Si le canal n'existe pas, on le crée et on l'ajoute à la liste des canaux du serveur    
+        // Si le canal n'existe pas, on le crée et on l'ajoute à la liste des canaux du serveur
         channel = server->getChannelPointer(*itb);
         if (!channel) {
             channel = new Channel(*itb);
@@ -341,8 +343,8 @@ void ft_irc::Server::privmsg(ft_irc::Message* message, const std::string& param)
                 }
             }
         }
-    } 
-    
+    }
+
     else {
         // Si le paramètre ne commence pas par un '#', c'est un message à envoyer à un client
         std::string nickname;
@@ -478,7 +480,7 @@ void ft_irc::Server::whois(ft_irc::Message* message, const std::string& param) {
         std::stringstream ss2;
         ss2 << client->getSignon();
         std::string whois_msg = ":" + server->getIp() + " 311 " + message->getSender()->getNickname() + " " + client->getNickname() + " ~" + client->getNickname() + "@localhost" + " * " + client->getNickname() + " " + client->getRealname() + "\r\n";
-        std::string whois_time_msg = ":" + server->getIp() + " 317 " + message->getSender()->getNickname() + " " + client->getNickname() + " " +  ss.str() + " " + ss2.str() + " :seconds idle, signon time" + "\r\n";   
+        std::string whois_time_msg = ":" + server->getIp() + " 317 " + message->getSender()->getNickname() + " " + client->getNickname() + " " +  ss.str() + " " + ss2.str() + " :seconds idle, signon time" + "\r\n";
         std::string whois_end_msg = ":" + server->getIp() + " 318 " + message->getSender()->getNickname() + " " + client->getNickname() + " :End of /WHOIS list\r\n";
         // std::cerr << whois_msg << std::endl;
         std::cerr << whois_time_msg << std::endl;
@@ -538,14 +540,14 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
         channel = message->getSender()->getChanPointer(*it);
         if (!channel)
             continue ;
-        
+
         std::string part_msg = ":" + message->getSender()->getNickname() + "!"  + message->getSender()->getNickname() + "@localhost PART #" + channel->getName() + " :" + param3 + "\r\n";
         for (std::vector<Client *>::const_iterator it = channel->getClients().begin(); it != channel->getClients().end(); ++it) {
             if (send((*it)->getSockfd(), part_msg.c_str(), part_msg.length(), 0) == -1) {
                 std::cerr << "Error SEND" << std::endl;
             }
         }
-        
+
         // Send a message to confirm the client's departure
         // std::string confirm_msg = ":" + message->getServer()->getIp() + " 301 " + message->getSender()->getNickname() + " #" + channel->getName() + " :Goodbye!\r\n";
         std::string confirm_msg = "*** You have left channel #" + channel->getName() + "\r\n";
@@ -577,7 +579,16 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
             if (send((*it)->getSockfd(), names_msg.c_str(), names_msg.length(), 0) == -1) {
                 std::cerr << "2 ERROR SEND" << std::endl;
             }
-        }        
+        }
     }
 
+}
+
+void	ft_irc::Server::pong(ft_irc::Message* message, const std::string& param) {
+	message->getSender()->setIdle();
+	ft_irc::Server *server = message->getServer();
+	std::string pong_msg = ":" + server->getIp() + " PONG " + server->getIp() + " :" + param + "\r\n";
+	if (send(message->getSender()->getSockfd(), pong_msg.c_str(), pong_msg.length(), 0) == -1) {
+		std::cerr << "Error SEND" << std::endl;
+	}
 }
