@@ -627,7 +627,7 @@ void	ft_irc::Server::info(ft_irc::Message* message, const std::string& param){
 			colors::reset(ss);
 			ss << "\r\n";
 			std::string messageToSend = ss.str();
-			server->sendToAllClients(messageToSend);
+			send(message->getSender()->getSockfd(), messageToSend.c_str(), messageToSend.length(), 0);
 		}
 	}
 
