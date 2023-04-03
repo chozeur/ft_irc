@@ -215,8 +215,6 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
     cleanLine(param2);
     removeAllOccurrences(param2, "#");
 
-    std::cerr << "param2--> " << "[" << param2 << "]" << std::endl;
-
     if (pos == std::string::npos) {
         std::string chan_res = ":" + server->getIp() + " 461 * " + message->getSender()->getNickname() + " JOIN :Channel name missing. Usage: /join #channel\r\n";
         send(message->getSender()->getSockfd(), chan_res.c_str(), chan_res.length(), 0);
@@ -401,10 +399,6 @@ void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
     size_t colon_pos = chann.find(':');
     chann = chann.substr(0, colon_pos); // equal to channel's name
 
-    std::cerr << "userToKick--> " << "[" << userToKick << "]" << std::endl;
-    std::cerr << "reasonWhy--> " << "[" << reasonWhy << "]" << std::endl;
-    std::cerr << "chann--> " << "[" << chann << "]" << std::endl;
-
     channel = message->getSender()->getChanPointer(chann);
     client = server->getClientPointerByNick(userToKick);
     if (channel && client && client->getNickname() != message->getSender()->getNickname()){
@@ -472,6 +466,7 @@ void ft_irc::Server::whois(ft_irc::Message* message, const std::string& param) {
     param2 = param2.substr(pos + 1);
     ft_irc::Client  *client = server->getClientPointerByNick(param2);
     if (client){
+        std::vector<ft_irc::Channel*> channs = client->getChannels();
         time_t now = time(0);
         time_t idle = now - client->getIdle();
         std::stringstream ss;
@@ -479,12 +474,23 @@ void ft_irc::Server::whois(ft_irc::Message* message, const std::string& param) {
         std::stringstream ss2;
         ss2 << client->getSignon();
         std::string whois_msg = ":" + server->getIp() + " 311 " + message->getSender()->getNickname() + " " + client->getNickname() + " ~" + client->getNickname() + "@localhost" + " * " + client->getNickname() + " " + client->getRealname() + "\r\n";
+        std::string whois_chan_msg = ":" + server->getIp() + " 319 " + message->getSender()->getNickname() + " " + client->getNickname() + " :";
+        std::vector<ft_irc::Channel*>::iterator it = channs.begin();
+        if (channs.size() > 0){
+            whois_chan_msg += "#" + (*it)->getName();
+            it++;
+            for ( ; it != channs.end(); ++it)
+                whois_chan_msg += " #" + (*it)->getName();
+        }
+        whois_chan_msg += "\r\n";
         std::string whois_time_msg = ":" + server->getIp() + " 317 " + message->getSender()->getNickname() + " " + client->getNickname() + " " +  ss.str() + " " + ss2.str() + " :seconds idle, signon time" + "\r\n";   
         std::string whois_end_msg = ":" + server->getIp() + " 318 " + message->getSender()->getNickname() + " " + client->getNickname() + " :End of /WHOIS list\r\n";
-        // std::cerr << whois_msg << std::endl;
-        std::cerr << whois_time_msg << std::endl;
-        // std::cerr << whois_end_msg << std::endl;
+
+        std::cerr << whois_chan_msg << std::endl;
         if (send(message->getSender()->getSockfd(), whois_msg.c_str(), whois_msg.length(), 0) == -1) {
+            std::cerr << "Error SEND" << std::endl;
+        }
+        if (send(message->getSender()->getSockfd(), whois_chan_msg.c_str(), whois_chan_msg.length(), 0) == -1) {
             std::cerr << "Error SEND" << std::endl;
         }
         if (send(message->getSender()->getSockfd(), whois_time_msg.c_str(), whois_time_msg.length(), 0) == -1) {
@@ -564,14 +570,7 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
         for (std::vector<Client *>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
             names_msg += " " + (*it)->getNickname();
         }
-
-        // On termine le message avec un espace et un retour à la ligne
         names_msg += " \r\n";
-
-        std::cerr << names_msg << std::endl;
-
-        // A tous les clients presents ds le canal
-        // ---------------------------------
 
         // On envoie le message de la liste des noms des clients présents dans le canal à tous les clients du canal
         for (std::vector<Client *>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
@@ -590,7 +589,6 @@ void ft_irc::Server::topic(ft_irc::Message* message, const std::string& param) {
     ft_irc::Server *server = message->getServer();
     ft_irc::Channel *channel;
 
-	std::cerr << "TOPIC FUNCTION CALLED WITH PARAM = " << param << std::endl;
     std::string param2 = param;
     size_t pos = param2.find(" ");
     param2 = param2.substr(pos + 1);    
@@ -603,7 +601,6 @@ void ft_irc::Server::topic(ft_irc::Message* message, const std::string& param) {
     param3 = param3.substr(pos2 + 1);
     removeAllOccurrences(param3, ":"); // param3 = topic
 
-    std::cerr << "step0--> [" << param3 << "]" << std::endl;
     channel = message->getSender()->getChanPointer(param2);
     if (!channel)
         return ;
@@ -615,18 +612,13 @@ void ft_irc::Server::topic(ft_irc::Message* message, const std::string& param) {
 
     if (param3 == ""){
         std::string topic_noparam;
-        if (channel->getTopic() == ""){
+        if (channel->getTopic() == "")
             topic_noparam = ":" + server->getName() + " 331 " + message->getSender()->getNickname() + "" + channel->getName() + " :No topic is set\r\n";
-            std::cerr << "Topic : " << topic_noparam << std::endl;
-        }    
-        else{
+        else
             topic_noparam = ":" + server->getName() + " 332 " + message->getSender()->getNickname() + "" + channel->getName() + " :" + channel->getTopic() + "\r\n";
-            std::cerr << "Topic : " << topic_noparam << std::endl;
-        }
         for (std::vector<Client *>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
-            if (send((*it)->getSockfd(), topic_noparam.c_str(), topic_noparam.length(), 0) == -1) {
+            if (send((*it)->getSockfd(), topic_noparam.c_str(), topic_noparam.length(), 0) == -1) 
                 std::cerr << "ERROR SEND" << std::endl;
-            }
         }        
         return ;
     }
