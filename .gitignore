@@ -1,5 +1,7 @@
 ircserv
 *.log
+.nfs0000000009f21c2d00000568
+ircserv.dSYM/
 # Prerequisites
 *.d
 

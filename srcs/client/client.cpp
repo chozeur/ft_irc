@@ -221,7 +221,6 @@ void 						ft_irc::Client::handleMessage(int serverSockFd, std::string text, Cli
 					colors::reset(stream);
 					stream << "\r\n";
 					std::string messageToSend = stream.str();
-					std::cout << "messageToSend = " << messageToSend;
 					send(receiver->getSockfd(), messageToSend.c_str(), messageToSend.length(), 0);
 				}
 			}

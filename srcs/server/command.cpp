@@ -16,6 +16,7 @@ void ft_irc::Server::initCommands(void) {
 	_commands.insert(std::make_pair("PART", &Server::part));
 
 	_commands.insert(std::make_pair("PING", &Server::pong));
+	// _commands.insert(std::make_pair("QUIT", &Server::quit));
 
 }
 
@@ -592,3 +593,14 @@ void	ft_irc::Server::pong(ft_irc::Message* message, const std::string& param) {
 		std::cerr << "Error SEND" << std::endl;
 	}
 }
+
+// void	ft_irc::Server::quit(ft_irc::Message* message, const std::string& param) {
+// 	message->getSender()->setIdle();
+// 	ft_irc::Server *server = message->getServer();
+// 	std::string quit_msg = ":" + message->getSender()->getNickname() + "!" + message->getSender()->getNickname() + "@localhost QUIT :" + param + "\r\n";
+// 	for (std::vector<Client *>::const_iterator it = server->getClients().begin(); it != server->getClients().end(); ++it) {
+// 		if (send((*it)->getSockfd(), quit_msg.c_str(), quit_msg.length(), 0) == -1) {
+// 			std::cerr << "Error SEND" << std::endl;
+// 		}
+// 	}
+// }

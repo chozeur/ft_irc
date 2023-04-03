@@ -217,6 +217,9 @@ void	ft_irc::Server::run(void) {
 	while (server) {
 		// std::string pong = std::string("PONG :") + this->_ip + std::string("\r\n");
 		// sendToAllClients(pong);
+
+		this->purgeChannels();
+
 		int num_ready_fds = poll(this->_fds, MAX_CLIENTS + 1, -1);
 		if (num_ready_fds == -1) {
 			std::cerr << "Error: poll failed" << std::endl;
@@ -453,7 +456,7 @@ void 	ft_irc::Server::closeClient(int i) {
 	std::vector<Client *>::iterator client_it = getClientIterator(this->_fds[i].fd);
 	if (client_it != this->_clients.end()) {
 		this->_clients.erase(client_it);
-		delete (*(client_it));
+		// delete (*(client_it));
 	}
 	close(this->_fds[i].fd);
 	this->_fds[i].fd = -1;
@@ -501,4 +504,14 @@ std::string	ft_irc::Server::info(void) const {
 	stream << "> channels: " << this->_channels.size() << std::endl;
 	stream << "> clients: " << this->_clients.size() << std::endl;
 	return (stream.str());
+}
+
+void	ft_irc::Server::purgeChannels(void) {
+	for (std::vector<Channel *>::iterator it = this->_channels.begin(); it != this->_channels.end(); ++it) {
+		if ((*it)->getClients().size() == 0 && (*it)->getName() != "general" && (*it)->getName() != "admin") {
+			std::cout << "Deleting channel " << (*it)->getName() << std::endl;
+			delete (*it);
+			this->_channels.erase(it);
+		}
+	}
 }
