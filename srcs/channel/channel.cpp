@@ -142,6 +142,17 @@ int 		ft_irc::Channel::isClientBanned(Client const &client) const
 	return 0;
 }
 
+int 		ft_irc::Channel::isClientOp(Client const &client) const
+{
+	for (std::vector<Client>::const_iterator it = _operators.begin(); it != _operators.end(); ++it)
+	{
+		if (client.getNickname() == it->getNickname())
+		{
+			return 1;
+		}
+	}
+	return 0;
+}
 
 std::ostream& ft_irc::operator<<(std::ostream& os, ft_irc::Channel* channel)
 {

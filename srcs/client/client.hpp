@@ -66,18 +66,18 @@ namespace ft_irc
 			ft_irc::Channel*			getChanPointer(std::string name);
 
 		private:
-			bool						_isSet;
-			bool						_isBot;
-			int							_sockfd;
-			std::string					_nickname;
-			std::string					_username;
-			std::string					_realname;
-			std::string					_password;
-			std::string					_host;
-			std::string					_servername;
-			std::string					_userLine;
-			time_t						_idle;
-			time_t						_signon;
+			bool							_isSet;
+			bool							_isBot;
+			int								_sockfd;
+			std::string						_nickname;
+			std::string						_username;
+			std::string						_realname;
+			std::string						_password;
+			std::string						_host;
+			std::string						_servername;
+			std::string						_userLine;
+			time_t							_idle;
+			time_t							_signon;
 			std::vector<ft_irc::Channel*>	_channels;
 	};
 

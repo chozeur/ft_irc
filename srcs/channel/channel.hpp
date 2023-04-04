@@ -42,6 +42,7 @@ namespace ft_irc {
 			void						addBannedClient(Client &client);
 			void						removeBannedClient(Client const &client);
 			int							isClientBanned(Client const &client) const;
+			int							isClientOp(Client const &client) const;
 
 		private:
 			std::string					_name;

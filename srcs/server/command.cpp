@@ -15,6 +15,7 @@ void ft_irc::Server::initCommands(void) {
 	_commands.insert(std::make_pair("PRIVMSG", &Server::privmsg));
 	_commands.insert(std::make_pair("PART", &Server::part));
 	_commands.insert(std::make_pair("TOPIC", &Server::topic));
+	_commands.insert(std::make_pair("MODE", &Server::mode));
 
 }
 
@@ -401,6 +402,10 @@ void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
 
     channel = message->getSender()->getChanPointer(chann);
     client = server->getClientPointerByNick(userToKick);
+
+    if (channel->isClientOp(*message->getSender()) == 0) /// Check if sender is operator or not
+        return ;
+
     if (channel && client && client->getNickname() != message->getSender()->getNickname()){
         std::string kick_message = ":" + message->getSender()->getNickname() + " " + "KICK" + " #" + chann + " " + userToKick + " :" + reasonWhy + "\r\n";
         channel->removeClient(*client);
@@ -637,5 +642,49 @@ void ft_irc::Server::topic(ft_irc::Message* message, const std::string& param) {
         }
     }        
     
+	return ;
+}
+
+void ft_irc::Server::mode(ft_irc::Message* message, const std::string& param) {
+
+    // :<server> MODE #channel +o alice
+    message->getSender()->setIdle();
+	std::cerr << "INVITE FUNCTION CALLED WITH PARAM = " << param << std::endl;
+    ft_irc::Server *server = message->getServer();
+    ft_irc::Channel *channel;
+    ft_irc::Client *client;
+
+    std::string param2 = param;
+    size_t pos = param2.find(" ");
+    param2 = param2.substr(pos + 1);
+    cleanLine(param2);
+    removeAllOccurrences(param2, "#");
+    param2 = param2.substr(0, param2.find(' '));
+
+    size_t pos2 = param.find(" ");
+    std::string param3 = param.substr(pos2 + 1);
+    pos2 = param3.find(" ");
+    param3 = param3.substr(pos2 + 1);
+
+    size_t pos3 = param3.find(' ');
+    std::string param4 = param3.substr(0, pos3);
+    std::string param5 = param3.substr(pos3 + 1);
+
+    channel = message->getSender()->getChanPointer(param2);
+    client = server->getClientPointerByNick(param5);
+    if (!channel || !client)
+        return ;
+
+    channel->addOperator(*client);
+
+    std::string mode_msg = ":" + server->getName() + " MODE #" + channel->getName() + " " + param4 + " " + client->getNickname() + "\r\n";
+
+    const std::vector<Client *>& vec = channel->getClients();
+    for (std::vector<Client *>::const_iterator it = vec.begin(); it != vec.end(); ++it){
+        std::cerr << "[" << mode_msg << "]" << std::endl;
+        if (send((*it)->getSockfd(), mode_msg.c_str(), mode_msg.length(), 0) == -1) 
+            std::cerr << "ERROR SEND" << std::endl;
+    }
+
 	return ;
 }
