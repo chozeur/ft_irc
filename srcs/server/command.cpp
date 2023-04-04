@@ -403,6 +403,9 @@ void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
     channel = message->getSender()->getChanPointer(chann);
     client = server->getClientPointerByNick(userToKick);
 
+    if (channel->isClient(*client) == 0) // Check if client to kick is in the chann or not
+        return ;
+
     if (channel->isClientOp(*message->getSender()) == 0) /// Check if sender is operator or not
         return ;
 
@@ -647,7 +650,7 @@ void ft_irc::Server::topic(ft_irc::Message* message, const std::string& param) {
 
 void ft_irc::Server::mode(ft_irc::Message* message, const std::string& param) {
 
-    // :<server> MODE #channel +o alice
+    // :<server> MODE #channel +o user
     message->getSender()->setIdle();
 	std::cerr << "INVITE FUNCTION CALLED WITH PARAM = " << param << std::endl;
     ft_irc::Server *server = message->getServer();
@@ -675,7 +678,10 @@ void ft_irc::Server::mode(ft_irc::Message* message, const std::string& param) {
     if (!channel || !client)
         return ;
 
-    channel->addOperator(*client);
+    if (param4 == "+o")
+        channel->addOperator(*client);
+    if (param4 == "-o")
+        channel->removeOperator(*client);
 
     std::string mode_msg = ":" + server->getName() + " MODE #" + channel->getName() + " " + param4 + " " + client->getNickname() + "\r\n";
 

@@ -154,6 +154,18 @@ int 		ft_irc::Channel::isClientOp(Client const &client) const
 	return 0;
 }
 
+int 		ft_irc::Channel::isClient(Client const &client) const
+{
+	for (std::vector<Client*>::const_iterator it = _clients.begin(); it != _clients.end(); ++it)
+	{
+		if (client.getNickname() == (*it)->getNickname())
+		{
+			return 1;
+		}
+	}
+	return 0;
+}
+
 std::ostream& ft_irc::operator<<(std::ostream& os, ft_irc::Channel* channel)
 {
 	std::ostringstream 	oss;

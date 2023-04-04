@@ -95,7 +95,6 @@ namespace ft_irc{
 			std::string										_ip;
 			long											_port;
 			std::string										_password;
-
 			struct pollfd									_fds[MAX_CLIENTS + 1];
 			struct sockaddr_in								_serv_addr;
 			int												_sockfd;

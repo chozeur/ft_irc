@@ -1,571 +1,430 @@
-==207834== Memcheck, a memory error detector
-==207834== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==207834== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==207834== Command: ./ircserv 1234 pass
-==207834== Parent PID: 177762
-==207834== 
-==207834== Invalid read of size 1
-==207834==    at 0x41FB7C: ft_irc::Client::isBot() const (client.cpp:191)
-==207834==    by 0x406056: ft_irc::Server::sendToAllClients(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) (server.cpp:332)
-==207834==    by 0x4059EA: ft_irc::Server::run() (server.cpp:207)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de93b9 is 9 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid read of size 4
-==207834==    at 0x41F73C: ft_irc::Client::getSockfd() const (client.cpp:84)
-==207834==    by 0x40606F: ft_irc::Server::sendToAllClients(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) (server.cpp:333)
-==207834==    by 0x4059EA: ft_irc::Server::run() (server.cpp:207)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de93bc is 12 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid read of size 4
-==207834==    at 0x41F73C: ft_irc::Client::getSockfd() const (client.cpp:84)
-==207834==    by 0x40529A: ft_irc::Server::getClientPointerByFd(int) (server.cpp:74)
-==207834==    by 0x405E22: ft_irc::Server::run() (server.cpp:256)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de93bc is 12 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid read of size 8
-==207834==    at 0x49C2B18: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
-==207834==    by 0x41F776: ft_irc::Client::getNickname[abi:cxx11]() const (client.cpp:88)
-==207834==    by 0x419E8F: ft_irc::Message::parsePayload() (message.cpp:101)
-==207834==    by 0x419B87: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:19)
-==207834==    by 0x405E52: ft_irc::Server::run() (server.cpp:256)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de93c8 is 24 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid read of size 8
-==207834==    at 0x49C2B1F: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
-==207834==    by 0x41F776: ft_irc::Client::getNickname[abi:cxx11]() const (client.cpp:88)
-==207834==    by 0x419E8F: ft_irc::Message::parsePayload() (message.cpp:101)
-==207834==    by 0x419B87: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:19)
-==207834==    by 0x405E52: ft_irc::Server::run() (server.cpp:256)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de93c0 is 16 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid read of size 2
-==207834==    at 0x484FF60: memcpy@GLIBC_2.2.5 (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x49C2AF3: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
-==207834==    by 0x41F776: ft_irc::Client::getNickname[abi:cxx11]() const (client.cpp:88)
-==207834==    by 0x419E8F: ft_irc::Message::parsePayload() (message.cpp:101)
-==207834==    by 0x419B87: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:19)
-==207834==    by 0x405E52: ft_irc::Server::run() (server.cpp:256)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de93d0 is 32 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid read of size 2
-==207834==    at 0x484FF6F: memcpy@GLIBC_2.2.5 (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x49C2AF3: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
-==207834==    by 0x41F776: ft_irc::Client::getNickname[abi:cxx11]() const (client.cpp:88)
-==207834==    by 0x419E8F: ft_irc::Message::parsePayload() (message.cpp:101)
-==207834==    by 0x419B87: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:19)
-==207834==    by 0x405E52: ft_irc::Server::run() (server.cpp:256)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de93d4 is 36 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid read of size 1
-==207834==    at 0x484FF90: memcpy@GLIBC_2.2.5 (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x49C2AF3: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
-==207834==    by 0x41F776: ft_irc::Client::getNickname[abi:cxx11]() const (client.cpp:88)
-==207834==    by 0x419E8F: ft_irc::Message::parsePayload() (message.cpp:101)
-==207834==    by 0x419B87: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:19)
-==207834==    by 0x405E52: ft_irc::Server::run() (server.cpp:256)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de93d6 is 38 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid read of size 4
-==207834==    at 0x41F73C: ft_irc::Client::getSockfd() const (client.cpp:84)
-==207834==    by 0x40529A: ft_irc::Server::getClientPointerByFd(int) (server.cpp:74)
-==207834==    by 0x406146: ft_irc::Server::closeClient(int) (server.cpp:314)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de93bc is 12 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid read of size 8
-==207834==    at 0x49C2B18: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
-==207834==    by 0x41F776: ft_irc::Client::getNickname[abi:cxx11]() const (client.cpp:88)
-==207834==    by 0x406156: ft_irc::Server::closeClient(int) (server.cpp:314)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de93c8 is 24 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid read of size 8
-==207834==    at 0x49C2B1F: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
-==207834==    by 0x41F776: ft_irc::Client::getNickname[abi:cxx11]() const (client.cpp:88)
-==207834==    by 0x406156: ft_irc::Server::closeClient(int) (server.cpp:314)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de93c0 is 16 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid read of size 2
-==207834==    at 0x484FF60: memcpy@GLIBC_2.2.5 (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x49C2AF3: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
-==207834==    by 0x41F776: ft_irc::Client::getNickname[abi:cxx11]() const (client.cpp:88)
-==207834==    by 0x406156: ft_irc::Server::closeClient(int) (server.cpp:314)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de93d0 is 32 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid read of size 2
-==207834==    at 0x484FF6F: memcpy@GLIBC_2.2.5 (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x49C2AF3: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
-==207834==    by 0x41F776: ft_irc::Client::getNickname[abi:cxx11]() const (client.cpp:88)
-==207834==    by 0x406156: ft_irc::Server::closeClient(int) (server.cpp:314)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de93d4 is 36 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid read of size 1
-==207834==    at 0x484FF90: memcpy@GLIBC_2.2.5 (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x49C2AF3: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
-==207834==    by 0x41F776: ft_irc::Client::getNickname[abi:cxx11]() const (client.cpp:88)
-==207834==    by 0x406156: ft_irc::Server::closeClient(int) (server.cpp:314)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de93d6 is 38 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid read of size 4
-==207834==    at 0x41F73C: ft_irc::Client::getSockfd() const (client.cpp:84)
-==207834==    by 0x40549A: ft_irc::Server::getClientIterator(int) (server.cpp:92)
-==207834==    by 0x4061BC: ft_irc::Server::closeClient(int) (server.cpp:315)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de93bc is 12 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid read of size 8
-==207834==    at 0x406233: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de93b0 is 0 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid write of size 8
-==207834==    at 0x41F484: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x41F6C8: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de93b0 is 0 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid read of size 8
-==207834==    at 0x407BC4: std::vector<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::~vector() (stl_vector.h:730)
-==207834==    by 0x41F4C8: ft_irc::Client::~Client() (client.cpp:56)
-==207834==    by 0x41F6C8: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de94b0 is 256 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid read of size 8
-==207834==    at 0x407BCB: std::vector<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::~vector() (stl_vector.h:730)
-==207834==    by 0x41F4C8: ft_irc::Client::~Client() (client.cpp:56)
-==207834==    by 0x41F6C8: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de94b8 is 264 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid read of size 8
-==207834==    at 0x408D44: std::_Vector_base<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::~_Vector_base() (stl_vector.h:366)
-==207834==    by 0x407C02: std::vector<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::~vector() (stl_vector.h:733)
-==207834==    by 0x41F4C8: ft_irc::Client::~Client() (client.cpp:56)
-==207834==    by 0x41F6C8: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de94b0 is 256 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid read of size 8
-==207834==    at 0x408D47: std::_Vector_base<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::~_Vector_base() (stl_vector.h:367)
-==207834==    by 0x407C02: std::vector<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::~vector() (stl_vector.h:733)
-==207834==    by 0x41F4C8: ft_irc::Client::~Client() (client.cpp:56)
-==207834==    by 0x41F6C8: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de94c0 is 272 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid free() / delete / delete[] / realloc()
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x408E7C: std::__new_allocator<ft_irc::Channel*>::deallocate(ft_irc::Channel**, unsigned long) (new_allocator.h:158)
-==207834==    by 0x408E54: __gnu_cxx::__alloc_traits<std::allocator<ft_irc::Channel*>, ft_irc::Channel*>::deallocate(std::allocator<ft_irc::Channel*>&, ft_irc::Channel**, unsigned long) (alloc_traits.h:141)
-==207834==    by 0x408E07: std::_Vector_base<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::_M_deallocate(ft_irc::Channel**, unsigned long) (stl_vector.h:387)
-==207834==    by 0x408D56: std::_Vector_base<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::~_Vector_base() (stl_vector.h:366)
-==207834==    by 0x407C02: std::vector<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::~vector() (stl_vector.h:733)
-==207834==    by 0x41F4C8: ft_irc::Client::~Client() (client.cpp:56)
-==207834==    by 0x41F6C8: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4dee100 is 0 bytes inside a block of size 8 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x408E7C: std::__new_allocator<ft_irc::Channel*>::deallocate(ft_irc::Channel**, unsigned long) (new_allocator.h:158)
-==207834==    by 0x408E54: __gnu_cxx::__alloc_traits<std::allocator<ft_irc::Channel*>, ft_irc::Channel*>::deallocate(std::allocator<ft_irc::Channel*>&, ft_irc::Channel**, unsigned long) (alloc_traits.h:141)
-==207834==    by 0x408E07: std::_Vector_base<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::_M_deallocate(ft_irc::Channel**, unsigned long) (stl_vector.h:387)
-==207834==    by 0x408D56: std::_Vector_base<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::~_Vector_base() (stl_vector.h:366)
-==207834==    by 0x407C02: std::vector<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::~vector() (stl_vector.h:733)
-==207834==    by 0x41F4C8: ft_irc::Client::~Client() (client.cpp:56)
-==207834==    by 0x41F6C8: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x409F3F: std::__new_allocator<ft_irc::Channel*>::allocate(unsigned long, void const*) (new_allocator.h:137)
-==207834==    by 0x409ED0: __gnu_cxx::__alloc_traits<std::allocator<ft_irc::Channel*>, ft_irc::Channel*>::allocate(std::allocator<ft_irc::Channel*>&, unsigned long) (alloc_traits.h:133)
-==207834==    by 0x409D1F: std::_Vector_base<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::_M_allocate(unsigned long) (stl_vector.h:378)
-==207834==    by 0x40994B: std::vector<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::_M_realloc_insert(__gnu_cxx::__normal_iterator<ft_irc::Channel**, std::vector<ft_irc::Channel*, std::allocator<ft_irc::Channel*> > >, ft_irc::Channel* const&) (vector.tcc:453)
-==207834==    by 0x40808C: std::vector<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::push_back(ft_irc::Channel* const&) (stl_vector.h:1287)
-==207834==    by 0x420193: ft_irc::Client::addChannel(ft_irc::Channel*) (client.cpp:221)
-==207834==    by 0x40E10F: ft_irc::Server::join(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (command.cpp:246)
-==207834==    by 0x41A18D: ft_irc::Message::parsePayload() (message.cpp:109)
-==207834==    by 0x419B87: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:19)
-==207834==    by 0x405E52: ft_irc::Server::run() (server.cpp:256)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid read of size 8
-==207834==    at 0x49C01F4: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
-==207834==    by 0x41F4FF: ft_irc::Client::~Client() (client.cpp:56)
-==207834==    by 0x41F6C8: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de9480 is 208 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid read of size 8
-==207834==    at 0x49C01F4: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
-==207834==    by 0x41F52A: ft_irc::Client::~Client() (client.cpp:56)
-==207834==    by 0x41F6C8: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de9460 is 176 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid read of size 8
-==207834==    at 0x49C01F4: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
-==207834==    by 0x41F56A: ft_irc::Client::~Client() (client.cpp:56)
-==207834==    by 0x41F6C8: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de9440 is 144 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid read of size 8
-==207834==    at 0x49C01F4: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
-==207834==    by 0x41F5A7: ft_irc::Client::~Client() (client.cpp:56)
-==207834==    by 0x41F6C8: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de9420 is 112 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid read of size 8
-==207834==    at 0x49C01F4: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
-==207834==    by 0x41F5E4: ft_irc::Client::~Client() (client.cpp:56)
-==207834==    by 0x41F6C8: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de9400 is 80 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid read of size 8
-==207834==    at 0x49C01F4: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
-==207834==    by 0x41F61E: ft_irc::Client::~Client() (client.cpp:56)
-==207834==    by 0x41F6C8: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de93e0 is 48 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid read of size 8
-==207834==    at 0x49C01F4: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
-==207834==    by 0x41F658: ft_irc::Client::~Client() (client.cpp:56)
-==207834==    by 0x41F6C8: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de93c0 is 16 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== Invalid free() / delete / delete[] / realloc()
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Address 0x4de93b0 is 0 bytes inside a block of size 280 free'd
-==207834==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x41F6D6: ft_irc::Client::~Client() (client.cpp:53)
-==207834==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
-==207834==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834==  Block was alloc'd at
-==207834==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==207834==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
-==207834==    by 0x403BB5: main (main.cpp:28)
-==207834== 
-==207834== 
-==207834== HEAP SUMMARY:
-==207834==     in use at exit: 288 bytes in 2 blocks
-==207834==   total heap usage: 409 allocs, 409 frees, 108,761 bytes allocated
-==207834== 
-==207834== LEAK SUMMARY:
-==207834==    definitely lost: 280 bytes in 1 blocks
-==207834==    indirectly lost: 8 bytes in 1 blocks
-==207834==      possibly lost: 0 bytes in 0 blocks
-==207834==    still reachable: 0 bytes in 0 blocks
-==207834==         suppressed: 0 bytes in 0 blocks
-==207834== Rerun with --leak-check=full to see details of leaked memory
-==207834== 
-==207834== For lists of detected and suppressed errors, rerun with: -s
-==207834== ERROR SUMMARY: 34 errors from 30 contexts (suppressed: 0 from 0)
+==211872== Memcheck, a memory error detector
+==211872== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==211872== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==211872== Command: ./ircserv 1234 pass
+==211872== Parent PID: 177762
+==211872== 
+==211872== Invalid read of size 4
+==211872==    at 0x41F92C: ft_irc::Client::getSockfd() const (client.cpp:84)
+==211872==    by 0x40529A: ft_irc::Server::getClientPointerByFd(int) (server.cpp:74)
+==211872==    by 0x406146: ft_irc::Server::closeClient(int) (server.cpp:314)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Address 0x4de954c is 12 bytes inside a block of size 280 free'd
+==211872==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x41F8C6: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Block was alloc'd at
+==211872==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872== 
+==211872== Invalid read of size 8
+==211872==    at 0x49C2B18: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==211872==    by 0x41F966: ft_irc::Client::getNickname[abi:cxx11]() const (client.cpp:88)
+==211872==    by 0x406156: ft_irc::Server::closeClient(int) (server.cpp:314)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Address 0x4de9558 is 24 bytes inside a block of size 280 free'd
+==211872==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x41F8C6: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Block was alloc'd at
+==211872==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872== 
+==211872== Invalid read of size 8
+==211872==    at 0x49C2B1F: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==211872==    by 0x41F966: ft_irc::Client::getNickname[abi:cxx11]() const (client.cpp:88)
+==211872==    by 0x406156: ft_irc::Server::closeClient(int) (server.cpp:314)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Address 0x4de9550 is 16 bytes inside a block of size 280 free'd
+==211872==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x41F8C6: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Block was alloc'd at
+==211872==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872== 
+==211872== Invalid read of size 2
+==211872==    at 0x484FF60: memcpy@GLIBC_2.2.5 (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x49C2AF3: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==211872==    by 0x41F966: ft_irc::Client::getNickname[abi:cxx11]() const (client.cpp:88)
+==211872==    by 0x406156: ft_irc::Server::closeClient(int) (server.cpp:314)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Address 0x4de9560 is 32 bytes inside a block of size 280 free'd
+==211872==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x41F8C6: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Block was alloc'd at
+==211872==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872== 
+==211872== Invalid read of size 2
+==211872==    at 0x484FF6F: memcpy@GLIBC_2.2.5 (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x49C2AF3: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==211872==    by 0x41F966: ft_irc::Client::getNickname[abi:cxx11]() const (client.cpp:88)
+==211872==    by 0x406156: ft_irc::Server::closeClient(int) (server.cpp:314)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Address 0x4de9564 is 36 bytes inside a block of size 280 free'd
+==211872==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x41F8C6: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Block was alloc'd at
+==211872==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872== 
+==211872== Invalid read of size 1
+==211872==    at 0x484FF90: memcpy@GLIBC_2.2.5 (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x49C2AF3: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==211872==    by 0x41F966: ft_irc::Client::getNickname[abi:cxx11]() const (client.cpp:88)
+==211872==    by 0x406156: ft_irc::Server::closeClient(int) (server.cpp:314)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Address 0x4de9566 is 38 bytes inside a block of size 280 free'd
+==211872==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x41F8C6: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Block was alloc'd at
+==211872==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872== 
+==211872== Invalid read of size 4
+==211872==    at 0x41F92C: ft_irc::Client::getSockfd() const (client.cpp:84)
+==211872==    by 0x40549A: ft_irc::Server::getClientIterator(int) (server.cpp:92)
+==211872==    by 0x4061BC: ft_irc::Server::closeClient(int) (server.cpp:315)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Address 0x4de954c is 12 bytes inside a block of size 280 free'd
+==211872==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x41F8C6: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Block was alloc'd at
+==211872==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872== 
+==211872== Invalid read of size 8
+==211872==    at 0x406233: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Address 0x4de9540 is 0 bytes inside a block of size 280 free'd
+==211872==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x41F8C6: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Block was alloc'd at
+==211872==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872== 
+==211872== Invalid write of size 8
+==211872==    at 0x41F674: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x41F8B8: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Address 0x4de9540 is 0 bytes inside a block of size 280 free'd
+==211872==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x41F8C6: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Block was alloc'd at
+==211872==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872== 
+==211872== Invalid read of size 8
+==211872==    at 0x407BC4: std::vector<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::~vector() (stl_vector.h:730)
+==211872==    by 0x41F6B8: ft_irc::Client::~Client() (client.cpp:56)
+==211872==    by 0x41F8B8: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Address 0x4de9640 is 256 bytes inside a block of size 280 free'd
+==211872==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x41F8C6: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Block was alloc'd at
+==211872==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872== 
+==211872== Invalid read of size 8
+==211872==    at 0x407BCB: std::vector<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::~vector() (stl_vector.h:730)
+==211872==    by 0x41F6B8: ft_irc::Client::~Client() (client.cpp:56)
+==211872==    by 0x41F8B8: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Address 0x4de9648 is 264 bytes inside a block of size 280 free'd
+==211872==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x41F8C6: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Block was alloc'd at
+==211872==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872== 
+==211872== Invalid read of size 8
+==211872==    at 0x408D44: std::_Vector_base<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::~_Vector_base() (stl_vector.h:366)
+==211872==    by 0x407C02: std::vector<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::~vector() (stl_vector.h:733)
+==211872==    by 0x41F6B8: ft_irc::Client::~Client() (client.cpp:56)
+==211872==    by 0x41F8B8: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Address 0x4de9640 is 256 bytes inside a block of size 280 free'd
+==211872==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x41F8C6: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Block was alloc'd at
+==211872==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872== 
+==211872== Invalid read of size 8
+==211872==    at 0x408D47: std::_Vector_base<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::~_Vector_base() (stl_vector.h:367)
+==211872==    by 0x407C02: std::vector<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::~vector() (stl_vector.h:733)
+==211872==    by 0x41F6B8: ft_irc::Client::~Client() (client.cpp:56)
+==211872==    by 0x41F8B8: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Address 0x4de9650 is 272 bytes inside a block of size 280 free'd
+==211872==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x41F8C6: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Block was alloc'd at
+==211872==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872== 
+==211872== Invalid free() / delete / delete[] / realloc()
+==211872==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x408E7C: std::__new_allocator<ft_irc::Channel*>::deallocate(ft_irc::Channel**, unsigned long) (new_allocator.h:158)
+==211872==    by 0x408E54: __gnu_cxx::__alloc_traits<std::allocator<ft_irc::Channel*>, ft_irc::Channel*>::deallocate(std::allocator<ft_irc::Channel*>&, ft_irc::Channel**, unsigned long) (alloc_traits.h:141)
+==211872==    by 0x408E07: std::_Vector_base<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::_M_deallocate(ft_irc::Channel**, unsigned long) (stl_vector.h:387)
+==211872==    by 0x408D56: std::_Vector_base<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::~_Vector_base() (stl_vector.h:366)
+==211872==    by 0x407C02: std::vector<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::~vector() (stl_vector.h:733)
+==211872==    by 0x41F6B8: ft_irc::Client::~Client() (client.cpp:56)
+==211872==    by 0x41F8B8: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Address 0x4dfb870 is 0 bytes inside a block of size 32 free'd
+==211872==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x408E7C: std::__new_allocator<ft_irc::Channel*>::deallocate(ft_irc::Channel**, unsigned long) (new_allocator.h:158)
+==211872==    by 0x408E54: __gnu_cxx::__alloc_traits<std::allocator<ft_irc::Channel*>, ft_irc::Channel*>::deallocate(std::allocator<ft_irc::Channel*>&, ft_irc::Channel**, unsigned long) (alloc_traits.h:141)
+==211872==    by 0x408E07: std::_Vector_base<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::_M_deallocate(ft_irc::Channel**, unsigned long) (stl_vector.h:387)
+==211872==    by 0x408D56: std::_Vector_base<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::~_Vector_base() (stl_vector.h:366)
+==211872==    by 0x407C02: std::vector<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::~vector() (stl_vector.h:733)
+==211872==    by 0x41F6B8: ft_irc::Client::~Client() (client.cpp:56)
+==211872==    by 0x41F8B8: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Block was alloc'd at
+==211872==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x409F3F: std::__new_allocator<ft_irc::Channel*>::allocate(unsigned long, void const*) (new_allocator.h:137)
+==211872==    by 0x409ED0: __gnu_cxx::__alloc_traits<std::allocator<ft_irc::Channel*>, ft_irc::Channel*>::allocate(std::allocator<ft_irc::Channel*>&, unsigned long) (alloc_traits.h:133)
+==211872==    by 0x409D1F: std::_Vector_base<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::_M_allocate(unsigned long) (stl_vector.h:378)
+==211872==    by 0x40994B: std::vector<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::_M_realloc_insert(__gnu_cxx::__normal_iterator<ft_irc::Channel**, std::vector<ft_irc::Channel*, std::allocator<ft_irc::Channel*> > >, ft_irc::Channel* const&) (vector.tcc:453)
+==211872==    by 0x40808C: std::vector<ft_irc::Channel*, std::allocator<ft_irc::Channel*> >::push_back(ft_irc::Channel* const&) (stl_vector.h:1287)
+==211872==    by 0x420383: ft_irc::Client::addChannel(ft_irc::Channel*) (client.cpp:221)
+==211872==    by 0x40E10F: ft_irc::Server::join(ft_irc::Message*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (command.cpp:246)
+==211872==    by 0x41A21D: ft_irc::Message::parsePayload() (message.cpp:109)
+==211872==    by 0x419C17: ft_irc::Message::Message(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, ft_irc::Client*, ft_irc::Server*) (message.cpp:19)
+==211872==    by 0x405E52: ft_irc::Server::run() (server.cpp:256)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872== 
+==211872== Invalid read of size 8
+==211872==    at 0x49C01F4: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==211872==    by 0x41F6EF: ft_irc::Client::~Client() (client.cpp:56)
+==211872==    by 0x41F8B8: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Address 0x4de9610 is 208 bytes inside a block of size 280 free'd
+==211872==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x41F8C6: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Block was alloc'd at
+==211872==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872== 
+==211872== Invalid read of size 8
+==211872==    at 0x49C01F4: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==211872==    by 0x41F71A: ft_irc::Client::~Client() (client.cpp:56)
+==211872==    by 0x41F8B8: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Address 0x4de95f0 is 176 bytes inside a block of size 280 free'd
+==211872==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x41F8C6: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Block was alloc'd at
+==211872==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872== 
+==211872== Invalid read of size 8
+==211872==    at 0x49C01F4: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==211872==    by 0x41F75A: ft_irc::Client::~Client() (client.cpp:56)
+==211872==    by 0x41F8B8: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Address 0x4de95d0 is 144 bytes inside a block of size 280 free'd
+==211872==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x41F8C6: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Block was alloc'd at
+==211872==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872== 
+==211872== Invalid read of size 8
+==211872==    at 0x49C01F4: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==211872==    by 0x41F797: ft_irc::Client::~Client() (client.cpp:56)
+==211872==    by 0x41F8B8: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Address 0x4de95b0 is 112 bytes inside a block of size 280 free'd
+==211872==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x41F8C6: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Block was alloc'd at
+==211872==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872== 
+==211872== Invalid read of size 8
+==211872==    at 0x49C01F4: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==211872==    by 0x41F7D4: ft_irc::Client::~Client() (client.cpp:56)
+==211872==    by 0x41F8B8: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Address 0x4de9590 is 80 bytes inside a block of size 280 free'd
+==211872==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x41F8C6: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Block was alloc'd at
+==211872==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872== 
+==211872== Invalid read of size 8
+==211872==    at 0x49C01F4: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==211872==    by 0x41F80E: ft_irc::Client::~Client() (client.cpp:56)
+==211872==    by 0x41F8B8: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Address 0x4de9570 is 48 bytes inside a block of size 280 free'd
+==211872==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x41F8C6: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Block was alloc'd at
+==211872==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872== 
+==211872== Invalid read of size 8
+==211872==    at 0x49C01F4: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==211872==    by 0x41F848: ft_irc::Client::~Client() (client.cpp:56)
+==211872==    by 0x41F8B8: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Address 0x4de9550 is 16 bytes inside a block of size 280 free'd
+==211872==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x41F8C6: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Block was alloc'd at
+==211872==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872== 
+==211872== Invalid free() / delete / delete[] / realloc()
+==211872==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x41F8C6: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Address 0x4de9540 is 0 bytes inside a block of size 280 free'd
+==211872==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x41F8C6: ft_irc::Client::~Client() (client.cpp:53)
+==211872==    by 0x406238: ft_irc::Server::closeClient(int) (server.cpp:318)
+==211872==    by 0x405D6B: ft_irc::Server::run() (server.cpp:252)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872==  Block was alloc'd at
+==211872==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==211872==    by 0x405B6F: ft_irc::Server::run() (server.cpp:230)
+==211872==    by 0x403BB5: main (main.cpp:28)
+==211872== 
+==211872== 
+==211872== HEAP SUMMARY:
+==211872==     in use at exit: 312 bytes in 2 blocks
+==211872==   total heap usage: 1,417 allocs, 1,417 frees, 149,090 bytes allocated
+==211872== 
+==211872== LEAK SUMMARY:
+==211872==    definitely lost: 280 bytes in 1 blocks
+==211872==    indirectly lost: 32 bytes in 1 blocks
+==211872==      possibly lost: 0 bytes in 0 blocks
+==211872==    still reachable: 0 bytes in 0 blocks
+==211872==         suppressed: 0 bytes in 0 blocks
+==211872== Rerun with --leak-check=full to see details of leaked memory
+==211872== 
+==211872== For lists of detected and suppressed errors, rerun with: -s
+==211872== ERROR SUMMARY: 23 errors from 22 contexts (suppressed: 0 from 0)
