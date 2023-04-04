@@ -511,6 +511,7 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
 
     // case 1 (out chann) /part <chan> <reasonWhy>
     // case 2 (in chann) /part <reasonWhy>
+	std::cerr << "PART FUNCTION CALLED WITH PARAM = " << param << std::endl;
     message->getSender()->setIdle();
     ft_irc::Server *server = message->getServer();
     ft_irc::Channel *channel;
@@ -602,11 +603,14 @@ void	ft_irc::Server::quit(ft_irc::Message* message, const std::string& param) {
 	message->getSender()->setIdle();
 	ft_irc::Server *server = message->getServer();
 	for (std::vector<ft_irc::Channel *>::iterator it = message->getSender()->getChannels().begin(); it != message->getSender()->getChannels().end(); ++it) {
-		std::string part_msg = ":" + message->getSender()->getNickname() + "!"  + message->getSender()->getNickname() + "@localhost PART #" + (*it)->getName() + " :" + param + "\r\n";
-		server->sendToAllClients(part_msg);
+		std::cout << "Channel pointer: " << *it << std::endl;
+		std::cout << *it << std::endl;
+		std::cout << "Channel name: [" << (*it)->getName() << ']' << std::endl;
+		ft_irc::Server::part(message, (*it)->getName());
 	}
 	std::string quit_msg = ":" + message->getSender()->getNickname() + "!" + message->getSender()->getNickname() + "@localhost QUIT :" + param + "\r\n";
 	server->sendToAllClients(quit_msg);
+	server->closeClient(message->getSender()->getSockfd());
 }
 
 
