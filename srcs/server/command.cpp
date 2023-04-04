@@ -195,13 +195,6 @@ void ft_irc::Server::user(ft_irc::Message* message, const std::string& param) {
 }
 
 // METHODS
-
-void ft_irc::Server::invite(ft_irc::Message* message, const std::string& param) {
-    message->getSender()->setIdle();
-	std::cerr << "INVITE FUNCTION CALLED WITH PARAM = " << param << std::endl;
-	return ;
-}
-
 void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
     // On récupère le serveur, le canal et la liste des canaux du serveur
     message->getSender()->setIdle();
@@ -692,5 +685,11 @@ void ft_irc::Server::mode(ft_irc::Message* message, const std::string& param) {
             std::cerr << "ERROR SEND" << std::endl;
     }
 
+	return ;
+}
+
+void ft_irc::Server::invite(ft_irc::Message* message, const std::string& param) {
+    message->getSender()->setIdle();
+	std::cerr << "INVITE FUNCTION CALLED WITH PARAM = " << param << std::endl;
 	return ;
 }
