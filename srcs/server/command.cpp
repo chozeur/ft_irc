@@ -680,7 +680,7 @@ void ft_irc::Server::mode(ft_irc::Message* message, const std::string& param) {
 
     const std::vector<Client *>& vec = channel->getClients();
     for (std::vector<Client *>::const_iterator it = vec.begin(); it != vec.end(); ++it){
-        std::cerr << "[" << mode_msg << "]" << std::endl;
+        std::cerr << "[" << mode_msg << "]" << std::endl;               //////////////////////////////
         if (send((*it)->getSockfd(), mode_msg.c_str(), mode_msg.length(), 0) == -1) 
             std::cerr << "ERROR SEND" << std::endl;
     }
@@ -691,5 +691,8 @@ void ft_irc::Server::mode(ft_irc::Message* message, const std::string& param) {
 void ft_irc::Server::invite(ft_irc::Message* message, const std::string& param) {
     message->getSender()->setIdle();
 	std::cerr << "INVITE FUNCTION CALLED WITH PARAM = " << param << std::endl;
+    // /invite user #chan
+    // :<server-name> INVITE <nickname> <#channel>
+
 	return ;
 }
