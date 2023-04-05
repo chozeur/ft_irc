@@ -604,8 +604,15 @@ void	ft_irc::Server::pong(ft_irc::Message* message, const std::string& param) {
 void	ft_irc::Server::quit(ft_irc::Message* message, const std::string& param) {
 	message->getSender()->setIdle();
 	ft_irc::Server *server = message->getServer();
+	for (std::vector<ft_irc::Channel *>::iterator it = message->getSender()->getChannels().begin(); it != message->getSender()->getChannels().end(); ++it) {
+		std::cout << "Channel pointer: " << *it << std::endl;
+		std::cout << *it << std::endl;
+		std::cout << "Channel name: [" << (*it)->getName() << ']' << std::endl;
+		ft_irc::Server::part(message, (*it)->getName());
+	}
 	std::string quit_msg = ":" + message->getSender()->getNickname() + "!" + message->getSender()->getNickname() + "@localhost QUIT :" + param + "\r\n";
 	server->sendToAllClients(quit_msg);
+	server->closeClient(message->getSender()->getSockfd());
 }
 
 
