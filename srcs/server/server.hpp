@@ -8,7 +8,6 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <sstream>
-// #include <chrono>
 #include <unistd.h>
 #include <poll.h>
 #include <vector>
@@ -50,7 +49,7 @@ namespace ft_irc{
 			struct sockaddr_in								getServAddr(void)const;
 			int												getSockfd(void)const;
 			char											**getEnv(void)const;
-			std::vector<Client *>							*getClients(void);
+			std::vector<Client *>							getClients(void);
 			Client											*getClientPointerByFd(int fd);
 			Client											*getClientPointerByNick(std::string nick);
 			std::vector<Client *>::iterator					getClientIterator(int fd);
@@ -103,6 +102,8 @@ namespace ft_irc{
 			static void										pong(ft_irc::Message* message, const std::string& param);
 			static void										quit(ft_irc::Message* message, const std::string& param);
 			static void										info(ft_irc::Message* message, const std::string& param);
+			static void										topic(ft_irc::Message* message, const std::string& param);
+			static void										mode(ft_irc::Message* message, const std::string& param);
 
 		private:
 			std::string 									_name;

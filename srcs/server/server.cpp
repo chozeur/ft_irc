@@ -75,8 +75,8 @@ char**									ft_irc::Server::getEnv(void)const{
 	return (this->_env);
 }
 
-std::vector<ft_irc::Client *>*			ft_irc::Server::getClients() {
-	return (&_clients);
+std::vector<ft_irc::Client *>			ft_irc::Server::getClients() {
+	return (_clients);
 }
 
 ft_irc::Client* 						ft_irc::Server::getClientPointerByFd(int fd) {
@@ -218,7 +218,7 @@ void	ft_irc::Server::run(void) {
 		// std::string pong = std::string("PONG :") + this->_ip + std::string("\r\n");
 		// sendToAllClients(pong);
 
-		// system("clear");
+		system("clear");
 
 		this->purgeChannels();
 		this->purgeClients();
@@ -456,7 +456,10 @@ bool	ft_irc::Server::parsingPassword(std::string password)const{
 }
 
 void 	ft_irc::Server::closeClient(int i) {
-	std::cerr << "\033[1m" << _name << "\033[0m => [" << getClientPointerByFd(_fds[i].fd)->getNickname() << "] CONNECTION CLOSED" << std::endl;
+	Client *client = getClientPointerByFd(_fds[i].fd);
+	if (!client)
+		return ;
+	std::cerr << "\033[1m" << _name << "\033[0m => [" << client->getNickname() << "] CONNECTION CLOSED" << std::endl;
 	std::vector<Client *>::iterator client_it = getClientIterator(this->_fds[i].fd);
 	if (client_it != this->_clients.end()) {
 		this->_clients.erase(client_it);
@@ -496,20 +499,6 @@ std::string	ft_irc::Server::HRuptime() const {
 	stream << minutes << " minutes, " << seconds << " seconds";
 	return (stream.str());
 }
-
-// std::string	ft_irc::Server::info(void) const {
-// 	std::stringstream stream;
-// 	stream << "> name: " << this->_name << std::endl;
-// 	stream << "> IP: " << this->_ip << std::endl;
-// 	stream << "> port: " << this->_port << std::endl;
-// 	stream << "> password: " << "**********" << std::endl;
-// 	stream << "> max clients: " << MAX_CLIENTS << std::endl;
-// 	stream << "> uptime: " << this->HRuptime() << std::endl;
-// 	stream << "> channels: " << this->_channels.size() << std::endl;
-// 	stream << "> clients: " << this->_clients.size() << std::endl;
-// 	return (stream.str());
-// }
-
 
 void	ft_irc::Server::purgeChannels(void) {
 	for (std::vector<Channel *>::iterator it = this->_channels.begin(); it != this->_channels.end(); ++it) {

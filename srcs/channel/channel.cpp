@@ -2,14 +2,14 @@
 
 /* CONSTRUCTEURS */
 
-ft_irc::Channel::Channel(void) {}
+ft_irc::Channel::Channel(void): _topic("") {}
 
 ft_irc::Channel::Channel(Channel const &rhs)
 {
 	*this = rhs;
 }
 
-ft_irc::Channel::Channel(std::string name) : _name(name) {}
+ft_irc::Channel::Channel(std::string name) : _name(name), _topic("") {}
 
 /* DESTRUCTEUR */
 
@@ -24,6 +24,7 @@ ft_irc::Channel &ft_irc::Channel::operator=(Channel const &rhs)
 	if (this != &rhs)
 	{
 		this->_name = rhs._name;
+		this->_topic = rhs._topic;
 		this->_clients = rhs._clients;
 		this->_operators = rhs._operators;
 		this->_banned_clients = rhs._banned_clients;
@@ -36,6 +37,11 @@ ft_irc::Channel &ft_irc::Channel::operator=(Channel const &rhs)
 std::string 							ft_irc::Channel::getName(void) const
 {
 	return (this->_name);
+}
+
+std::string 							ft_irc::Channel::getTopic(void) const
+{
+	return (this->_topic);
 }
 
 std::vector<ft_irc::Client *> const &	ft_irc::Channel::getClients() const {
@@ -59,6 +65,11 @@ std::vector<ft_irc::Client> const &		ft_irc::Channel::getBannedClients(void) con
 void 		ft_irc::Channel::setName(std::string const &name)
 {
 	this->_name = name;
+}
+
+void 		ft_irc::Channel::setTopic(std::string const &topic)
+{
+	this->_topic = topic;
 }
 
 void 		ft_irc::Channel::setClients(std::vector<ft_irc::Client *> const &clients)
@@ -132,6 +143,29 @@ int 		ft_irc::Channel::isClientBanned(Client const &client) const
 	return 0;
 }
 
+int 		ft_irc::Channel::isClientOp(Client const &client) const
+{
+	for (std::vector<Client>::const_iterator it = _operators.begin(); it != _operators.end(); ++it)
+	{
+		if (client.getNickname() == it->getNickname())
+		{
+			return 1;
+		}
+	}
+	return 0;
+}
+
+int 		ft_irc::Channel::isClient(Client const &client) const
+{
+	for (std::vector<Client*>::const_iterator it = _clients.begin(); it != _clients.end(); ++it)
+	{
+		if (client.getNickname() == (*it)->getNickname())
+		{
+			return 1;
+		}
+	}
+	return 0;
+}
 
 std::ostream& ft_irc::operator<<(std::ostream& os, ft_irc::Channel* channel)
 {
