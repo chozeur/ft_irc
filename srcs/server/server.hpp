@@ -49,7 +49,7 @@ namespace ft_irc{
 			struct sockaddr_in								getServAddr(void)const;
 			int												getSockfd(void)const;
 			char											**getEnv(void)const;
-			std::vector<Client *>							*getClients(void);
+			std::vector<Client *>							getClients(void);
 			Client											*getClientPointerByFd(int fd);
 			Client											*getClientPointerByNick(std::string nick);
 			std::vector<Client *>::iterator					getClientIterator(int fd);

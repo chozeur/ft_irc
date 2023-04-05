@@ -176,10 +176,10 @@ void ft_irc::Server::user(ft_irc::Message* message, const std::string& param) {
         }
 
         // Retirer le client de la liste des clients et supprimer son objet de la mémoire
-        std::vector<ft_irc::Client *> *clients = server->getClients();
-        for (std::vector<ft_irc::Client *>::iterator it = clients->begin(); it != clients->end(); ++it) {
+        std::vector<ft_irc::Client *> clients = server->getClients();
+        for (std::vector<ft_irc::Client *>::iterator it = clients.begin(); it != clients.end(); ++it) {
             if (*it == client) {
-                clients->erase(it);
+                clients.erase(it);
                 delete client;
                 break;
             }

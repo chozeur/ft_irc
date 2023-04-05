@@ -75,8 +75,8 @@ char**									ft_irc::Server::getEnv(void)const{
 	return (this->_env);
 }
 
-std::vector<ft_irc::Client *>*			ft_irc::Server::getClients() {
-	return (&_clients);
+std::vector<ft_irc::Client *>			ft_irc::Server::getClients() {
+	return (_clients);
 }
 
 ft_irc::Client* 						ft_irc::Server::getClientPointerByFd(int fd) {
