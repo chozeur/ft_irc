@@ -98,7 +98,7 @@ void				ft_irc::Message::setPayload(std::string payload){
 void				ft_irc::Message::parsePayload(void) {
 	if (!(_payload.substr(0, 6) == "CAP LS" || _payload.substr(0, 4) == "PASS" || _payload.substr(0, 4) == "NICK" || _payload.substr(0, 4) == "USER")){
 		cleanLine(_payload);
-		std::cerr << "\033[1m" << _server->getName() << " [\033[32m" << _sender->getNickname() << "\033[0m] => " << _payload << std::endl;
+		ft_irc::cout << _server->getName() << " [" << _sender->getNickname() << "] => " << _payload << std::endl;
 	}
 	size_t pos = _payload.find(' ');
 	std::string cmd = _payload.substr(0, pos);

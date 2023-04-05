@@ -3,6 +3,7 @@
 
 #include <string.h>
 #include <iostream>
+#include <fstream>
 #include <map>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -120,6 +121,13 @@ namespace ft_irc{
 			std::vector<Channel *>							_channels;
 			std::map<std::string, CommandFunction>			_commands;
 	};
+
+	extern std::ofstream log_file;
+	class LogStream : public std::ostream {
+        public:
+            LogStream(std::ostream& os);
+    };
+	extern LogStream cout;
 }
 
 #endif

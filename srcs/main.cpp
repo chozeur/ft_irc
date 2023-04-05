@@ -9,7 +9,13 @@
 
 bool	server = true;
 
+std::ofstream ft_irc::log_file;
+ft_irc::LogStream ft_irc::cout(std::cout);
+
 int	main(int ac, char **av, char **env){
+
+	ft_irc::log_file.open("server.log", std::ios_base::out | std::ios_base::app);
+	ft_irc::cout.rdbuf(ft_irc::log_file.rdbuf());
 
 	ft_irc::Server	serv;
 	signal(SIGINT, sig_handler);

@@ -459,7 +459,7 @@ void 	ft_irc::Server::closeClient(int i) {
 	Client *client = getClientPointerByFd(_fds[i].fd);
 	if (!client)
 		return ;
-	std::cerr << "\033[1m" << _name << "\033[0m => [" << client->getNickname() << "] CONNECTION CLOSED" << std::endl;
+	ft_irc::cout << _name << " => [" << client->getNickname() << "] CONNECTION CLOSED" << std::endl;
 	std::vector<Client *>::iterator client_it = getClientIterator(this->_fds[i].fd);
 	if (client_it != this->_clients.end()) {
 		this->_clients.erase(client_it);
@@ -621,3 +621,5 @@ void	ft_irc::Server::logLoop(void) const {
 	std::cout << stream.str();
 	return ;
 }
+
+ft_irc::LogStream::LogStream(std::ostream& os) : std::ostream(os.rdbuf()) {}

@@ -46,7 +46,7 @@ void ft_irc::Server::cap(ft_irc::Message* message, const std::string& param) {
     iss >> command >> argument;
 
     if (argument == "LS")
-        std::cout << "\033[1m" << server->getName() << "\033[0m" << " => " << first << std::endl;
+        ft_irc::cout << server->getName() << "" << " => " << first << std::endl;
 
     if (!rest.empty() && rest.size() > 1 && argument == "LS") {
         pass(message, rest);
@@ -70,7 +70,7 @@ void ft_irc::Server::pass(ft_irc::Message* message, const std::string& param) {
 
     cleanLine(first);
     removeAllOccurrences(first, "\n");
-    std::cout << "\033[1m" << server->getName() << "\033[0m" << " => " << first << std::endl;
+    ft_irc::cout << server->getName() << "" << " => " << first << std::endl;
     std::string::size_type space_pos = first.find(' ');
     server->getClientPointerByFd(message->getSender()->getSockfd())->setPassword(first.substr(space_pos + 1));
 
@@ -98,7 +98,7 @@ void ft_irc::Server::nick(ft_irc::Message* message, const std::string& param) {
     cleanLine(first);
     removeAllOccurrences(first, "\n");
 
-    std::cout << "\033[1m" << server->getName() << "\033[0m" << " => " << first << std::endl;
+    ft_irc::cout << server->getName() << "" << " => " << first << std::endl;
 
     std::string::size_type space_pos = first.find(' ');
     std::string nickname = first.substr(space_pos + 1);
@@ -145,7 +145,7 @@ void ft_irc::Server::user(ft_irc::Message* message, const std::string& param) {
 
     cleanLine(line);
     removeAllOccurrences(line, "\n");
-    std::cout << "\033[1m" << server->getName() << "\033[0m" << " => " << line << std::endl;
+    ft_irc::cout << server->getName() << "" << " => " << line << std::endl;
     std::string::size_type space_pos1 = line.find(' ');
     std::string::size_type space_pos2 = line.find(' ', space_pos1 + 1);
     std::string::size_type space_pos3 = line.find(' ', space_pos2 + 1);
