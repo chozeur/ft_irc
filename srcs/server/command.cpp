@@ -403,7 +403,8 @@ void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
 
     channel = message->getSender()->getChanPointer(chann);
     client = server->getClientPointerByNick(userToKick);
-
+    if (!client)
+        return ;
     if (channel->isClient(*client) == 0) // Check if client to kick is in the chann or not
         return ;
 
