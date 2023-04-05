@@ -103,6 +103,8 @@ namespace ft_irc{
 			static void										pong(ft_irc::Message* message, const std::string& param);
 			static void										quit(ft_irc::Message* message, const std::string& param);
 			static void										info(ft_irc::Message* message, const std::string& param);
+			static void										topic(ft_irc::Message* message, const std::string& param);
+			static void										mode(ft_irc::Message* message, const std::string& param);
 
 		private:
 			std::string 									_name;

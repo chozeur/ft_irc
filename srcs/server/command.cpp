@@ -14,6 +14,8 @@ void ft_irc::Server::initCommands(void) {
 	_commands.insert(std::make_pair("WHOIS", &Server::whois));
 	_commands.insert(std::make_pair("PRIVMSG", &Server::privmsg));
 	_commands.insert(std::make_pair("PART", &Server::part));
+	_commands.insert(std::make_pair("TOPIC", &Server::topic));
+	_commands.insert(std::make_pair("MODE", &Server::mode));
 
 	_commands.insert(std::make_pair("PING", &Server::pong));
 	_commands.insert(std::make_pair("QUIT", &Server::quit));
@@ -200,13 +202,6 @@ void ft_irc::Server::user(ft_irc::Message* message, const std::string& param) {
 }
 
 // METHODS
-
-void ft_irc::Server::invite(ft_irc::Message* message, const std::string& param) {
-    message->getSender()->setIdle();
-	std::cerr << "INVITE FUNCTION CALLED WITH PARAM = " << param << std::endl;
-	return ;
-}
-
 void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
     // On récupère le serveur, le canal et la liste des canaux du serveur
     message->getSender()->setIdle();
@@ -220,8 +215,6 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
     param2 = param2.substr(pos + 1);
     cleanLine(param2);
     removeAllOccurrences(param2, "#");
-
-    std::cerr << "param2--> " << "[" << param2 << "]" << std::endl;
 
     if (pos == std::string::npos) {
         std::string chan_res = ":" + server->getIp() + " 461 * " + message->getSender()->getNickname() + " JOIN :Channel name missing. Usage: /join #channel\r\n";
@@ -384,7 +377,8 @@ void ft_irc::Server::privmsg(ft_irc::Message* message, const std::string& param)
 
 void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
     //utilisation (in chann only) : /kick <nom d'utilisateur> <raison>
-
+    // SEGFAULT (WRONG SYNTAX ?)
+    
     message->getSender()->setIdle();
     ft_irc::Server *server = message->getServer();
     ft_irc::Channel *channel;
@@ -407,12 +401,15 @@ void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
     size_t colon_pos = chann.find(':');
     chann = chann.substr(0, colon_pos); // equal to channel's name
 
-    std::cerr << "userToKick--> " << "[" << userToKick << "]" << std::endl;
-    std::cerr << "reasonWhy--> " << "[" << reasonWhy << "]" << std::endl;
-    std::cerr << "chann--> " << "[" << chann << "]" << std::endl;
-
     channel = message->getSender()->getChanPointer(chann);
     client = server->getClientPointerByNick(userToKick);
+
+    if (channel->isClient(*client) == 0) // Check if client to kick is in the chann or not
+        return ;
+
+    if (channel->isClientOp(*message->getSender()) == 0) /// Check if sender is operator or not
+        return ;
+
     if (channel && client && client->getNickname() != message->getSender()->getNickname()){
         std::string kick_message = ":" + message->getSender()->getNickname() + " " + "KICK" + " #" + chann + " " + userToKick + " :" + reasonWhy + "\r\n";
         channel->removeClient(*client);
@@ -478,6 +475,7 @@ void ft_irc::Server::whois(ft_irc::Message* message, const std::string& param) {
     param2 = param2.substr(pos + 1);
     ft_irc::Client  *client = server->getClientPointerByNick(param2);
     if (client){
+        std::vector<ft_irc::Channel*> channs = client->getChannels();
         time_t now = time(0);
         time_t idle = now - client->getIdle();
         std::stringstream ss;
@@ -485,12 +483,23 @@ void ft_irc::Server::whois(ft_irc::Message* message, const std::string& param) {
         std::stringstream ss2;
         ss2 << client->getSignon();
         std::string whois_msg = ":" + server->getIp() + " 311 " + message->getSender()->getNickname() + " " + client->getNickname() + " ~" + client->getNickname() + "@localhost" + " * " + client->getNickname() + " " + client->getRealname() + "\r\n";
-        std::string whois_time_msg = ":" + server->getIp() + " 317 " + message->getSender()->getNickname() + " " + client->getNickname() + " " +  ss.str() + " " + ss2.str() + " :seconds idle, signon time" + "\r\n";
+        std::string whois_chan_msg = ":" + server->getIp() + " 319 " + message->getSender()->getNickname() + " " + client->getNickname() + " :";
+        std::vector<ft_irc::Channel*>::iterator it = channs.begin();
+        if (channs.size() > 0){
+            whois_chan_msg += "#" + (*it)->getName();
+            it++;
+            for ( ; it != channs.end(); ++it)
+                whois_chan_msg += " #" + (*it)->getName();
+        }
+        whois_chan_msg += "\r\n";
+        std::string whois_time_msg = ":" + server->getIp() + " 317 " + message->getSender()->getNickname() + " " + client->getNickname() + " " +  ss.str() + " " + ss2.str() + " :seconds idle, signon time" + "\r\n";   
         std::string whois_end_msg = ":" + server->getIp() + " 318 " + message->getSender()->getNickname() + " " + client->getNickname() + " :End of /WHOIS list\r\n";
-        // std::cerr << whois_msg << std::endl;
-        std::cerr << whois_time_msg << std::endl;
-        // std::cerr << whois_end_msg << std::endl;
+
+        std::cerr << whois_chan_msg << std::endl;
         if (send(message->getSender()->getSockfd(), whois_msg.c_str(), whois_msg.length(), 0) == -1) {
+            std::cerr << "Error SEND" << std::endl;
+        }
+        if (send(message->getSender()->getSockfd(), whois_chan_msg.c_str(), whois_chan_msg.length(), 0) == -1) {
             std::cerr << "Error SEND" << std::endl;
         }
         if (send(message->getSender()->getSockfd(), whois_time_msg.c_str(), whois_time_msg.length(), 0) == -1) {
@@ -570,14 +579,7 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
         for (std::vector<Client *>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
             names_msg += " " + (*it)->getNickname();
         }
-
-        // On termine le message avec un espace et un retour à la ligne
         names_msg += " \r\n";
-
-        std::cerr << names_msg << std::endl;
-
-        // A tous les clients presents ds le canal
-        // ---------------------------------
 
         // On envoie le message de la liste des noms des clients présents dans le canal à tous les clients du canal
         for (std::vector<Client *>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
@@ -608,6 +610,7 @@ void	ft_irc::Server::quit(ft_irc::Message* message, const std::string& param) {
 
 void	ft_irc::Server::info(ft_irc::Message* message, const std::string& param){
 	(void)param;
+    message->getSender()->setIdle();
 	ft_irc::Server *server = message->getServer();
 	std::stringstream stream;
 	stream << "> name: " << server->_name << std::endl;
@@ -627,8 +630,124 @@ void	ft_irc::Server::info(ft_irc::Message* message, const std::string& param){
 			colors::reset(ss);
 			ss << "\r\n";
 			std::string messageToSend = ss.str();
-			send(message->getSender()->getSockfd(), messageToSend.c_str(), messageToSend.length(), 0);
+			if (send(message->getSender()->getSockfd(), messageToSend.c_str(), messageToSend.length(), 0) == -1){
+                std::cerr << "Error in Server::info()" << std::endl;
+            }
 		}
 	}
+    return ;
+}
 
+void ft_irc::Server::topic(ft_irc::Message* message, const std::string& param) {
+
+    std::cerr << "param--> [" << param << "]" << std::endl;
+    message->getSender()->setIdle();
+    ft_irc::Server *server = message->getServer();
+    ft_irc::Channel *channel;
+
+    std::string param2 = param;
+    size_t pos = param2.find(" ");
+    param2 = param2.substr(pos + 1);    
+    cleanLine(param2);
+    removeAllOccurrences(param2, "#");
+    param2 = param2.substr(0, param2.find(' ')); // param2 = channel
+    size_t pos2 = param.find(" ");
+    std::string param3 = param.substr(pos2 + 1);
+    pos2 = param3.find(" ");
+    param3 = param3.substr(pos2 + 1);
+    removeAllOccurrences(param3, ":"); // param3 = topic
+
+    channel = message->getSender()->getChanPointer(param2);
+    if (!channel)
+        return ;
+
+    const std::vector<Client *>& clients = channel->getClients();    
+
+    if (param.size() <= (6 + param2.size() + 1))
+        param3 = "";
+
+    if (param3 == ""){
+        std::string topic_noparam;
+        if (channel->getTopic() == "")
+            topic_noparam = ":" + server->getName() + " 331 " + message->getSender()->getNickname() + "" + channel->getName() + " :No topic is set\r\n";
+        else
+            topic_noparam = ":" + server->getName() + " 332 " + message->getSender()->getNickname() + "" + channel->getName() + " :" + channel->getTopic() + "\r\n";
+        for (std::vector<Client *>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
+            if (send((*it)->getSockfd(), topic_noparam.c_str(), topic_noparam.length(), 0) == -1) 
+                std::cerr << "ERROR SEND" << std::endl;
+        }        
+        return ;
+    }
+
+    //change topic
+
+    channel->setTopic(param3);
+
+    std::string topic_msg = ":" + message->getSender()->getNickname() + " TOPIC #" + channel->getName() + " :" + param3 + "\r\n";
+
+    std::cerr << topic_msg << std::endl;
+
+    for (std::vector<Client *>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
+        if (send((*it)->getSockfd(), topic_msg.c_str(), topic_msg.length(), 0) == -1) {
+            std::cerr << "ERROR SEND" << std::endl;
+        }
+    }        
+    
+	return ;
+}
+
+void ft_irc::Server::mode(ft_irc::Message* message, const std::string& param) {
+
+    // :<server> MODE #channel +o user
+    message->getSender()->setIdle();
+	std::cerr << "INVITE FUNCTION CALLED WITH PARAM = " << param << std::endl;
+    ft_irc::Server *server = message->getServer();
+    ft_irc::Channel *channel;
+    ft_irc::Client *client;
+
+    std::string param2 = param;
+    size_t pos = param2.find(" ");
+    param2 = param2.substr(pos + 1);
+    cleanLine(param2);
+    removeAllOccurrences(param2, "#");
+    param2 = param2.substr(0, param2.find(' '));
+
+    size_t pos2 = param.find(" ");
+    std::string param3 = param.substr(pos2 + 1);
+    pos2 = param3.find(" ");
+    param3 = param3.substr(pos2 + 1);
+
+    size_t pos3 = param3.find(' ');
+    std::string param4 = param3.substr(0, pos3);
+    std::string param5 = param3.substr(pos3 + 1);
+
+    channel = message->getSender()->getChanPointer(param2);
+    client = server->getClientPointerByNick(param5);
+    if (!channel || !client)
+        return ;
+
+    if (param4 == "+o")
+        channel->addOperator(*client);
+    if (param4 == "-o")
+        channel->removeOperator(*client);
+
+    std::string mode_msg = ":" + server->getName() + " MODE #" + channel->getName() + " " + param4 + " " + client->getNickname() + "\r\n";
+
+    const std::vector<Client *>& vec = channel->getClients();
+    for (std::vector<Client *>::const_iterator it = vec.begin(); it != vec.end(); ++it){
+        std::cerr << "[" << mode_msg << "]" << std::endl;               //////////////////////////////
+        if (send((*it)->getSockfd(), mode_msg.c_str(), mode_msg.length(), 0) == -1) 
+            std::cerr << "ERROR SEND" << std::endl;
+    }
+
+	return ;
+}
+
+void ft_irc::Server::invite(ft_irc::Message* message, const std::string& param) {
+    message->getSender()->setIdle();
+	std::cerr << "INVITE FUNCTION CALLED WITH PARAM = " << param << std::endl;
+    // /invite user #chan
+    // :<server-name> INVITE <nickname> <#channel>
+
+	return ;
 }
