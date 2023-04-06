@@ -226,7 +226,8 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
     std::stringstream ss(param2);
     std::string channel_name;
     while (std::getline(ss, channel_name, ',')) {
-        vec_channels.push_back(channel_name);
+        if (channel_name != "")
+            vec_channels.push_back(channel_name);
     }
 
 
@@ -403,7 +404,7 @@ void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
 
     channel = message->getSender()->getChanPointer(chann);
     client = server->getClientPointerByNick(userToKick);
-    if (!client)
+    if (!client || !channel)
         return ;
     if (channel->isClient(*client) == 0) // Check if client to kick is in the chann or not
         return ;
@@ -413,8 +414,6 @@ void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
 
     if (channel && client && client->getNickname() != message->getSender()->getNickname()){
         std::string kick_message = ":" + message->getSender()->getNickname() + " " + "KICK" + " #" + chann + " " + userToKick + " :" + reasonWhy + "\r\n";
-        channel->removeClient(*client);
-        client->removeChannel(*channel);
         for (std::vector<Client *>::const_iterator it = channel->getClients().begin(); it != channel->getClients().end(); ++it) {
             if (send((*it)->getSockfd(), kick_message.c_str(), kick_message.length(), 0) == -1) {
                 std::cerr << "Error SEND" << std::endl;
@@ -425,6 +424,9 @@ void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
         if (send(client->getSockfd(), confirm_msg.c_str(), confirm_msg.length(), 0) == -1) {
             std::cerr << "Error SEND" << std::endl;
         }
+
+        channel->removeClient(*client);
+        client->removeChannel(*channel);
 
         std::string names_msg = ":" + message->getServer()->getName() + " 353 " + client->getNickname() + " @ #" + channel->getName() + " :";
         const std::vector<Client *>& clients = channel->getClients();
@@ -525,6 +527,7 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
     message->getSender()->setIdle();
     ft_irc::Server *server = message->getServer();
     ft_irc::Channel *channel;
+    ft_irc::Client *sender = message->getSender();
 
     std::string param2 = param;
     size_t pos = param2.find(" ");
@@ -546,35 +549,34 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
         param3 = "";
 
     if (param2 == "") {
-        std::string chan_res = ":" + server->getIp() + " 461 * " + message->getSender()->getNickname() + " PART :Channel name missing. Usage: /part #channel\r\n";
-        send(message->getSender()->getSockfd(), chan_res.c_str(), chan_res.length(), 0);
+        std::string chan_res = ":" + server->getIp() + " 461 * " + sender->getNickname() + " PART :Channel name missing. Usage: /part #channel\r\n";
+        send(sender->getSockfd(), chan_res.c_str(), chan_res.length(), 0);
         return ;
     }
 
     for(std::vector<std::string>::iterator it = channels.begin(); it != channels.end(); ++it){
 
-        channel = message->getSender()->getChanPointer(*it);
+        channel = sender->getChanPointer(*it);
         if (!channel)
             continue ;
 
-        std::string part_msg = ":" + message->getSender()->getNickname() + "!"  + message->getSender()->getNickname() + "@localhost PART #" + channel->getName() + " :" + param3 + "\r\n";
+        std::string part_msg = ":" + sender->getNickname() + "!"  + sender->getNickname() + "@localhost PART #" + channel->getName() + " :" + param3 + "\r\n";
         for (std::vector<Client *>::const_iterator it = channel->getClients().begin(); it != channel->getClients().end(); ++it) {
             if (send((*it)->getSockfd(), part_msg.c_str(), part_msg.length(), 0) == -1) {
                 std::cerr << "Error SEND" << std::endl;
             }
         }
+        sender->removeChannel(*channel);
 
         // Send a message to confirm the client's departure
-        // std::string confirm_msg = ":" + message->getServer()->getIp() + " 301 " + message->getSender()->getNickname() + " #" + channel->getName() + " :Goodbye!\r\n";
+        // std::string confirm_msg = ":" + message->getServer()->getIp() + " 301 " + sender->getNickname() + " #" + channel->getName() + " :Goodbye!\r\n";
         std::string confirm_msg = "*** You have left channel #" + channel->getName() + "\r\n";
-        if (send(message->getSender()->getSockfd(), confirm_msg.c_str(), confirm_msg.length(), 0) == -1) {
+        if (send(sender->getSockfd(), confirm_msg.c_str(), confirm_msg.length(), 0) == -1) {
             std::cerr << "Error SEND" << std::endl;
         }
 
-        channel->removeClient(*(message->getSender()));
-        message->getSender()->removeChannel(*channel);
 
-        std::string names_msg = ":" + message->getServer()->getIp() + " 301 " + message->getSender()->getNickname() + " = #" + channel->getName() + " :";
+        std::string names_msg = ":" + message->getServer()->getIp() + " 301 " + sender->getNickname() + " = #" + channel->getName() + " :";
         const std::vector<Client *>& clients = channel->getClients();
 
         // On parcourt la liste des clients dans le canal et on ajoute leur nom au message
@@ -589,6 +591,7 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
                 std::cerr << "2 ERROR SEND" << std::endl;
             }
         }
+        channel->removeClient(*sender);
     }
 
 }
@@ -754,10 +757,61 @@ void ft_irc::Server::mode(ft_irc::Message* message, const std::string& param) {
 }
 
 void ft_irc::Server::invite(ft_irc::Message* message, const std::string& param) {
-    message->getSender()->setIdle();
-	std::cerr << "INVITE FUNCTION CALLED WITH PARAM = " << param << std::endl;
     // /invite user #chan
     // :<server-name> INVITE <nickname> <#channel>
+
+    message->getSender()->setIdle();
+    ft_irc::Server *server = message->getServer();
+    ft_irc::Channel *channel;
+    ft_irc::Client *client;
+
+    std::string userStr = param;
+    size_t pos = userStr.find(" ");
+    userStr = userStr.substr(pos + 1);
+    cleanLine(userStr);
+    userStr = userStr.substr(0, userStr.find(' '));
+    size_t pos2 = param.find(" ");
+    std::string chanStr = param.substr(pos2 + 1);
+    pos2 = chanStr.find(" ");
+    chanStr = chanStr.substr(pos2 + 1);
+    removeAllOccurrences(chanStr, "#");
+
+    std::cerr << "step1 [" << param << "]" << std::endl;
+    std::cerr << "step1 [" << chanStr << "]" << std::endl;
+    std::cerr << "step1 [" << userStr << "]" << std::endl;
+
+    channel = message->getSender()->getChanPointer(chanStr);
+    client = server->getClientPointerByNick(userStr);
+
+    // std::cerr << "step1 [" << client->getNickname() << "]" << std::endl;
+    // std::cerr << "step1 [" << channel->getName() << "]" << std::endl;
+
+    if (!channel || !client || client->getNickname() == message->getSender()->getNickname())
+        return ;
+
+    std::cerr << "step2 [" << param << "]" << std::endl;
+    std::cerr << "step2 [" << chanStr << "]" << std::endl;
+    std::cerr << "step2 [" << userStr << "]" << std::endl;
+
+    if (channel->isClientOp(*message->getSender()) == 0) /// Check if sender is operator or not
+        return ;
+        
+    std::cerr << "step3 [" << param << "]" << std::endl;
+    std::cerr << "step3 [" << chanStr << "]" << std::endl;
+    std::cerr << "step3 [" << userStr << "]" << std::endl;
+
+    channel->addClient(client);
+    client->addChannel(channel);
+
+    std::cerr << param << std::endl;
+    // :inviter_nick!inviter_user@localhost INVITE invitee_nick #channel_name\r\n
+    std::string invite_msg = ":" + message->getSender()->getNickname() + "!" + message->getSender()->getNickname() + "@localhost INVITE " + client->getNickname() + " #" + channel->getName() + "\r\n";
+    std::cerr << invite_msg << std::endl;
+    std::vector<Client*> vec = channel->getClients();
+    for (std::vector<Client*>::iterator it = vec.begin(); it != vec.end(); ++it){
+        if (send((*it)->getSockfd(), invite_msg.c_str(), invite_msg.length(), 0) == -1) 
+            std::cerr << "ERROR SEND" << std::endl;
+    }
 
 	return ;
 }
