@@ -250,7 +250,6 @@ void	ft_irc::Server::run(void) {
 					new_client->setSockfd(clientfd);
 					new_client->setIsBot(false);
 					_clients.push_back(new_client);
-
 					break;
 				}
 				if (i == MAX_CLIENTS) {
@@ -283,11 +282,23 @@ void	ft_irc::Server::run(void) {
 }
 
 void	ft_irc::Server::stop(void) {
+	
+	for (std::vector<Channel *>::iterator it = _channels.begin(); it != _channels.end(); it++){
+		std::vector<Client *> vec = (*it)->getClients();
+		for (std::vector<Client *>::iterator itb = vec.begin(); itb != vec.end(); itb++)
+			delete ((*itb));
+	}
 	for (std::vector<Channel *>::iterator it = _channels.begin(); it != _channels.end(); it++)
 		delete ((*it));
-	for (std::vector<Client *>::iterator it = _clients.begin(); it != _clients.end(); it++) {
-		delete (*it);
+
+	for (std::vector<Client *>::iterator it = _clients.begin(); it != _clients.end(); it++){
+		std::vector<Channel *> vec = (*it)->getChannels();
+		for (std::vector<Channel *>::iterator itb = vec.begin(); itb != vec.end(); itb++)
+			delete ((*itb));
 	}
+	for (std::vector<Client *>::iterator it = _clients.begin(); it != _clients.end(); it++)
+		delete (*it);
+	
 	close(this->_sockfd);
 	std::cerr << "Turn off server here" << std::endl;
 }
@@ -461,10 +472,9 @@ void 	ft_irc::Server::closeClient(int i) {
 		return ;
 	std::cerr << "\033[1m" << _name << "\033[0m => [" << client->getNickname() << "] CONNECTION CLOSED" << std::endl;
 	std::vector<Client *>::iterator client_it = getClientIterator(this->_fds[i].fd);
-	if (client_it != this->_clients.end()) {
+	if (client_it != this->_clients.end())
 		this->_clients.erase(client_it);
-		// delete (*(client_it));
-	}
+	delete client;
 	close(this->_fds[i].fd);
 	this->_fds[i].fd = -1;
 }

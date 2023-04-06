@@ -8,16 +8,13 @@
 # include <sys/types.h>
 # include <sys/socket.h>
 # include <netinet/in.h>
-// # include <string.h>
 # include <unistd.h>
 # include <algorithm>
 # include <sys/time.h>
-// # include <chrono>
 # include "../channel/channel.hpp"
 # include "../../includes/utils.hpp"
 
 
-// #include <iostream>
 #include <cstring>
 #include <cstdlib>
 #include <netdb.h>
