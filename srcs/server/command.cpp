@@ -776,42 +776,24 @@ void ft_irc::Server::invite(ft_irc::Message* message, const std::string& param) 
     chanStr = chanStr.substr(pos2 + 1);
     removeAllOccurrences(chanStr, "#");
 
-    std::cerr << "step1 [" << param << "]" << std::endl;
-    std::cerr << "step1 [" << chanStr << "]" << std::endl;
-    std::cerr << "step1 [" << userStr << "]" << std::endl;
-
     channel = message->getSender()->getChanPointer(chanStr);
     client = server->getClientPointerByNick(userStr);
 
-    // std::cerr << "step1 [" << client->getNickname() << "]" << std::endl;
-    // std::cerr << "step1 [" << channel->getName() << "]" << std::endl;
-
     if (!channel || !client || client->getNickname() == message->getSender()->getNickname())
         return ;
-
-    std::cerr << "step2 [" << param << "]" << std::endl;
-    std::cerr << "step2 [" << chanStr << "]" << std::endl;
-    std::cerr << "step2 [" << userStr << "]" << std::endl;
-
     if (channel->isClientOp(*message->getSender()) == 0) /// Check if sender is operator or not
         return ;
-        
-    std::cerr << "step3 [" << param << "]" << std::endl;
-    std::cerr << "step3 [" << chanStr << "]" << std::endl;
-    std::cerr << "step3 [" << userStr << "]" << std::endl;
 
-    channel->addClient(client);
-    client->addChannel(channel);
-
-    std::cerr << param << std::endl;
-    // :inviter_nick!inviter_user@localhost INVITE invitee_nick #channel_name\r\n
     std::string invite_msg = ":" + message->getSender()->getNickname() + "!" + message->getSender()->getNickname() + "@localhost INVITE " + client->getNickname() + " #" + channel->getName() + "\r\n";
-    std::cerr << invite_msg << std::endl;
-    std::vector<Client*> vec = channel->getClients();
-    for (std::vector<Client*>::iterator it = vec.begin(); it != vec.end(); ++it){
-        if (send((*it)->getSockfd(), invite_msg.c_str(), invite_msg.length(), 0) == -1) 
-            std::cerr << "ERROR SEND" << std::endl;
+    if (send(client->getSockfd(), invite_msg.c_str(), invite_msg.length(), 0) == -1){
+        std::cerr << "ERROR SEND" << std::endl;
+        return ;
     }
 
-	return ;
+    // std::vector<Client*> vec = channel->getClients();
+    // for (std::vector<Client*>::iterator it = vec.begin(); it != vec.end(); ++it){
+        // if (send((*it)->getSockfd(), invite_msg.c_str(), invite_msg.length(), 0) == -1) 
+            // std::cerr << "ERROR SEND" << std::endl;
+    // }
+
 }

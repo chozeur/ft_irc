@@ -218,7 +218,7 @@ void	ft_irc::Server::run(void) {
 		// std::string pong = std::string("PONG :") + this->_ip + std::string("\r\n");
 		// sendToAllClients(pong);
 
-		// system("clear");
+		system("clear");
 
 		this->purgeChannels();
 		this->purgeClients();
