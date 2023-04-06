@@ -218,7 +218,7 @@ void	ft_irc::Server::run(void) {
 		// std::string pong = std::string("PONG :") + this->_ip + std::string("\r\n");
 		// sendToAllClients(pong);
 
-		// system("clear");
+		system("clear");
 
 		this->purgeChannels();
 		this->purgeClients();
@@ -285,7 +285,7 @@ void	ft_irc::Server::stop(void) {
 	for (std::vector<Channel *>::iterator it = _channels.begin(); it != _channels.end(); it++)
 		delete ((*it));
 	for (std::vector<Client *>::iterator it = _clients.begin(); it != _clients.end(); it++)
-		delete (*it);	
+		delete (*it);
 	close(this->_sockfd);
 	std::cerr << "Turn off server here" << std::endl;
 }
@@ -494,6 +494,16 @@ std::string	ft_irc::Server::HRuptime() const {
 	(void)days;
 	(void)hours;
 	stream << minutes << " minutes, " << seconds << " seconds";
+	return (stream.str());
+}
+
+std::string	ft_irc::Server::HRdate(void) const {
+	std::stringstream stream;
+	time_t t = time(NULL);
+	struct tm *tm = localtime(&t);
+	char s[64];
+	strftime(s, sizeof(s), "%c", tm);
+	stream << s;
 	return (stream.str());
 }
 
