@@ -226,7 +226,8 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
     std::stringstream ss(param2);
     std::string channel_name;
     while (std::getline(ss, channel_name, ',')) {
-        vec_channels.push_back(channel_name);
+        if (channel_name != "")
+            vec_channels.push_back(channel_name);
     }
 
 
