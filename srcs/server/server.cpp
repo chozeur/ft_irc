@@ -662,5 +662,4 @@ std::vector<std::string>	ft_irc::Server::tenLastLogs(void) const {
 	return logs;
 }
 
-
 ft_irc::LogStream::LogStream(std::ostream& os) : std::ostream(os.rdbuf()) {}
