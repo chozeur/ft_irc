@@ -616,7 +616,8 @@ void	ft_irc::Server::logLoop(void) const {
 	colors::bright_grey(stream);colors::bold(stream);
 	std::vector<Client *>::const_iterator it2 = this->_clients.begin();
 	while (it2 != this->_clients.end()) {
-		stream << '@' << (*it2)->getNickname() << std::endl;
+		if ((*it2)->getNickname() != "MasterBot")
+			stream << '@' << (*it2)->getNickname() << std::endl;
 		++it2;
 	}
 	colors::reset(stream);
