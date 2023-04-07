@@ -677,7 +677,6 @@ void ft_irc::Server::topic(ft_irc::Message* message, const std::string& param) {
     param3 = param3.substr(pos2 + 1);
     removeAllOccurrences(param3, ":"); // param3 = topic
 
-    std::cerr << "param -->" << param << std::endl;
 
     channel = message->getSender()->getChanPointer(param2);
     if (!channel)
@@ -745,8 +744,6 @@ void ft_irc::Server::mode(ft_irc::Message* message, const std::string& param) {
 
     channel = message->getSender()->getChanPointer(param2);
     client = server->getClientPointerByNick(param5);
-    std::cerr << "chan->" << param2 << std::endl;
-    std::cerr << "client->" << param5 << std::endl;
     if (!channel || !client)
         return ;
 
@@ -770,7 +767,6 @@ void ft_irc::Server::mode(ft_irc::Message* message, const std::string& param) {
 
     const std::vector<Client *>& vec = channel->getClients();
     for (std::vector<Client *>::const_iterator it = vec.begin(); it != vec.end(); ++it){
-        std::cerr << "[" << mode_msg << "]" << std::endl;               //////////////////////////////
         if (send((*it)->getSockfd(), mode_msg.c_str(), mode_msg.length(), 0) == -1)
             std::cerr << "ERROR SEND" << std::endl;
     }
