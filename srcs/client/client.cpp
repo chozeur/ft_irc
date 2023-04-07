@@ -55,7 +55,6 @@ ft_irc::Client::Client(int sockfd, ft_irc::Server *server):
 /* DESTRUCTOR */
 
 ft_irc::Client::~Client(void){
-	std::cerr << "Client destructor called" << std::endl;
 	return ;
 }
 

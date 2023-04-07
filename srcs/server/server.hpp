@@ -13,6 +13,7 @@
 #include <poll.h>
 #include <vector>
 #include <ctime>
+#include <algorithm>
 #include "../client/client.hpp"
 #include "../channel/channel.hpp"
 #include "../message/message.hpp"
@@ -87,6 +88,7 @@ namespace ft_irc{
 			void											purgeChannels(void);
 			void											purgeClients(void);
 			void											logLoop(void) const;
+			std::vector<std::string>						tenLastLogs(void) const;
 
 			//SERVER COMMANDS
 			static void										cap(ft_irc::Message* Message, const std::string& param);
