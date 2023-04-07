@@ -14,7 +14,7 @@ ft_irc::Channel::Channel(std::string name) : _name(name), _topic("") {}
 /* DESTRUCTEUR */
 
 ft_irc::Channel::~Channel(void) {
-	std::cerr << "Channel destructor called" << std::endl;
+	return ;
 }
 
 /* OPERATEURS */

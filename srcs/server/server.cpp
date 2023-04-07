@@ -226,7 +226,7 @@ void	ft_irc::Server::run(void) {
 
 		int num_ready_fds = poll(this->_fds, MAX_CLIENTS + 1, -1);
 		if (num_ready_fds == -1) {
-			std::cerr << "Error: poll failed" << std::endl;
+			// std::cerr << "Error: poll failed" << std::endl;
 			break;
 		}
 
@@ -285,9 +285,9 @@ void	ft_irc::Server::stop(void) {
 	for (std::vector<Channel *>::iterator it = _channels.begin(); it != _channels.end(); it++)
 		delete ((*it));
 	for (std::vector<Client *>::iterator it = _clients.begin(); it != _clients.end(); it++)
-		delete (*it);	
+		delete (*it);
 	close(this->_sockfd);
-	std::cerr << "Turn off server here" << std::endl;
+	ft_irc::cout << "----------SERVER  STOPED ( " << this->HRdate() << " )----------" << std::endl;
 }
 
 void 	ft_irc::Server::sendIrcResponse(int sockfd, ft_irc::Client *client) const {
@@ -497,6 +497,16 @@ std::string	ft_irc::Server::HRuptime() const {
 	return (stream.str());
 }
 
+std::string	ft_irc::Server::HRdate(void) const {
+	std::stringstream stream;
+	time_t t = time(NULL);
+	struct tm *tm = localtime(&t);
+	char s[64];
+	strftime(s, sizeof(s), "%c", tm);
+	stream << s;
+	return (stream.str());
+}
+
 void	ft_irc::Server::purgeChannels(void) {
 	for (std::vector<Channel *>::iterator it = this->_channels.begin(); it != this->_channels.end(); ++it) {
 		if ((*it)->getClients().size() == 0 && (*it)->getName() != "general" && (*it)->getName() != "admin") {
@@ -533,20 +543,20 @@ void	ft_irc::Server::logLoop(void) const {
 	stream << std::endl << std::endl;
 
 	colors::green(stream);colors::bold(stream);
-	stream << "____________________________________________________________" << std::endl;
-	stream << "----------------------SERVER LOGS---------------------------" << std::endl;
+	stream << "___________________________________________________________________" << std::endl;
+	stream << "---------------------------SERVER STATUS---------------------------" << std::endl;
 	colors::reset(stream);
 
 	stream << std::endl;
 
 	colors::yellow(stream);colors::bold(stream);
-	stream << "\t  Server " << this->_name << " started at " << hour << ':' << min << std::endl;
+	stream << "\t\t  Server " << this->_name << " started at " << hour << ':' << min << std::endl;
 	colors::reset(stream);
 
 	stream << std::endl;
 
 	colors::blue(stream);colors::bold(stream);
-	stream << "\t  IP: " << this->_ip;
+	stream << "\t\t  IP: " << this->_ip;
 	colors::reset(stream);
 	colors::bright_grey(stream);colors::bold(stream);
 	stream << "\t\tPort: " << this->_port << std::endl;
@@ -555,7 +565,7 @@ void	ft_irc::Server::logLoop(void) const {
 	stream << std::endl;
 
 	colors::red(stream);colors::bold(stream);
-	stream << "\t  Password: " << this->_password;
+	stream << "\t\t  Password: " << this->_password;
 	colors::reset(stream);
 	colors::bright_grey(stream);colors::bold(stream);
 	stream << "\tMax clients: " << MAX_CLIENTS << std::endl;
@@ -563,9 +573,10 @@ void	ft_irc::Server::logLoop(void) const {
 
 	stream << std::endl;
 
-	colors::cyan(stream);colors::bold(stream);colors::underline(stream);
-	stream << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
-	stream << "\t\t\tChannels" << std::endl;
+	colors::cyan(stream);colors::bold(stream);
+	stream << "≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈" << std::endl;
+	stream << "\t\t\t\tChannels" << std::endl;
+	stream << "≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈" << std::endl;
 	colors::reset(stream);
 	colors::bright_grey(stream);colors::bold(stream);
 	std::vector<Channel *>::const_iterator it = this->_channels.begin();
@@ -597,9 +608,10 @@ void	ft_irc::Server::logLoop(void) const {
 
 	stream << std::endl;
 
-	colors::yellow(stream);colors::bold(stream);colors::underline(stream);
-	stream << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
-	stream << "\t\t\tClients" << std::endl;
+	colors::yellow(stream);colors::bold(stream);
+	stream << "≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈" << std::endl;
+	stream << "\t\t\t\tClients" << std::endl;
+	stream << "≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈" << std::endl;
 	colors::reset(stream);
 	colors::bright_grey(stream);colors::bold(stream);
 	std::vector<Client *>::const_iterator it2 = this->_clients.begin();
@@ -609,14 +621,45 @@ void	ft_irc::Server::logLoop(void) const {
 	}
 	colors::reset(stream);
 
+	stream << std::endl << std::endl << std::endl;
+
+	colors::grey(stream);colors::bold(stream);
+	stream << "©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©" << std::endl;
+	stream << "\t\t\t\t  Logs" << std::endl;
+	stream << "©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©" << std::endl;
+	colors::reset(stream);
+	stream << std::endl;
+	std::vector<std::string> logs = this->tenLastLogs();
+	colors::bright_grey(stream);colors::italic(stream);
+	for (std::vector<std::string>::const_iterator it = logs.begin(); it != logs.end(); ++it) {
+		stream << *it << std::endl;
+	}
+	colors::reset(stream);
+
 	stream << std::endl;
 
 	colors::green(stream);colors::bold(stream);
-	stream << "------------------------------------------------------------" << std::endl;
-	stream << "____________________________________________________________" << std::endl;
+	stream << "___________________________________________________________________" << std::endl;
+	stream << "-------------------------------------------------------------------" << std::endl;
 	colors::reset(stream);
 	std::cout << stream.str();
 	return ;
+}
+
+std::vector<std::string>	ft_irc::Server::tenLastLogs(void) const {
+	std::vector<std::string> logs;
+	std::ifstream file("server.log");
+	std::string line;
+	if (file.is_open()) {
+		while (std::getline(file, line)) {
+			logs.push_back(line);
+		}
+		file.close();
+	}
+	if (logs.size() > 10) {
+		logs.erase(logs.begin(), logs.begin() + logs.size() - 10);
+	}
+	return logs;
 }
 
 ft_irc::LogStream::LogStream(std::ostream& os) : std::ostream(os.rdbuf()) {}

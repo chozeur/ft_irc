@@ -30,6 +30,8 @@ int	main(int ac, char **av, char **env){
 		return (1);
 	}
 
+	ft_irc::cout << "----------SERVER STARTED ( " << serv.HRdate() << " )----------" << std::endl;
+
 	while (server)
 		serv.run();
 	serv.stop();
