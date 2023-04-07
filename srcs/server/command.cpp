@@ -226,7 +226,7 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
     std::stringstream ss(param2);
     std::string channel_name;
     while (std::getline(ss, channel_name, ',')) {
-        if (channel_name != "")
+        if (channel_name.size() >= 1)
             vec_channels.push_back(channel_name);
     }
 
@@ -378,7 +378,6 @@ void ft_irc::Server::privmsg(ft_irc::Message* message, const std::string& param)
 
 void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
     //utilisation (in chann only) : /kick <nom d'utilisateur> <raison>
-    // SEGFAULT (WRONG SYNTAX ?)
 
     message->getSender()->setIdle();
     ft_irc::Server *server = message->getServer();
@@ -413,7 +412,11 @@ void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
         return ;
 
     if (channel && client && client->getNickname() != message->getSender()->getNickname()){
-        std::string kick_message = ":" + message->getSender()->getNickname() + " " + "KICK" + " #" + chann + " " + userToKick + " :" + reasonWhy + "\r\n";
+        std::string kick_message;
+        if (reasonWhy.size() >= 1)
+            kick_message = ":" + message->getSender()->getNickname() + " " + "KICK" + " #" + chann + " " + userToKick + " :" + reasonWhy + "\r\n";
+        else
+            kick_message = ":" + message->getSender()->getNickname() + " " + "KICK" + " #" + chann + " " + userToKick + "\r\n";
         for (std::vector<Client *>::const_iterator it = channel->getClients().begin(); it != channel->getClients().end(); ++it) {
             if (send((*it)->getSockfd(), kick_message.c_str(), kick_message.length(), 0) == -1) {
                 std::cerr << "Error SEND" << std::endl;
@@ -433,11 +436,9 @@ void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
         std::vector<Client *>::const_iterator it = clients.begin();
         names_msg += (*it)->getNickname();
         ++it;
-        for ( ; it != clients.end(); ++it) {
+        for ( ; it != clients.end(); ++it)
             names_msg += " " + (*it)->getNickname();
-        }
         names_msg += "\r\n";
-        std::cerr << names_msg << std::endl;
 
         // On envoie le message de la liste des noms des clients présents dans le canal à tous les clients du canal
         for (std::vector<Client *>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
@@ -559,30 +560,35 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
         channel = sender->getChanPointer(*it);
         if (!channel)
             continue ;
+        std::string part_msg;
+        if (param3.size() >= 1)
+            part_msg = ":" + sender->getNickname() + "!"  + sender->getNickname() + "@localhost PART #" + channel->getName() + " :" + param3 + "\r\n";
+        else
+            part_msg = ":" + sender->getNickname() + "!"  + sender->getNickname() + "@localhost PART #" + channel->getName() + "\r\n";
 
-        std::string part_msg = ":" + sender->getNickname() + "!"  + sender->getNickname() + "@localhost PART #" + channel->getName() + " :" + param3 + "\r\n";
         for (std::vector<Client *>::const_iterator it = channel->getClients().begin(); it != channel->getClients().end(); ++it) {
             if (send((*it)->getSockfd(), part_msg.c_str(), part_msg.length(), 0) == -1) {
                 std::cerr << "Error SEND" << std::endl;
             }
         }
-        sender->removeChannel(*channel);
+        // :<server>  PART  <channel> :Goodbye
 
         // Send a message to confirm the client's departure
-        // std::string confirm_msg = ":" + message->getServer()->getIp() + " 301 " + sender->getNickname() + " #" + channel->getName() + " :Goodbye!\r\n";
-        std::string confirm_msg = "*** You have left channel #" + channel->getName() + "\r\n";
-        if (send(sender->getSockfd(), confirm_msg.c_str(), confirm_msg.length(), 0) == -1) {
-            std::cerr << "Error SEND" << std::endl;
-        }
-
+        // std::string confirm_msg = ":" + server->getName() + " 301 " + sender->getNickname() + " #" + channel->getName() + " :Goodbye!\r\n";
+        // std::string confirm_msg = ":" + message->getServer()->getName() + " PART #" + channel->getName() + " :Goodbye\r\n";
+        // std::string confirm_msg = ":localhost PART #" + channel->getName() + " :Goodbye\r\n";
+        // if (send(sender->getSockfd(), confirm_msg.c_str(), confirm_msg.length(), 0) == -1) {
+            // std::cerr << "Error SEND" << std::endl;
+        // }
+        sender->removeChannel(*channel);
+        channel->removeClient(*sender);
 
         std::string names_msg = ":" + message->getServer()->getIp() + " 301 " + sender->getNickname() + " = #" + channel->getName() + " :";
         const std::vector<Client *>& clients = channel->getClients();
 
         // On parcourt la liste des clients dans le canal et on ajoute leur nom au message
-        for (std::vector<Client *>::const_iterator it = clients.begin(); it != clients.end(); ++it) {
-            names_msg += " " + (*it)->getNickname();
-        }
+        for (std::vector<Client *>::const_iterator it = clients.begin(); it != clients.end(); ++it)
+                names_msg += " " + (*it)->getNickname();
         names_msg += " \r\n";
 
         // On envoie le message de la liste des noms des clients présents dans le canal à tous les clients du canal
@@ -591,7 +597,7 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
                 std::cerr << "2 ERROR SEND" << std::endl;
             }
         }
-        channel->removeClient(*sender);
+        privmsg(message, "PRIVMSG #" + channel->getName() + " ");
     }
 
 }
@@ -653,7 +659,6 @@ void	ft_irc::Server::info(ft_irc::Message* message, const std::string& param){
 
 void ft_irc::Server::topic(ft_irc::Message* message, const std::string& param) {
 
-    std::cerr << "param--> [" << param << "]" << std::endl;
     message->getSender()->setIdle();
     ft_irc::Server *server = message->getServer();
     ft_irc::Channel *channel;
@@ -669,6 +674,8 @@ void ft_irc::Server::topic(ft_irc::Message* message, const std::string& param) {
     pos2 = param3.find(" ");
     param3 = param3.substr(pos2 + 1);
     removeAllOccurrences(param3, ":"); // param3 = topic
+
+    std::cerr << "param -->" << param << std::endl;
 
     channel = message->getSender()->getChanPointer(param2);
     if (!channel)
