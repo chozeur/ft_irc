@@ -542,7 +542,7 @@ void	ft_irc::Server::logLoop(void) const {
 
 	stream << std::endl << std::endl;
 
-	colors::bright_white(stream);colors::on_green(stream);colors::bold(stream);
+	colors::green(stream);colors::bold(stream);
 	stream << "___________________________________________________________________" << std::endl;
 	stream << "---------------------------SERVER STATUS---------------------------" << std::endl;
 	colors::reset(stream);
@@ -613,7 +613,7 @@ void	ft_irc::Server::logLoop(void) const {
 	stream << "\t\t\t\tClients" << std::endl;
 	stream << "≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈" << std::endl;
 	colors::reset(stream);
-	colors::white(stream);colors::bold(stream);
+	colors::bright_grey(stream);colors::bold(stream);
 	std::vector<Client *>::const_iterator it2 = this->_clients.begin();
 	while (it2 != this->_clients.end()) {
 		stream << '@' << (*it2)->getNickname() << std::endl;
@@ -638,7 +638,7 @@ void	ft_irc::Server::logLoop(void) const {
 
 	stream << std::endl;
 
-	colors::bright_white(stream);colors::on_green(stream);colors::bold(stream);
+	colors::green(stream);colors::bold(stream);
 	stream << "___________________________________________________________________" << std::endl;
 	stream << "-------------------------------------------------------------------" << std::endl;
 	colors::reset(stream);
