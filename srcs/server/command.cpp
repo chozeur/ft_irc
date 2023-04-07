@@ -236,6 +236,8 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
 
         // Si le canal n'existe pas, on le crée et on l'ajoute à la liste des canaux du serveur
         channel = server->getChannelPointer(*itb);
+        if (channel && channel->isClientBanned(*(message->getSender())))
+            continue ;
         if (!channel) {
             channel = new Channel(*itb);
             channels->push_back(channel);
@@ -277,7 +279,7 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
         }
 
         // send JOIN message to all clients in the channel
-        std::string join_msg = message->getSender()->getNickname() + ": JOIN #" + channel->getName() + "\r\n";
+        std::string join_msg = ":" + message->getSender()->getNickname() + " JOIN #" + channel->getName() + "\r\n";
         std::vector<Client *> channel_clients = channel->getClients();
         for (std::vector<Client *>::iterator it = channel_clients.begin(); it != channel_clients.end(); ++it) {
             if ((*it)->getSockfd() != message->getSender()->getSockfd()) {
@@ -378,7 +380,7 @@ void ft_irc::Server::privmsg(ft_irc::Message* message, const std::string& param)
 
 void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
     //utilisation (in chann only) : /kick <nom d'utilisateur> <raison>
-
+    std::cerr << "[" << param << "]" << std::endl;
     message->getSender()->setIdle();
     ft_irc::Server *server = message->getServer();
     ft_irc::Channel *channel;
@@ -720,7 +722,7 @@ void ft_irc::Server::mode(ft_irc::Message* message, const std::string& param) {
 
     // :<server> MODE #channel +o user
     message->getSender()->setIdle();
-	std::cerr << "INVITE FUNCTION CALLED WITH PARAM = " << param << std::endl;
+	std::cerr << "MODE FUNCTION CALLED WITH PARAM = " << param << std::endl;
     ft_irc::Server *server = message->getServer();
     ft_irc::Channel *channel;
     ft_irc::Client *client;
@@ -743,6 +745,8 @@ void ft_irc::Server::mode(ft_irc::Message* message, const std::string& param) {
 
     channel = message->getSender()->getChanPointer(param2);
     client = server->getClientPointerByNick(param5);
+    std::cerr << "chan->" << param2 << std::endl;
+    std::cerr << "client->" << param5 << std::endl;
     if (!channel || !client)
         return ;
 
@@ -750,6 +754,17 @@ void ft_irc::Server::mode(ft_irc::Message* message, const std::string& param) {
         channel->addOperator(*client);
     if (param4 == "-o")
         channel->removeOperator(*client);
+    if (param4 == "+b"){
+        if (channel->isClientOp(*(message->getSender())) == 0)
+            return ;
+        channel->addBannedClient(*client);
+        kick(message, "KICK #" + channel->getName() + " " + client->getNickname() + "\r\n");
+    }
+    if (param4 == "-b"){
+        if (channel->isClientOp(*(message->getSender())) == 0)
+            return ;
+        channel->removeBannedClient(*client);
+    }
 
     std::string mode_msg = ":" + server->getName() + " MODE #" + channel->getName() + " " + param4 + " " + client->getNickname() + "\r\n";
 
@@ -792,15 +807,7 @@ void ft_irc::Server::invite(ft_irc::Message* message, const std::string& param) 
         return ;
 
     std::string invite_msg = ":" + message->getSender()->getNickname() + "!" + message->getSender()->getNickname() + "@localhost INVITE " + client->getNickname() + " #" + channel->getName() + "\r\n";
-    if (send(client->getSockfd(), invite_msg.c_str(), invite_msg.length(), 0) == -1){
+    if (send(client->getSockfd(), invite_msg.c_str(), invite_msg.length(), 0) == -1)
         std::cerr << "ERROR SEND" << std::endl;
-        return ;
-    }
-
-    // std::vector<Client*> vec = channel->getClients();
-    // for (std::vector<Client*>::iterator it = vec.begin(); it != vec.end(); ++it){
-        // if (send((*it)->getSockfd(), invite_msg.c_str(), invite_msg.length(), 0) == -1) 
-            // std::cerr << "ERROR SEND" << std::endl;
-    // }
-
+    return ;
 }
