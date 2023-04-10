@@ -60,6 +60,11 @@ std::vector<ft_irc::Client> const &		ft_irc::Channel::getBannedClients(void) con
 	return (this->_banned_clients);
 }
 
+std::vector<std::string> const &		ft_irc::Channel::getAllMode(void) const
+{
+	return (this->_allMode);
+}
+
 /* SETTERS */
 
 void 		ft_irc::Channel::setName(std::string const &name)
@@ -165,6 +170,11 @@ int 		ft_irc::Channel::isClient(Client const &client) const
 		}
 	}
 	return 0;
+}
+
+void		ft_irc::Channel::updateMode(std::string mode)
+{
+	this->_allMode.push_back(mode);
 }
 
 std::ostream& ft_irc::operator<<(std::ostream& os, ft_irc::Channel* channel)

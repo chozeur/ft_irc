@@ -84,11 +84,11 @@ namespace ft_irc{
 			int 											uptime(void) const;
 			std::string										HRuptime(void) const;
 			std::string										HRdate(void) const;
-			// std::string										info(void) const;
 			void											purgeChannels(void);
 			void											purgeClients(void);
 			void											logLoop(void) const;
 			std::vector<std::string>						tenLastLogs(void) const;
+			// void											updateChan()
 
 			//SERVER COMMANDS
 			static void										cap(ft_irc::Message* Message, const std::string& param);
@@ -123,7 +123,6 @@ namespace ft_irc{
 			std::vector<Client *>							_clients;
 			std::vector<Channel *>							_channels;
 			std::map<std::string, CommandFunction>			_commands;
-
 	};
 
 	extern std::ofstream log_file;

@@ -243,6 +243,7 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
             channels->push_back(channel);
         }
 
+        
         // On ajoute l'utilisateur qui a envoyé le message au canal
         channel->addClient(message->getSender());
 
@@ -279,7 +280,7 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
         }
 
         // send JOIN message to all clients in the channel
-        std::string join_msg = ":" + message->getSender()->getNickname() + " JOIN #" + channel->getName() + "\r\n";
+        std::string join_msg = ":" + message->getSender()->getNickname() + "!" + message->getSender()->getUsername() + "@localhost" + " JOIN #" + channel->getName() + "\r\n";
         std::vector<Client *> channel_clients = channel->getClients();
         for (std::vector<Client *>::iterator it = channel_clients.begin(); it != channel_clients.end(); ++it) {
             if ((*it)->getSockfd() != message->getSender()->getSockfd()) {
@@ -287,6 +288,14 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
                     std::cerr << "3 ERROR SEND" << std::endl;
                 }
             }
+        }
+
+        std::vector<std::string> const chanMode = channel->getAllMode();
+
+        for (std::vector<std::string>::const_iterator itChan = chanMode.begin(); itChan != chanMode.end(); ++itChan){
+            if (send(message->getSender()->getSockfd(), (*itChan).c_str(), (*itChan).length(), 0) == -1)
+                std::cerr << "ERROR SEND" << std::endl;
+                
         }
     }
 }
@@ -415,10 +424,13 @@ void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
 
     if (channel && client && client->getNickname() != message->getSender()->getNickname()){
         std::string kick_message;
+
+        // kick_message = ":" + message->getSender()->getNickname() + " KICK #" + chann + " " + userToKick + "!" + userToKickUsername + "@" + userToKickHostname + " :" + reasonWhy + "\r\n";
+
         if (reasonWhy.size() >= 1)
-            kick_message = ":" + message->getSender()->getNickname() + " " + "KICK" + " #" + chann + " " + userToKick + " :" + reasonWhy + "\r\n";
+            kick_message = ":" + message->getSender()->getNickname() + " " + "KICK" + " #" + chann + " " + client->getNickname() + " :" + reasonWhy + "\r\n";
         else
-            kick_message = ":" + message->getSender()->getNickname() + " " + "KICK" + " #" + chann + " " + userToKick + "\r\n";
+            kick_message = ":" + message->getSender()->getNickname() + " " + "KICK" + " #" + chann + " " + client->getNickname() + "\r\n";
         for (std::vector<Client *>::const_iterator it = channel->getClients().begin(); it != channel->getClients().end(); ++it) {
             if (send((*it)->getSockfd(), kick_message.c_str(), kick_message.length(), 0) == -1) {
                 std::cerr << "Error SEND" << std::endl;
@@ -564,9 +576,9 @@ void ft_irc::Server::part(ft_irc::Message* message, const std::string& param) {
             continue ;
         std::string part_msg;
         if (param3.size() >= 1)
-            part_msg = ":" + sender->getNickname() + "!"  + sender->getNickname() + "@localhost PART #" + channel->getName() + " :" + param3 + "\r\n";
+            part_msg = ":" + sender->getNickname() + "!"  + sender->getUsername() + "@localhost PART #" + channel->getName() + " :" + param3 + "\r\n";
         else
-            part_msg = ":" + sender->getNickname() + "!"  + sender->getNickname() + "@localhost PART #" + channel->getName() + "\r\n";
+            part_msg = ":" + sender->getNickname() + "!"  + sender->getUsername() + "@localhost PART #" + channel->getName() + "\r\n";
 
         for (std::vector<Client *>::const_iterator it = channel->getClients().begin(); it != channel->getClients().end(); ++it) {
             if (send((*it)->getSockfd(), part_msg.c_str(), part_msg.length(), 0) == -1) {
@@ -764,6 +776,8 @@ void ft_irc::Server::mode(ft_irc::Message* message, const std::string& param) {
     }
 
     std::string mode_msg = ":" + server->getName() + " MODE #" + channel->getName() + " " + param4 + " " + client->getNickname() + "\r\n";
+
+    channel->updateMode(mode_msg);
 
     const std::vector<Client *>& vec = channel->getClients();
     for (std::vector<Client *>::const_iterator it = vec.begin(); it != vec.end(); ++it){

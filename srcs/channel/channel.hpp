@@ -23,11 +23,12 @@ namespace ft_irc {
 
 			Channel						&operator=(Channel const &rhs);
 
-			std::string					getName(void) const;
-			std::string					getTopic(void) const;
-			std::vector<Client*> const	&getClients(void) const;
-			std::vector<Client>	const 	&getOperators(void) const;
-			std::vector<Client>	const 	&getBannedClients(void) const;
+			std::string												getName(void) const;
+			std::string												getTopic(void) const;
+			std::vector<Client*> const								&getClients(void) const;
+			std::vector<Client>	const 								&getOperators(void) const;
+			std::vector<Client>	const 								&getBannedClients(void) const;
+			std::vector<std::string> const							&getAllMode(void) const;
 
 			void						setName(std::string const &name);
 			void						setTopic(std::string const &name);
@@ -44,13 +45,16 @@ namespace ft_irc {
 			int							isClientBanned(Client const &client) const;
 			int							isClientOp(Client const &client) const;
 			int							isClient(Client const &client) const;
+			
+			void						updateMode(std::string mode);
 
 		private:
-			std::string					_name;
-			std::string					_topic;
-			std::vector<Client *>		_clients;
-			std::vector<Client>			_operators;
-			std::vector<Client>			_banned_clients;
+			std::string										_name;
+			std::string										_topic;
+			std::vector<Client *>							_clients;
+			std::vector<Client>								_operators;
+			std::vector<Client>								_banned_clients;
+			std::vector<std::string>						_allMode;
 	};
 
 std::ostream& operator<<(std::ostream& os, ft_irc::Channel* channel);
