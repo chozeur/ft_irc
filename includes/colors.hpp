@@ -457,6 +457,11 @@ namespace colors {
 
 		return stream;
 	}
+
+	inline std::ostream&	random(std::ostream& stream){
+		stream << "\033[38;5;" << rand() % 255 << "m";
+		return stream;
+	}
 }
 
 #undef COLORS_TARGET_POSIX

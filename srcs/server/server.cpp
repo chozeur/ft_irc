@@ -624,14 +624,14 @@ void	ft_irc::Server::logLoop(void) const {
 
 	stream << std::endl << std::endl << std::endl;
 
-	colors::grey(stream);colors::bold(stream);
+	colors::white(stream);colors::bold(stream);
 	stream << "©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©" << std::endl;
 	stream << "\t\t\t\t  Logs" << std::endl;
 	stream << "©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©" << std::endl;
 	colors::reset(stream);
 	stream << std::endl;
 	std::vector<std::string> logs = this->tenLastLogs();
-	colors::bright_grey(stream);colors::italic(stream);
+	colors::bright_grey(stream);colors::italic(stream);colors::bold(stream);
 	for (std::vector<std::string>::const_iterator it = logs.begin(); it != logs.end(); ++it) {
 		stream << *it << std::endl;
 	}

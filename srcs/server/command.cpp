@@ -638,7 +638,7 @@ void	ft_irc::Server::info(ft_irc::Message* message, const std::string& param){
 	for (std::vector<std::string>::iterator it = lines.begin(); it != lines.end(); ++it) {
 		if (*it != ""){
 			std::stringstream ss;
-			colors::bold(ss);colors::white(ss);colors::on_blue(ss);
+			colors::bold(ss);colors::random(ss);colors::on_blue(ss);
 			ss << "    " << format(*it,42);
 			colors::reset(ss);
 			ss << "\r\n";
@@ -795,7 +795,7 @@ void ft_irc::Server::invite(ft_irc::Message* message, const std::string& param) 
 
     if (channel->isClientOp(*message->getSender()) == 0) /// Check if sender is operator or not
         return ;
-        
+
     std::cerr << "step3 [" << param << "]" << std::endl;
     std::cerr << "step3 [" << chanStr << "]" << std::endl;
     std::cerr << "step3 [" << userStr << "]" << std::endl;
@@ -809,7 +809,7 @@ void ft_irc::Server::invite(ft_irc::Message* message, const std::string& param) 
     std::cerr << invite_msg << std::endl;
     std::vector<Client*> vec = channel->getClients();
     for (std::vector<Client*>::iterator it = vec.begin(); it != vec.end(); ++it){
-        if (send((*it)->getSockfd(), invite_msg.c_str(), invite_msg.length(), 0) == -1) 
+        if (send((*it)->getSockfd(), invite_msg.c_str(), invite_msg.length(), 0) == -1)
             std::cerr << "ERROR SEND" << std::endl;
     }
 
