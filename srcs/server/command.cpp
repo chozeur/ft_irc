@@ -72,7 +72,12 @@ void ft_irc::Server::pass(ft_irc::Message* message, const std::string& param) {
     removeAllOccurrences(first, "\n");
     ft_irc::cout << server->getName() << "" << " => " << first << std::endl;
     std::string::size_type space_pos = first.find(' ');
-    server->getClientPointerByFd(message->getSender()->getSockfd())->setPassword(first.substr(space_pos + 1));
+    if (space_pos == std::string::npos){
+        ft_irc::cout << "WEEEEEEEEEEEEEEEEEEEEEEEEEE" << std::endl;
+        server->getClientPointerByFd(message->getSender()->getSockfd())->setPassword("");
+    }
+    else
+        server->getClientPointerByFd(message->getSender()->getSockfd())->setPassword(first.substr(space_pos + 1));
 
     if (!rest.empty() && rest.size() > 1) {
         nick(message, rest);
@@ -164,7 +169,9 @@ void ft_irc::Server::user(ft_irc::Message* message, const std::string& param) {
     client->setRealname(realname);
 
     if (!server->parsingPassword(client->getPassword())) {
-        std::string pass_res = "NOTICE " + client->getNickname() + " :Invalid password. Please try again.\r\n";
+        // std::string pass_res = ":NOTICE " + client->getNickname() + " :Invalid password. Please try again.\r\n";
+        // :your.server.name 464 * :Password required
+        std::string pass_res = ":" + server->getName() + " 464 * :Password required\r\n";
         send(client->getSockfd(), pass_res.c_str(), pass_res.length(), 0);
 
         int fd = client->getSockfd();
@@ -419,8 +426,13 @@ void ft_irc::Server::kick(ft_irc::Message* message, const std::string& param) {
     if (channel->isClient(*client) == 0) // Check if client to kick is in the chann or not
         return ;
 
-    if (channel->isClientOp(*message->getSender()) == 0) /// Check if sender is operator or not
+    if (channel->isClientOp(*message->getSender()) == 0){ /// Check if sender is operator or not
+        // :server.name 482 user1 #chan :You're not channel operator
+        std::string notOps_msg = ":" + server->getName(); + " 482 " + message->getSender()->getNickname() + " #" + channel->getName() + " :You're not channel operator\r\n";
+        if (send(message->getSender()->getSockfd(), notOps_msg.c_str(), notOps_msg.length(), 0) == -1)
+            std::cerr << "Error SEND" << std::endl;
         return ;
+    }
 
     if (channel && client && client->getNickname() != message->getSender()->getNickname()){
         std::string kick_message;
@@ -759,19 +771,26 @@ void ft_irc::Server::mode(ft_irc::Message* message, const std::string& param) {
     if (!channel || !client)
         return ;
 
+    std::string notOps_msg = ":" + server->getName(); + " 482 " + message->getSender()->getNickname() + " #" + channel->getName() + " :You're not channel operator\r\n";
     if (param4 == "+o")
         channel->addOperator(*client);
     if (param4 == "-o")
         channel->removeOperator(*client);
     if (param4 == "+b"){
-        if (channel->isClientOp(*(message->getSender())) == 0)
+        if (channel->isClientOp(*(message->getSender())) == 0){
+            if (send(message->getSender()->getSockfd(), notOps_msg.c_str(), notOps_msg.length(), 0) == -1)
+                std::cerr << "Error SEND" << std::endl;
             return ;
+        }
         channel->addBannedClient(*client);
         kick(message, "KICK #" + channel->getName() + " " + client->getNickname() + "\r\n");
     }
     if (param4 == "-b"){
-        if (channel->isClientOp(*(message->getSender())) == 0)
+        if (channel->isClientOp(*(message->getSender())) == 0){
+            if (send(message->getSender()->getSockfd(), notOps_msg.c_str(), notOps_msg.length(), 0) == -1)
+                std::cerr << "Error SEND" << std::endl;
             return ;
+        }
         channel->removeBannedClient(*client);
     }
 

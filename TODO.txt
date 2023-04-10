@@ -39,10 +39,8 @@ NOTICE
 JOIN
 TOPIC
 
-<<<<<<< HEAD
-
-=======
->>>>>>> master
 send files:
 sender: /dcc send receiver "/path/to/file"
 receiver: /dcc get sender "fileName.ext"
+
+SEGFAULT WHEN BAD PASSWORD OR NO PASSWORD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
