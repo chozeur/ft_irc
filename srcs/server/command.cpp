@@ -646,7 +646,7 @@ void	ft_irc::Server::info(ft_irc::Message* message, const std::string& param){
 	for (std::vector<std::string>::iterator it = lines.begin(); it != lines.end(); ++it) {
 		if (*it != ""){
 			std::stringstream ss;
-			colors::bold(ss);colors::white(ss);colors::on_blue(ss);
+			colors::bold(ss);colors::random(ss);colors::on_blue(ss);
 			ss << "    " << format(*it,42);
 			colors::reset(ss);
 			ss << "\r\n";
