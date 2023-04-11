@@ -225,10 +225,8 @@ void	ft_irc::Server::run(void) {
 		this->logLoop();
 
 		int num_ready_fds = poll(this->_fds, MAX_CLIENTS + 1, -1);
-		if (num_ready_fds == -1) {
-			// std::cerr << "Error: poll failed" << std::endl;
+		if (num_ready_fds == -1)
 			break;
-		}
 
 		if (this->_fds[0].revents & POLLIN) {
 			// Accepter une connexion entrante
