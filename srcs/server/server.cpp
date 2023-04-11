@@ -272,6 +272,9 @@ void	ft_irc::Server::run(void) {
 					ft_irc::Message *command = new Message(message, getClientPointerByFd(this->_fds[i].fd), this);
 					delete command;
 				}
+				if (this->getClientPointerByFd(this->_fds[i].fd)->getPassword() != this->_password) {
+					closeClient(i);
+				}
 			}
 		}
 		break ;

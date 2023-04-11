@@ -73,7 +73,6 @@ void ft_irc::Server::pass(ft_irc::Message* message, const std::string& param) {
     ft_irc::cout << server->getName() << "" << " => " << first << std::endl;
     std::string::size_type space_pos = first.find(' ');
     if (space_pos == std::string::npos){
-        ft_irc::cout << "WEEEEEEEEEEEEEEEEEEEEEEEEEE" << std::endl;
         server->getClientPointerByFd(message->getSender()->getSockfd())->setPassword("");
     }
     else
@@ -168,33 +167,33 @@ void ft_irc::Server::user(ft_irc::Message* message, const std::string& param) {
     client->setServername(servername);
     client->setRealname(realname);
 
-    if (!server->parsingPassword(client->getPassword())) {
-        // std::string pass_res = ":NOTICE " + client->getNickname() + " :Invalid password. Please try again.\r\n";
-        // :your.server.name 464 * :Password required
-        std::string pass_res = ":" + server->getName() + " 464 * :Password required\r\n";
-        send(client->getSockfd(), pass_res.c_str(), pass_res.length(), 0);
+    // if (!server->parsingPassword(client->getPassword())) {
+    //     // std::string pass_res = ":NOTICE " + client->getNickname() + " :Invalid password. Please try again.\r\n";
+    //     // :your.server.name 464 * :Password required
+    //     std::string pass_res = ":" + server->getName() + " 464 * :Password required\r\n";
+    //     send(client->getSockfd(), pass_res.c_str(), pass_res.length(), 0);
 
-        int fd = client->getSockfd();
+    //     int fd = client->getSockfd();
 
-        // Set a -1 le fd ouvert dans la struct pollfd
-        for (int i = 1; i <= MAX_CLIENTS; i++) {
-            if (server->getFds()[i].fd == fd)
-                server->getFds()[i].fd = -1;
-        }
+    //     // Set a -1 le fd ouvert dans la struct pollfd
+    //     for (int i = 1; i <= MAX_CLIENTS; i++) {
+    //         if (server->getFds()[i].fd == fd)
+    //             server->getFds()[i].fd = -1;
+    //     }
 
-        // Retirer le client de la liste des clients et supprimer son objet de la mémoire
-        std::vector<ft_irc::Client *> clients = server->getClients();
-        for (std::vector<ft_irc::Client *>::iterator it = clients.begin(); it != clients.end(); ++it) {
-            if (*it == client) {
-                clients.erase(it);
-                delete client;
-                break;
-            }
-        }
+    //     // Retirer le client de la liste des clients et supprimer son objet de la mémoire
+    //     std::vector<ft_irc::Client *> clients = server->getClients();
+    //     for (std::vector<ft_irc::Client *>::iterator it = clients.begin(); it != clients.end(); ++it) {
+    //         if (*it == client) {
+    //             clients.erase(it);
+    //             delete client;
+    //             break;
+    //         }
+    //     }
 
-        close(fd);
-        return ;
-    }
+    //     close(fd);
+    //     return ;
+    // }
 
     if (client->getNickname().empty()) {
         client->setUserLine(param);
@@ -250,7 +249,7 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
             channels->push_back(channel);
         }
 
-        
+
         // On ajoute l'utilisateur qui a envoyé le message au canal
         channel->addClient(message->getSender());
 
@@ -302,7 +301,7 @@ void ft_irc::Server::join(ft_irc::Message* message, const std::string& param) {
         for (std::vector<std::string>::const_iterator itChan = chanMode.begin(); itChan != chanMode.end(); ++itChan){
             if (send(message->getSender()->getSockfd(), (*itChan).c_str(), (*itChan).length(), 0) == -1)
                 std::cerr << "ERROR SEND" << std::endl;
-                
+
         }
     }
 }
