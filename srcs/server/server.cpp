@@ -252,6 +252,7 @@ void	ft_irc::Server::run(void) {
 				}
 				if (i == MAX_CLIENTS) {
 					std::cout << "Too many clients connected" << std::endl;
+					close(clientfd);
 					break;
 				}
 			}
@@ -285,8 +286,11 @@ void	ft_irc::Server::run(void) {
 void	ft_irc::Server::stop(void) {
 	for (std::vector<Channel *>::iterator it = _channels.begin(); it != _channels.end(); it++)
 		delete ((*it));
-	for (std::vector<Client *>::iterator it = _clients.begin(); it != _clients.end(); it++)
+	for (std::vector<Client *>::iterator it = _clients.begin(); it != _clients.end(); it++){
+		if ((*it)->getSockfd() != -1)
+			close((*it)->getSockfd());
 		delete (*it);
+	}
 	close(3);
 	close(this->_sockfd);
 	ft_irc::cout << "----------SERVER  STOPED ( " << this->HRdate() << " )----------" << std::endl;
@@ -465,7 +469,7 @@ void 	ft_irc::Server::closeClient(int i) {
 		this->_clients.erase(client_it);
 	delete client;
 	if (this->_fds[i].fd != -1)
-		close(this->_fds[i].fd); /////////!!!!!!//////////
+		close(this->_fds[i].fd);
 	this->_fds[i].fd = -1;
 }
 

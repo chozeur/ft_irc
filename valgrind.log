@@ -1,17 +1,17 @@
-==321647== Memcheck, a memory error detector
-==321647== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==321647== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==321647== Command: ./ircserv 2222 pass
-==321647== Parent PID: 311180
-==321647== 
-==321647== 
-==321647== FILE DESCRIPTORS: 3 open (3 std) at exit.
-==321647== 
-==321647== HEAP SUMMARY:
-==321647==     in use at exit: 0 bytes in 0 blocks
-==321647==   total heap usage: 78,634 allocs, 78,634 frees, 6,393,200 bytes allocated
-==321647== 
-==321647== All heap blocks were freed -- no leaks are possible
-==321647== 
-==321647== For lists of detected and suppressed errors, rerun with: -s
-==321647== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==347216== Memcheck, a memory error detector
+==347216== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==347216== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==347216== Command: ./ircserv 2121 pass
+==347216== Parent PID: 311180
+==347216== 
+==347216== 
+==347216== FILE DESCRIPTORS: 3 open (3 std) at exit.
+==347216== 
+==347216== HEAP SUMMARY:
+==347216==     in use at exit: 0 bytes in 0 blocks
+==347216==   total heap usage: 241,453 allocs, 241,453 frees, 18,030,599 bytes allocated
+==347216== 
+==347216== All heap blocks were freed -- no leaks are possible
+==347216== 
+==347216== For lists of detected and suppressed errors, rerun with: -s
+==347216== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
