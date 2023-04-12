@@ -70,7 +70,7 @@ all: $(TARGETDIR)/$(TARGET)
 test: all
 	$(TARGETDIR)/$(TARGET) 2121 pass
 debug: all
-	valgrind --log-file="valgrind.log" --leak-check=full --track-origins=yes --show-leak-kinds=all $(TARGETDIR)/$(TARGET) 2121 pass
+	valgrind --log-file="valgrind.log" --leak-check=full --track-origins=yes --show-leak-kinds=all --track-fds=yes $(TARGETDIR)/$(TARGET) 2121 pass
 
 # Bonus rule
 bonus: CPPFLAGS += -DBONUS

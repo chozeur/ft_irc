@@ -272,7 +272,7 @@ void	ft_irc::Server::run(void) {
 					ft_irc::Message *command = new Message(message, getClientPointerByFd(this->_fds[i].fd), this);
 					delete command;
 				}
-				if (this->getClientPointerByFd(this->_fds[i].fd)->getPassword() != this->_password) {
+				if (this->getClientPointerByFd(this->_fds[i].fd) && this->getClientPointerByFd(this->_fds[i].fd)->getPassword() != this->_password) {
 					closeClient(i);
 				}
 			}
@@ -287,6 +287,7 @@ void	ft_irc::Server::stop(void) {
 		delete ((*it));
 	for (std::vector<Client *>::iterator it = _clients.begin(); it != _clients.end(); it++)
 		delete (*it);
+	close(3);
 	close(this->_sockfd);
 	ft_irc::cout << "----------SERVER  STOPED ( " << this->HRdate() << " )----------" << std::endl;
 }
@@ -463,7 +464,8 @@ void 	ft_irc::Server::closeClient(int i) {
 	if (client_it != this->_clients.end())
 		this->_clients.erase(client_it);
 	delete client;
-	close(this->_fds[i].fd);
+	if (this->_fds[i].fd != -1)
+		close(this->_fds[i].fd); /////////!!!!!!//////////
 	this->_fds[i].fd = -1;
 }
 
