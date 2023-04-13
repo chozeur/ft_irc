@@ -14,6 +14,7 @@ ft_irc::Client::Client(void):
 	_password(""),
 	_host(""),
 	_userLine(""),
+	_command(""),
 	_idle(time(0)),
 	_signon(time(0)) {
 	return ;
@@ -30,6 +31,7 @@ ft_irc::Client::Client(Client const & rhs):
 	_password(""),
 	_host(""),
 	_userLine(""),
+	_command(""),
 	_idle(time(0)),
 	_signon(time(0)) {
 	*this = rhs;
@@ -47,6 +49,7 @@ ft_irc::Client::Client(int sockfd, ft_irc::Server *server):
 	_password(""),
 	_host(""),
 	_userLine(""),
+	_command(""),
 	_idle(time(0)),
 	_signon(time(0)) {
 	return ;
@@ -73,6 +76,7 @@ ft_irc::Client&				ft_irc::Client::operator=(Client const &rhs){
 		this->_host = rhs._host;
 		this->_servername = rhs._servername;
 		this->_userLine = rhs._userLine;
+		this->_command = rhs._command;
 		this->_idle = rhs._idle;
 		this->_signon = rhs._signon;
 		this->_channels = rhs._channels;
@@ -116,6 +120,10 @@ std::string					ft_irc::Client::getServername(void) const {
 
 std::string					ft_irc::Client::getUserLine(void) const {
 	return (this->_userLine);
+}
+
+std::string					ft_irc::Client::getCommand(void) const {
+	return (this->_command);
 }
 
 time_t						ft_irc::Client::getIdle(void) const {
@@ -169,6 +177,11 @@ void						ft_irc::Client::setServername(std::string servername){
 
 void						ft_irc::Client::setUserLine(std::string userLine){
 	this->_userLine = userLine;
+	return ;
+}
+
+void						ft_irc::Client::setCommand(std::string command){
+	this->_command = command;
 	return ;
 }
 

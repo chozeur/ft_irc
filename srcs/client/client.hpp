@@ -47,6 +47,7 @@ namespace ft_irc
 			std::string					getHost(void) const;
 			std::string					getServername(void) const;
 			std::string					getUserLine(void) const;
+			std::string					getCommand(void) const;
 			time_t						getIdle(void) const;
 			time_t						getSignon(void) const;
 			std::vector<ft_irc::Channel*>	getChannels(void) const;
@@ -61,6 +62,7 @@ namespace ft_irc
 			void						setHost(std::string host);
 			void						setServername(std::string servername);
 			void						setUserLine(std::string userLine);
+			void						setCommand(std::string userLine);
 			void						setIdle(void);
 			void						setChannels(std::vector<ft_irc::Channel*> channels);
 			void						setIsBot(bool isBot);
@@ -89,6 +91,7 @@ namespace ft_irc
 			std::string					_host;
 			std::string					_servername;
 			std::string					_userLine;
+			std::string					_command;
 			time_t						_idle;
 			time_t						_signon;
 			std::vector<ft_irc::Channel*>	_channels;

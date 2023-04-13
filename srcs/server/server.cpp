@@ -262,15 +262,22 @@ void	ft_irc::Server::run(void) {
 			if (this->_fds[i].fd != -1 && this->_fds[i].revents & POLLIN)
 			{
 				char buffer[1024];
-				int bytes_received = recv(this->_fds[i].fd, buffer, sizeof(buffer), 0);
+		rec:	int bytes_received = recv(this->_fds[i].fd, buffer, sizeof(buffer), 0);
 				if (bytes_received <= 0) {
 					if (bytes_received == -1)
 						std::cerr << "Error: message receiving failed on fd : " << this->_fds[i].fd << std::endl;
 					closeClient(i);
 				} else {
+					ft_irc::Client *cli = this->getClientPointerByFd(this->_fds[i].fd);
 					std::string message(buffer, bytes_received);
-
-					ft_irc::Message *command = new Message(message, getClientPointerByFd(this->_fds[i].fd), this);
+					if (message[message.length() - 1] != '\n'){
+						cli->setCommand(cli->getCommand() + message);
+						goto rec;
+					}else{
+						cli->setCommand(cli->getCommand() + message);
+					}					
+					ft_irc::Message *command = new Message(cli->getCommand(), getClientPointerByFd(this->_fds[i].fd), this);
+					cli->setCommand("");
 					delete command;
 				}
 				if (this->getClientPointerByFd(this->_fds[i].fd) && this->getClientPointerByFd(this->_fds[i].fd)->getPassword() != this->_password) {
