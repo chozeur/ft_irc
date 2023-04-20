@@ -1,5 +1,5 @@
 # <p align="center">ft_IRC</p>
-## <p align="center"> done in collab with [chozeur](https://github.com/chozeur) and [rolekss](https://github.com/RolandVrignon)</p>
+## <p align="center"> done in collab with [rolekss](https://github.com/RolandVrignon) and [tbrebion](https://github.com/tbrebion)</p>
 
 ## Introduction
 
